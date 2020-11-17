@@ -7,6 +7,20 @@ import sha256 from 'sha256';
 
 const { PASSWORD_MIN }: any = process.env;
 
+/**
+ *   Регистрация пользователя.
+ * Обязательные параметры
+ * email,
+    first_name,
+    last_name,
+    password,
+    password_repeat,
+    company,
+    skype,
+    При успешной регистрации отправляет письмо с сылкой подтверждения почты
+ * @param req 
+ * @param res 
+ */
 export default async function postCreateUser(req: express.Request, res: express.Response): Promise<any> {
 
   const {

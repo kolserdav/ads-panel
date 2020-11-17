@@ -3,6 +3,14 @@ import * as lib from '../lib';
 import * as orm from '../orm';
 import express from 'express';
 
+
+/**
+ *  Посредник авторизации, проверяет токен в заголовке xx-auth,
+ *  если токен актуален то пропускает дальше, если нет то возвращает статус 403
+ * @param req 
+ * @param res 
+ * @param next 
+ */
 export async function auth(req: express.Request, res: express.Response, next: express.NextFunction): Promise<any> {
 
   const token: any = req.headers['xx-auth'];

@@ -1,3 +1,5 @@
+import * as campaign from './campaign';
 import * as user from './user';
 
-export { user };
+
+export { campaign, user };

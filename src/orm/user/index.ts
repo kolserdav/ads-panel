@@ -168,3 +168,139 @@ export function changePassword(password: string, id: number): Promise<Types.OrmR
     );
   });
 }
+
+/**
+ *  Смена имени
+ * @param first_name 
+ * @param id 
+ */
+export function changeFirstName(first_name: string, id: number): Promise<Types.OrmResult> {
+  return new Promise(resolve => {
+    connection.query(
+      'UPDATE `users` SET first_name=? WHERE id=?',
+      [first_name, id],
+      (err, results, fields) => {
+        if (err) {
+          console.error(`<${Date()}>`, '[Error change first_name]', err);
+          resolve({
+            error: 1,
+            data: err.message,
+          });
+        }
+        resolve({
+          error: 0,
+          data: results,
+        });
+      },
+    );
+  });
+}
+
+/**
+ *  Смена фамилии
+ * @param last_name 
+ * @param id 
+ */
+export function changeLastName(last_name: string, id: number): Promise<Types.OrmResult> {
+  return new Promise(resolve => {
+    connection.query(
+      'UPDATE `users` SET last_name=? WHERE id=?',
+      [last_name, id],
+      (err, results, fields) => {
+        if (err) {
+          console.error(`<${Date()}>`, '[Error change last_name]', err);
+          resolve({
+            error: 1,
+            data: err.message,
+          });
+        }
+        resolve({
+          error: 0,
+          data: results,
+        });
+      },
+    );
+  });
+}
+
+/**
+ *  Смена компании
+ * @param company 
+ * @param id 
+ */
+export function changeCompany(company: string, id: number): Promise<Types.OrmResult> {
+  return new Promise(resolve => {
+    connection.query(
+      'UPDATE `users` SET company=? WHERE id=?',
+      [company, id],
+      (err, results, fields) => {
+        if (err) {
+          console.error(`<${Date()}>`, '[Error change company]', err);
+          resolve({
+            error: 1,
+            data: err.message,
+          });
+        }
+        resolve({
+          error: 0,
+          data: results,
+        });
+      },
+    );
+  });
+}
+
+/**
+ *  Смена скайпа
+ * @param company 
+ * @param id 
+ */
+export function changeSkype(skype: string, id: number): Promise<Types.OrmResult> {
+  return new Promise(resolve => {
+    connection.query(
+      'UPDATE `users` SET skype=? WHERE id=?',
+      [skype, id],
+      (err, results, fields) => {
+        if (err) {
+          console.error(`<${Date()}>`, '[Error change skype]', err);
+          resolve({
+            error: 1,
+            data: err.message,
+          });
+        }
+        resolve({
+          error: 0,
+          data: results,
+        });
+      },
+    );
+  });
+}
+
+/**
+ * Смена email и постановка confirm d 0;
+ * Внимание перед этим проверить, что email не занят! Так как метод не делает такой проверки.
+ * @param email 
+ * @param id 
+ */
+export function changeEmail(email: string, id: number): Promise<Types.OrmResult> {
+  return new Promise(resolve => {
+    connection.query(
+      'UPDATE `users` SET confirm=0, email=? WHERE id=?',
+      [email, id],
+      (err, results, fields) => {
+        if (err) {
+          console.error(`<${Date()}>`, '[Error change email]', err);
+          resolve({
+            error: 1,
+            data: err.message,
+          });
+        }
+        resolve({
+          error: 0,
+          data: results,
+        });
+      },
+    );
+  });
+}

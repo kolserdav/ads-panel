@@ -4,6 +4,12 @@ import * as orm from '../../orm';
 import express from 'express';
 import sha256 from 'sha256';
 
+/**
+ * Апи входа. Ожидвет email и password в результате возвращает токен.
+ * Который в закрытых узлах ожидается в заголовке xx-auth.
+ * @param req 
+ * @param res 
+ */
 export default async function postLogin(req: express.Request, res: express.Response): Promise<any> {
 
   const { email, password }: any = req.body;

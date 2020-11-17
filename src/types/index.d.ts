@@ -8,9 +8,12 @@ export type ServerHandlerResponse = {
   message: string
   body: {
     email?: string
+    url?: string
     stdErrMessage?: string
     token?: string
     errAuth?: boolean
+    user?: User
+    campaign?: Campaign
   }
 };
 
@@ -34,6 +37,19 @@ export type JWT = {
   email: string
   userAgent: string
   password: string
+};
+
+export type Campaign = {
+  title: string
+  link: string
+  postback: string
+  countries: string[]
+  cost: number
+  user_id: number
+  budget: number
+  ip_pattern: string[]
+  white_list: string[]
+  black_list: string[]
 };
 
 export interface HeadersMiddleware {
