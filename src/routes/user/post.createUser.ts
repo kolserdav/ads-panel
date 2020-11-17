@@ -171,7 +171,7 @@ export default async function postCreateUser(req: express.Request, res: express.
 
   const userAgent: any = req.headers['user-agent'];
 
-  const token = lib.createToken(saveRes.data.insertId, email, userAgent, sha256(password));
+  const token = lib.createToken(saveRes.data.insertId, 0, email, userAgent, sha256(password));
 
   if (sendRes.error === 1) {
     console.warn(`<${Date()}>`, '[Warning: sendRes.error === 1]', {

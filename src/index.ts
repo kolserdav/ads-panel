@@ -13,10 +13,18 @@ import path from 'path';
 
 // Хранилище изображений
 const storage = multer.diskStorage({
-  destination: (req: any, file, cb) => {
-    const dir = lib.encodeBase64(Date.now().toString());
+  destination: (req: any, file: any, cb) => {
+    const reg = /^image\//;
+    if (!reg.exec(file.mimetype)) {
+      // @ts-ignore
+      return cb(new Error('Ошибка! Можно передавать только изображения.').message, '');
+    }
+    const dir = req.params.id;
     req.imageDir = dir;
-    fs.mkdirSync(path.resolve(__dirname, `../public/img/${dir}`));
+    const dirPath = path.resolve(__dirname, `../public/img/${dir}`);
+    if (!fs.existsSync(dirPath)) {
+      fs.mkdirSync(dirPath);
+    }
     cb(null, `public/img/${dir}`);
   },
   filename: (req: any, file, cb) => {
@@ -57,10 +65,12 @@ app.put('/user/pass', router.putPass);
 app.get('/user/session', middle.auth, router.getSession);
 // API кампаний
 app.post('/campaign', middle.auth, router.postCreateCampaign);
+app.put('/campaign/:id', middle.auth, middle.selfCampaign, router.putUpdateCampaign);
 // API офферов
 app.post('/offer', middle.auth, router.postCreateOffer);
-app.post('/offer/icon', middle.auth, upload.single('icon'), router.postIconOffer);
-app.post('/offer/image', middle.auth, upload.single('image'), router.postImageOffer);
+app.post('/offer/icon/:id', middle.auth, middle.selfOffer, upload.single('icon'), router.postIconOffer);
+app.post('/offer/image/:id', middle.auth, middle.selfOffer, upload.single('image'), router.postImageOffer);
+app.put('/offer/:id', middle.auth, middle.selfOffer, router.putUpdateOffer);
 
 
 app.listen(parseInt(API_PORT, 10));

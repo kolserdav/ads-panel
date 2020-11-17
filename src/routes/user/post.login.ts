@@ -51,7 +51,7 @@ export default async function postLogin(req: express.Request, res: express.Respo
 
   const userAgent: any = req.headers['user-agent'];
 
-  const token = lib.createToken(user.id, email, userAgent, sha256(password));
+  const token = lib.createToken(user.id, user.admin, email, userAgent, sha256(password));
 
   const result: Types.ServerHandlerResponse = {
     result: 'success',

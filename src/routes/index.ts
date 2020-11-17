@@ -10,7 +10,9 @@ export { default as putPass } from './user/put.pass';
 export { default as getSession } from './user/get.session';
 // Роуты кампаний
 export { default as postCreateCampaign } from './campaign/post.create';
+export { default as putUpdateCampaign } from './campaign/put.update';
 // Роуты офферов
 export { default as postCreateOffer } from './offer/post.create';
 export { default as postImageOffer } from './offer/post.image';
 export { default as postIconOffer } from './offer/post.icon';
+export { default as putUpdateOffer } from './offer/put.update';

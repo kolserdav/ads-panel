@@ -2,6 +2,22 @@ import * as Types from '../../types';
 import * as orm from '../../orm';
 import express from 'express';
 
+/**
+ * /campaign POST
+ * Создание кампании. 
+ * Обязательные параметры title,
+    link,
+    postback,
+    countries,
+    cost,
+    budget,
+    ip_pattern,
+    white_list,
+    black_list,
+    Необязательные offer_id
+ * @param req 
+ * @param res 
+ */
 export default async function postCreateCampaign(req: express.Request, res: express.Response): Promise<any> {
 
   const { uid }: any = req.headers;
@@ -17,6 +33,7 @@ export default async function postCreateCampaign(req: express.Request, res: expr
     ip_pattern,
     white_list,
     black_list,
+    offer_id,
   }: any = req.body;
 
   // Последовательная проверка переданных параметров
@@ -155,6 +172,56 @@ export default async function postCreateCampaign(req: express.Request, res: expr
       body: {},
     };
     return res.status(500).json(warnRes);
+  }
+
+  if (offer_id) {
+    const offerRes: Types.OrmResult = await orm.offer.getById(offer_id);
+    if (offerRes.error === 1) {
+      console.warn(`<${Date()}>`, '[Warning: offerRes.error === 1]', {
+        url: req.url,
+        headers: req.headers,
+      });
+      const offerErr: Types.ServerHandlerResponse = {
+        result: 'error',
+        message: 'Ошибка получения оффера',
+        body: {
+          stdErrMessage: offerRes.data,
+        },
+      };
+      return res.status(500).json(offerErr);
+    }
+    const offer: Types.Offer = offerRes.data[0];
+    if (!offer) {
+      const offerWarn: Types.ServerHandlerResponse = {
+        result: 'warning',
+        message: 'Оффер не найден',
+        body: {},
+      };
+      return res.status(404).json(offerWarn);
+    }
+    if (offer.user_id !== user_id) {
+      const warnRes: Types.ServerHandlerResponse = {
+        result: 'warning',
+        message: 'Данный оффер нельзя прикрепить',
+        body: {},
+      };
+      return res.status(403).json(warnRes);
+    }
+    const updateOfferIdRes: Types.OrmResult = await orm.campaign.updateOfferId(offer_id, saveRes.data.insertId);
+    if (updateOfferIdRes.error === 1) {
+      console.warn(`<${Date()}>`, '[Warning: updateOfferIdRes.error === 1]', {
+        url: req.url,
+        headers: req.headers,
+      });
+      const errUpdId: Types.ServerHandlerResponse = {
+        result: 'error',
+        message: 'Ошибка прикрепления оффера к кампании',
+        body: {
+          stdErrMessage: updateOfferIdRes.data,
+        },
+      };
+      return res.status(500).json(errUpdId);
+    }
   }
 
   const successRes: Types.ServerHandlerResponse = {

@@ -64,9 +64,10 @@ export function checkKey(updated: string, key: string): boolean {
  * @param userAgent 
  * @param password 
  */
-export function createToken(id: number, email: string, userAgent: string, password: string): string {
+export function createToken(id: number, admin: number, email: string, userAgent: string, password: string): string {
   return jwt.sign({
     id,
+    admin,
     email,
     userAgent,
     password,
@@ -85,6 +86,7 @@ export function parseToken(token: string): Types.JWT {
   } catch (e) {
     parsedToken = {
       id: -1,
+      admin: 0,
       email: '',
       userAgent: '',
       password: '',

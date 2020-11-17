@@ -52,6 +52,7 @@ export function createTableCampaigns(needDelete = false): Promise<Types.OrmResul
   const createQuery = 'CREATE TABLE IF NOT EXISTS `campaigns` (\
     id INT NOT NULL AUTO_INCREMENT,\
     title VARCHAR(255),\
+    status VARCHAR(25) DEFAULT pending,\
     link VARCHAR(255),\
     postback VARCHAR(255),\
     countries JSON,\
@@ -100,9 +101,11 @@ export function createTableOffers(needDelete = false): Promise<Types.OrmResult> 
     comment JSON,\
     icon VARCHAR(255),\
     image VARCHAR(255),\
+    user_id INT NOT NULL,\
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\
-    PRIMARY KEY (id)\
+    PRIMARY KEY (id),\
+    FOREIGN KEY (user_id) REFERENCES users (id)\
     )';
   const deleteQuery = 'DROP TABLE `offers`';
   const query = needDelete ? deleteQuery : createQuery;

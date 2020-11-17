@@ -13,6 +13,7 @@ export type ServerHandlerResponse = {
     token?: string
     errAuth?: boolean
     user?: User
+    offer?: Offer
     campaign?: Campaign
   }
 };
@@ -34,6 +35,7 @@ export type User = {
 
 export type JWT = {
   id: number
+  admin: 0 | 1
   email: string
   userAgent: string
   password: string
@@ -41,6 +43,7 @@ export type JWT = {
 
 export type Campaign = {
   title: string
+  status: 'active' | 'pause' | 'pending' | 'budget'
   link: string
   postback: string
   countries: string[]
@@ -50,6 +53,17 @@ export type Campaign = {
   ip_pattern: string[]
   white_list: string[]
   black_list: string[]
+};
+
+export type Offer = {
+  id?: number
+  status: 'verify' | 'pending' | 'warning'
+  warning: string
+  user_id: number
+  title: string
+  comment: string
+  icon?: string
+  image?: string
 };
 
 export interface HeadersMiddleware {
