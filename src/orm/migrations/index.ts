@@ -99,7 +99,7 @@ export function createTableOffers(needDelete = false): Promise<Types.OrmResult> 
   const createQuery = 'CREATE TABLE IF NOT EXISTS `offers` (\
     id INT NOT NULL AUTO_INCREMENT,\
     title VARCHAR(255),\
-    description JSON,\
+    description VARCHAR(255),\
     status ENUM(\'verified\', \'pending\', \'warning\') DEFAULT \'pending\',\
     warning JSON NULL,\
     icon VARCHAR(255),\

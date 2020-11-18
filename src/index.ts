@@ -11,6 +11,14 @@ import fs from 'fs';
 import multer from 'multer';
 import path from 'path';
 
+// Отлавливаем тут всё что случайно не отловили где-то там, чтобы если упало то не всё.
+process.on('unhandledRejection', (e: Error) => {
+  console.error(`<${Date()}>`, '["UNHANDLED_REJECTION_TASK"]', e);
+});
+process.on('uncaughtException', (e: Error) => {
+  console.error(`<${Date()}>`, '["UNCAUGT_EXCEPTION_TASK"]', e);
+});
+
 // Хранилище изображений
 const storage = multer.diskStorage({
   destination: (req: any, file: any, cb) => {
