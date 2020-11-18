@@ -8,11 +8,11 @@ import connection from '../connection';
 export function createNew(offer: Types.Offer): Promise<Types.OrmResult> {
   return new Promise(resolve => {
     connection.query(
-      'INSERT INTO `offers` (user_id, title, comment) VALUES (?,?,?)',
+      'INSERT INTO `offers` (user_id, title, description) VALUES (?,?,?)',
       [
         offer.user_id,
         offer.title,
-        offer.comment,
+        offer.description,
       ],
       (err, results, fields) => {
         if (err) {
@@ -141,17 +141,79 @@ export function updateTitle(title: string, id: number): Promise<Types.OrmResult>
 
 /**
  * Изменение комментария оффера
- * @param comment 
+ * @param description 
  * @param id 
  */
-export function updateComment(comment: string, id: number): Promise<Types.OrmResult> {
+export function updateComment(description: string, id: number): Promise<Types.OrmResult> {
   return new Promise(resolve => {
     connection.query(
-      'UPDATE `offers` SET comment=?, updated=? WHERE `id`=?',
-      [ comment, new Date(), id ],
+      'UPDATE `offers` SET description=?, updated=? WHERE `id`=?',
+      [ description, new Date(), id ],
       (err, results, fields) => {
         if (err) {
-          console.error(`<${Date()}>`, '[Error update offer comment]', err);
+          console.error(`<${Date()}>`, '[Error update offer description]', err);
+          resolve({
+            error: 1,
+            data: err.message,
+          });
+        }
+        resolve({
+          error: 0,
+          data: results,
+        });
+      },
+    );
+  });
+}
+
+/**
+ * Обновление статуса оффера
+ * @param status 
+ * @param id 
+ */
+export function updateStatus(status: string, id: number): Promise<Types.OrmResult> {
+  return new Promise(resolve => {
+    connection.query(
+      'UPDATE `offers` SET status=?, updated=? WHERE id=?',
+      [
+        status,
+        new Date(),
+        id,
+      ],
+      (err, results, fields) => {
+        if (err) {
+          console.error(`<${Date()}>`, '[Error update offer status]', err);
+          resolve({
+            error: 1,
+            data: err.message,
+          });
+        }
+        resolve({
+          error: 0,
+          data: results,
+        });
+      },
+    );
+  });
+}
+
+/**
+ * Обновление сообщения предупреждения оффера
+ * @param warning 
+ * @param id 
+ */
+export function updateWarning(warning: string, id: number): Promise<Types.OrmResult> {
+  return new Promise(resolve => {
+    connection.query(
+      'UPDATE `offers` SET warning=?, updated=? WHERE id=?',
+      [
+        warning,
+        new Date(),
+        id,
+      ],
+      (err, results, fields) => {
+        if (err) {
+          console.error(`<${Date()}>`, '[Error update offer warning message]', err);
           resolve({
             error: 1,
             data: err.message,

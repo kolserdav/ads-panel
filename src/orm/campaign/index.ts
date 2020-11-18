@@ -373,3 +373,183 @@ export function updateBlacklist(black_list: string[], id: number): Promise<Types
     );
   });
 }
+
+/**
+ * Обновление статуса
+ * @param status 
+ * @param id 
+ */
+export function updateStatus(status: string, id: number): Promise<Types.OrmResult> {
+  return new Promise(resolve => {
+    connection.query(
+      'UPDATE `campaigns` SET status=?, updated=? WHERE id=?',
+      [
+        status,
+        new Date(),
+        id,
+      ],
+      (err, results, fields) => {
+        if (err) {
+          console.error(`<${Date()}>`, '[Error update campaign status]', err);
+          resolve({
+            error: 1,
+            data: err.message,
+          });
+        }
+        resolve({
+          error: 0,
+          data: results,
+        });
+      },
+    );
+  });
+}
+
+export function getAll(status: string): Promise<Types.OrmResult> {
+  return new Promise(resolve => {
+    connection.query(
+      'SELECT * FROM ORDER BY CASE WHEN status=? THEN 1 ELSE 2 END `campaigns`',
+      [ status ],
+      (err, results, fields) => {
+        if (err) {
+          console.error(`<${Date()}>`, '[Error get all campaigns]', err);
+          resolve({
+            error: 1,
+            data: err.message,
+          });
+        }
+        resolve({
+          error: 0,
+          data: results,
+        });
+      },
+    );
+  });
+}
+
+export function getAllByUid(status: string, user_id: number): Promise<Types.OrmResult> {
+  return new Promise(resolve => {
+    connection.query(
+      'SELECT * FROM `campaigns` WHERE user_id=? ORDER BY CASE WHEN status=? THEN 1 ELSE 2 END',
+      [ user_id, status ],
+      (err, results, fields) => {
+        if (err) {
+          console.error(`<${Date()}>`, '[Error get all you campaigns]', err);
+          resolve({
+            error: 1,
+            data: err.message,
+          });
+        }
+        resolve({
+          error: 0,
+          data: results,
+        });
+      },
+    );
+  });
+}
+
+/**
+ * Фильтрует пагинацию с учетом user_id
+ * @param user_id 
+ * @param start - первый элемент
+ * @param count - количество элементов
+ */
+export function filterAllByUid(user_id: number, status: string, start: number, count: number): Promise<Types.OrmResult> {
+  return new Promise(resolve => {
+    connection.query(
+      'SELECT * FROM `campaigns` WHERE user_id=? ORDER BY CASE WHEN status=? THEN 1 ELSE 2 END LIMIT ?,?',
+      [ user_id, status, start, count ],
+      (err, results, fields) => {
+        if (err) {
+          console.error(`<${Date()}>`, '[Error get list of your campaigns]', err);
+          resolve({
+            error: 1,
+            data: err.message,
+          });
+        }
+        resolve({
+          error: 0,
+          data: results,
+        });
+      },
+    );
+  });
+}
+
+/**
+ * Фильтрует пагинацию среди всех кампаний
+ * @param start - первый элемент
+ * @param count - количество элементов
+ */
+export function filterAll(status: string, start: number, count: number): Promise<Types.OrmResult> {
+  return new Promise(resolve => {
+    connection.query(
+      'SELECT * FROM `campaigns` ORDER BY CASE WHEN status=? THEN 1 ELSE 2 END LIMIT ?,? ',
+      [ status, start, count ],
+      (err, results, fields) => {
+        if (err) {
+          console.error(`<${Date()}>`, '[Error get list of campaigns]', err);
+          resolve({
+            error: 1,
+            data: err.message,
+          });
+        }
+        resolve({
+          error: 0,
+          data: results,
+        });
+      },
+    );
+  });
+}
+
+/**
+ * Получает общее количество кампаний
+ */
+export function getCountAll(): Promise<Types.OrmResult> {
+  return new Promise(resolve => {
+    connection.query(
+      'SELECT COUNT(*) FROM `campaigns`',
+      (err, results, fields) => {
+        if (err) {
+          console.error(`<${Date()}>`, '[Error get all count campaigns]', err);
+          resolve({
+            error: 1,
+            data: err.message,
+          });
+        }
+        resolve({
+          error: 0,
+          data: results,
+        });
+      },
+    );
+  });
+}
+
+/**
+ * Получает общее количество кампаний с учетом user_id
+ * @param user_id 
+ */
+export function getCountByUid(user_id: number): Promise<Types.OrmResult> {
+  return new Promise(resolve => {
+    connection.query(
+      'SELECT COUNT(*) FROM `campaigns` WHERE user_id=?',
+      [ user_id ],
+      (err, results, fields) => {
+        if (err) {
+          console.error(`<${Date()}>`, '[Error get user count campaigns]', err);
+          resolve({
+            error: 1,
+            data: err.message,
+          });
+        }
+        resolve({
+          error: 0,
+          data: results,
+        });
+      },
+    );
+  });
+}

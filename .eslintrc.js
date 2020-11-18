@@ -55,7 +55,7 @@ module.exports = {
 		"keyword-spacing": "warn", 
 		"new-parens": "warn", 
 		"no-bitwise": "warn", 
-		"no-lonely-if": "warn", 
+		"no-lonely-if": "off", 
 		"no-multiple-empty-lines": "warn", 
 		"no-nested-ternary": "warn", 
 		"no-new-object": "warn", 

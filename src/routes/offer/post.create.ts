@@ -18,7 +18,7 @@ export default async function postCreateOffer(req: express.Request, res: express
 
   const {
     title,
-    comment,
+    description,
   }: any = req.body;
 
   if (!title) {
@@ -29,10 +29,10 @@ export default async function postCreateOffer(req: express.Request, res: express
     };
     return res.status(400).json(warnTitleRes);
   }
-  if (!comment) {
+  if (!description) {
     const warnCommentRes: Types.ServerHandlerResponse = {
       result: 'warning',
-      message: 'Комментарий не может быть пустым',
+      message: 'Описание не может быть пустым',
       body: {},
     };
     return res.status(400).json(warnCommentRes);

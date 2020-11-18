@@ -13,6 +13,7 @@ export function checkEmail(email: string): boolean {
   if (!email || typeof email !== 'string') {
     return false;
   }
+  // eslint-disable-next-line no-useless-escape
   const re = /^(([^\s"(),.:;<>@[\\\]]+(\.[^\s"(),.:;<>@[\\\]]+)*)|(".+"))@((\[(?:\d{1,3}\.){3}\d{1,3}])|(([\dA-Za-z\-]+\.)+[A-Za-z]{2,}))$/;
   if (re.exec(email)) {
     return true;
@@ -94,3 +95,6 @@ export function parseToken(token: string): Types.JWT {
   }
   return parsedToken;
 }
+
+
+export const CampaignStatuses: Types.CampaignStatus[] = ['active', 'pause', 'pending', 'budget'];

@@ -158,22 +158,7 @@ export default async function postCreateCampaign(req: express.Request, res: expr
     return res.status(400).json(warnBlackArrRes);
   }
 
-  // Записывает в базу 
-  const campaign: Types.Campaign = { user_id, ...req.body };
-  const saveRes: Types.OrmResult = await orm.campaign.createNew(campaign);
-  if (saveRes.error === 1) {
-    console.warn(`<${Date()}>`, '[Warning: saveRes.error === 1]', {
-      url: req.url,
-      headers: req.headers,
-    });
-    const warnRes: Types.ServerHandlerResponse = {
-      result: 'error',
-      message: 'Ошибка создания кампании',
-      body: {},
-    };
-    return res.status(500).json(warnRes);
-  }
-
+  // Проверка оффера перед записью
   if (offer_id) {
     const offerRes: Types.OrmResult = await orm.offer.getById(offer_id);
     if (offerRes.error === 1) {
@@ -207,6 +192,26 @@ export default async function postCreateCampaign(req: express.Request, res: expr
       };
       return res.status(403).json(warnRes);
     }
+  }
+
+  // Записывает в базу 
+  const campaign: Types.Campaign = { user_id, ...req.body };
+  const saveRes: Types.OrmResult = await orm.campaign.createNew(campaign);
+  if (saveRes.error === 1) {
+    console.warn(`<${Date()}>`, '[Warning: saveRes.error === 1]', {
+      url: req.url,
+      headers: req.headers,
+    });
+    const warnRes: Types.ServerHandlerResponse = {
+      result: 'error',
+      message: 'Ошибка создания кампании',
+      body: {},
+    };
+    return res.status(500).json(warnRes);
+  }
+
+  // Прикрепление оффера
+  if (offer_id) {
     const updateOfferIdRes: Types.OrmResult = await orm.campaign.updateOfferId(offer_id, saveRes.data.insertId);
     if (updateOfferIdRes.error === 1) {
       console.warn(`<${Date()}>`, '[Warning: updateOfferIdRes.error === 1]', {

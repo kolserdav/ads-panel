@@ -50,6 +50,7 @@ export async function auth(req: express.Request, res: express.Response, next: ex
     return res.status(403).json(errRes);
   }
 
+  // eslint-disable-next-line prefer-destructuring
   const user: Types.User = userById.data[0];
 
   if (user.email !== parsedToken.email || user.password !== parsedToken.password || user.id !== parsedToken.id || user.admin !== parsedToken.admin) {
@@ -94,6 +95,7 @@ export async function selfOffer(req: express.Request, res: express.Response, nex
     return res.status(500).json(errRes);
   }
 
+  // eslint-disable-next-line prefer-destructuring
   const offer: Types.Offer = getOfferRes.data[0];
   if (!offer) {
     const warnOffNotEx: Types.ServerHandlerResponse = {
@@ -106,7 +108,8 @@ export async function selfOffer(req: express.Request, res: express.Response, nex
     return res.status(404).json(warnOffNotEx);
   }
 
-  if (user_id !== offer.user_id) {
+  // Закрывает доступ пользователю если он не значится в user_id оффера. За исключением админов перед тем где это указано посредником orAdmin
+  if (user_id !== offer.user_id && req.headers.orAdmin !== '1') {
     const warnRes: Types.ServerHandlerResponse = {
       result: 'warning',
       message: 'Эта комманда доступна только создателю оффера',
@@ -149,6 +152,7 @@ export async function selfCampaign(req: express.Request, res: express.Response, 
     return res.status(500).json(errRes);
   }
 
+  // eslint-disable-next-line prefer-destructuring
   const campaign: Types.Campaign = getCampaignRes.data[0];
   if (!campaign) {
     const warnCamNotEx: Types.ServerHandlerResponse = {
@@ -160,8 +164,8 @@ export async function selfCampaign(req: express.Request, res: express.Response, 
     };
     return res.status(404).json(warnCamNotEx);
   }
-
-  if (user_id !== campaign.user_id) {
+  // Закрывает доступ пользователю если он не значится в user_id кампании. За исключением админов перед тем где это указано посредником orAdmin
+  if (user_id !== campaign.user_id && req.headers.orAdmin !== '1') {
     const warnRes: Types.ServerHandlerResponse = {
       result: 'warning',
       message: 'Эта комманда доступна только создателю кампании',
@@ -172,4 +176,45 @@ export async function selfCampaign(req: express.Request, res: express.Response, 
 
   next();
 
+}
+
+/**
+ * Посредник закрывающий ресурс для всех кроме администраторов.
+ * Обязательно использовать после посредника auth!
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+// eslint-disable-next-line @typescript-eslint/require-await
+export async function onlyAdmin(req: express.Request, res: express.Response, next: express.NextFunction): Promise<any> {
+
+  const { admin }: any = req.headers;
+  const _isAdmin = parseInt(admin, 10);
+  if (_isAdmin !== 1) {
+    const warnRes: Types.ServerHandlerResponse = {
+      result: 'warning',
+      message: 'Permission denied',
+      body: {
+        errRole: true,
+      },
+    };
+    return res.status(403).json(warnRes);
+  }
+
+  next();
+
+}
+
+/**
+ * Посредник который добавляет заголовок orAdmin,
+ * что позволяет открывать админу доступ на self посредники, перед которыми он используется.
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+// eslint-disable-next-line @typescript-eslint/require-await
+export async function orAdmin(req: express.Request, res: express.Response, next: express.NextFunction): Promise<any> {
+
+  req.headers.orAdmin = req.headers.admin;
+  next();
 }

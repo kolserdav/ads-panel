@@ -7,14 +7,19 @@ export type ServerHandlerResponse = {
   result: 'error' | 'warning' | 'success'
   message: string
   body: {
+    require?: any
+    received?: any
     email?: string
     url?: string
     stdErrMessage?: string
     token?: string
     errAuth?: boolean
+    errRole?: boolean
     user?: User
     offer?: Offer
     campaign?: Campaign
+    campaigns?: Campaign[]
+    count?: number
   }
 };
 
@@ -41,9 +46,11 @@ export type JWT = {
   password: string
 };
 
+export type CampaignStatus = 'active' | 'pause' | 'pending' | 'budget';
+
 export type Campaign = {
   title: string
-  status: 'active' | 'pause' | 'pending' | 'budget'
+  status: CampaignStatus
   link: string
   postback: string
   countries: string[]
@@ -55,13 +62,15 @@ export type Campaign = {
   black_list: string[]
 };
 
+export type OfferStatus = 'verified' | 'pending' | 'warning';
+
 export type Offer = {
   id?: number
-  status: 'verify' | 'pending' | 'warning'
+  status: OfferStatus
   warning: string
   user_id: number
   title: string
-  comment: string
+  description: string
   icon?: string
   image?: string
 };
