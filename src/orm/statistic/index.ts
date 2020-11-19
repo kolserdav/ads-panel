@@ -4,7 +4,6 @@
 
 import * as Types from '../../types';
 import * as lib from '../../lib';
-import connection from '../connection';
 
 /**
  * 
@@ -18,7 +17,7 @@ import connection from '../connection';
  * @param customTime - количество дней отнять от сегодня
  */
 export function getTableStatistic(user_id: number | null, start: number, count: number,
-  groupBy: Types.GroupBy, time: Types.Time, customTime: number): Promise<Types.OrmResult> {
+  groupBy: Types.GroupBy, time: Types.Time, customTime: Date[] | undefined, orderBy: string, desc: boolean): Promise<Types.OrmResult> {
 
   const user = user_id !== null ? `AND c.user_id=${user_id}` : '';
   const first = start ? start : 0;
@@ -44,45 +43,46 @@ export function getTableStatistic(user_id: number | null, start: number, count: 
       group = 'h.campaign';
   }
 
+  const by = desc === true ? 'DESC' : 'ASC';
+  const oBy = orderBy ? orderBy : 'date';
+  const order = `ORDER BY ${oBy} ${by}`;
+
   // Если сегодня то из hourly...
   const table = time === 'today' ? 'hourly' : 'daily';
 
-  return new Promise(resolve => {
-    connection.query(
-      `SELECT ${group},\
-      MIN(h.date) as dateMin,\
-      MAX(h.date) as dateMax,\
-      Count(*) as count,\
-      u.first_name,\
-      u.last_name,\
-      c.user_id,\
-      SUM(h.cost) as cost,\
-      CAST(SUM(h.requests) AS INTEGER) as requests,\
-      CAST(SUM(h.clicks) AS INTEGER) as clicks,\
-      CAST(SUM(h.impressions) AS INTEGER) as impressions \
-      FROM ${table} h LEFT JOIN campaigns c ON h.campaign = c.id \
-      LEFT JOIN users u ON c.user_id = u.id \
-      WHERE h.date>=? ${user} GROUP BY ${group} LIMIT ?,?`,
-      [
-        lib.calculateDate(time, customTime).time,
-        first,
-        all,
-      ],
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error get table statistic]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  let whereDate, values;
+  if (!customTime) {
+    whereDate = 'h.date>=?';
+    values = [
+      lib.calculateDate(time, customTime).time,
+      first,
+      all,
+    ];
+  } else {
+    whereDate = 'h.date>=? AND h.date<=?';
+    values = [
+      customTime[0],
+      customTime[1],
+      first,
+      all,
+    ];
+  }
+
+  const query = `SELECT ${group},\
+    MIN(h.date) as dateMin,\
+    MAX(h.date) as dateMax,\
+    Count(*) as count,\
+    u.first_name,\
+    u.last_name,\
+    c.user_id,\
+    SUM(h.cost) as cost,\
+    CAST(SUM(h.requests) AS INTEGER) as requests,\
+    CAST(SUM(h.clicks) AS INTEGER) as clicks,\
+    CAST(SUM(h.impressions) AS INTEGER) as impressions \
+    FROM ${table} h LEFT JOIN campaigns c ON h.campaign = c.id \
+    LEFT JOIN users u ON c.user_id = u.id \
+    WHERE ${whereDate} ${user} GROUP BY ${group} ${order} LIMIT ?,?`;
+  return lib.runDBQuery(query, 'Error get table statistic', values);
 }
 
 
@@ -92,38 +92,32 @@ export function getTableStatistic(user_id: number | null, start: number, count: 
  * @param time {Types.Time} - шаблон выборки времени
  * @param customTime {number?} - когда time === custom
  */
-export function getGraphStatistic(userId: number | null, time: Types.Time, customTime: number): Promise<Types.OrmResult> {
+export function getGraphStatistic(userId: number | null, time: Types.Time, customTime: Date[] | undefined): Promise<Types.OrmResult> {
 
   const user = userId !== null ? `AND c.user_id=${userId}` : '';
 
   // Если сегодня то из hourly...
   const table = time === 'today' ? 'hourly' : 'daily';
   const date = lib.calculateDate(time, customTime);
-  return new Promise(resolve => {
-    connection.query(
-      `SELECT MIN(h.date) as dateMin,\
-      MAX(h.date) as dateMax,\
-      Count(*) as count,\
-      SUM(h.cost) as cost,\
-      CAST(SUM(h.requests) AS INTEGER) as requests,\
-      CAST(SUM(h.clicks) AS INTEGER) as clicks,\
-      CAST(SUM(h.impressions) AS INTEGER) as impressions \
-      FROM ${table} h LEFT JOIN campaigns c ON h.campaign = c.id \
-      WHERE h.date>=? ${user} GROUP BY ${date.range}`,
-      [date.time],
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error get all statistic]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  let whereDate, values;
+  if (!customTime) {
+    whereDate = 'h.date>=?';
+    values = [date.time];
+  } else {
+    whereDate = 'h.date>=? AND h.date<=?';
+    values = [
+      customTime[0],
+      customTime[1],
+    ];
+  }
+  const query = `SELECT MIN(h.date) as dateMin,\
+    MAX(h.date) as dateMax,\
+    Count(*) as count,\
+    SUM(h.cost) as cost,\
+    CAST(SUM(h.requests) AS INTEGER) as requests,\
+    CAST(SUM(h.clicks) AS INTEGER) as clicks,\
+    CAST(SUM(h.impressions) AS INTEGER) as impressions \
+    FROM ${table} h LEFT JOIN campaigns c ON h.campaign = c.id \
+    WHERE ${whereDate} ${user} GROUP BY ${date.range} ORDER BY date ASC`;
+  return lib.runDBQuery(query, 'Error get all statistic', values);
 }

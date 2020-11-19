@@ -24,7 +24,7 @@
 
 ### Вызовы по данным кампаний
 
-`/campaign POST` - Создание кампании. Обязательные параметры title, link, postback, countries, cost, budget, ip_pattern, white_list, black_list, Необязательные offer_id
+`/campaign POST` - Создание кампании. Обязательные параметры title, link, countries, cost, budget, ip_pattern, white_list, black_list, Необязательные offer_id
 
 `/campaign/:id PUT` - Обновление данных кампании. title, link, postback, countries, cost, budget, ip_pattern, white_list, black_list, offer_id, Можно менять по одному или все
 

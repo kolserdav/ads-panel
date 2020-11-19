@@ -5,18 +5,15 @@ import express from 'express';
 /**
  * /campaign POST
  * Создание кампании. 
- * Обязательные параметры title,
-    link,
-    postback,
-    countries,
-    cost,
-    budget,
-    ip_pattern,
-    white_list,
-    black_list,
-    Необязательные offer_id
- * @param req 
- * @param res 
+ *  @title {string} - Название
+    @link {string} - Ссылка
+    @countries {string[]} - Список кодов стран
+    @price {number} - Цена клика
+    @budget {number} - Бюджет
+    @ip_pattern {string[]} - Список ip адресов
+    @white_list {string[]} - Черный список
+    @black_list {string[]} - Белый список
+    @offer_id {number} - ID оффера
  */
 export default async function postCreateCampaign(req: express.Request, res: express.Response): Promise<any> {
 
@@ -26,15 +23,14 @@ export default async function postCreateCampaign(req: express.Request, res: expr
   const {
     title,
     link,
-    postback,
     countries,
-    cost,
+    price,
     budget,
     ip_pattern,
     white_list,
     black_list,
     offer_id,
-  }: any = req.body;
+  }: Types.Campaign = req.body;
 
   // Последовательная проверка переданных параметров
   if (!title) {
@@ -53,14 +49,6 @@ export default async function postCreateCampaign(req: express.Request, res: expr
     };
     return res.status(400).json(warnLinkRes);
   }
-  if (!postback) {
-    const warnPostbackRes: Types.ServerHandlerResponse = {
-      result: 'warning',
-      message: 'Постбек ссылка не передана',
-      body: {},
-    };
-    return res.status(400).json(warnPostbackRes);
-  }
   if (!countries) {
     const warnCountrRes: Types.ServerHandlerResponse = {
       result: 'warning',
@@ -77,7 +65,7 @@ export default async function postCreateCampaign(req: express.Request, res: expr
     };
     return res.status(400).json(warnCountArrRes);
   }
-  if (!cost) {
+  if (!price) {
     const warnCostRes: Types.ServerHandlerResponse = {
       result: 'warning',
       message: 'Цена клика не указана',
@@ -85,7 +73,7 @@ export default async function postCreateCampaign(req: express.Request, res: expr
     };
     return res.status(400).json(warnCostRes);
   }
-  if (typeof cost !== 'number') {
+  if (typeof price !== 'number') {
     const warnCostNumRes: Types.ServerHandlerResponse = {
       result: 'warning',
       message: 'Стоимостью клика должно быть число',
@@ -175,6 +163,7 @@ export default async function postCreateCampaign(req: express.Request, res: expr
       };
       return res.status(500).json(offerErr);
     }
+    // eslint-disable-next-line prefer-destructuring
     const offer: Types.Offer = offerRes.data[0];
     if (!offer) {
       const offerWarn: Types.ServerHandlerResponse = {
@@ -205,7 +194,9 @@ export default async function postCreateCampaign(req: express.Request, res: expr
     const warnRes: Types.ServerHandlerResponse = {
       result: 'error',
       message: 'Ошибка создания кампании',
-      body: {},
+      body: {
+        stdErrMessage: saveRes.data,
+      },
     };
     return res.status(500).json(warnRes);
   }

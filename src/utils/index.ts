@@ -1,3 +1,8 @@
+/**
+ * Вспомогательные функции, которые не просто возвращают данные,
+ * а ещё производят действия с ервисами или ресурсами.
+ */
+
 import * as Types from '../types';
 import * as lib from '../lib';
 import transporter from './transporter';
@@ -9,6 +14,27 @@ const {
 }: any = process.env;
 const dev = process.env.NODE_ENV === 'development';
 const protocol = dev ? 'http' : 'https';
+
+function sendEmail(message: Types.Email, errMess: string): Promise<Types.OrmResult> {
+  return new Promise(resolve => {
+    transporter.sendMail(message)
+      .then(data => {
+        resolve({
+          error: 0,
+          data,
+          message: 'Email sended',
+        });
+      })
+      .catch(e => {
+        console.error(`<${Date()}>`, `[${errMess}]`, e);
+        resolve({
+          error: 1,
+          data: e.message,
+          message: errMess,
+        });
+      });
+  });
+}
 
 
 /**
@@ -29,7 +55,7 @@ export function getConfirmEmail(email: string, dateNow: number, first_name: stri
   const newHost = dev ? host : LINK_HOST;
   const link = `${protocol}://${newHost}/user/confirm?e=${email}&k=${key}`;
 
-  const userMessage = {
+  const userMessage: Types.Email = {
     from: SMTP_EMAIL,
     to: email,
     subject: 'Подтверждение адреса',
@@ -37,22 +63,7 @@ export function getConfirmEmail(email: string, dateNow: number, first_name: stri
     html: `Здравствуйте ${first_name}! Ваш адрес почты был указан при регистрации на нашем сайте. Чтобы подтвердить данный адрес пожалуйста перейдите по <a href="${link}">ссылке</a>, <i>которая действительна в течении ${LINK_EXPIRE} дней.</i>`,
   };
 
-  return new Promise(resolve => {
-    transporter.sendMail(userMessage)
-      .then(data => {
-        resolve({
-          error: 0,
-          data,
-        });
-      })
-      .catch(e => {
-        console.error(`<${Date()}>`, '[Error send email to registered user]', e);
-        resolve({
-          error: 1,
-          data: e.message,
-        });
-      });
-  });
+  return sendEmail(userMessage, 'Error send email to registered user');
 }
 
 export function getForgotEmail(email: string, dateNow: number, first_name: string, host: string): Promise<Types.OrmResult> {
@@ -70,20 +81,5 @@ export function getForgotEmail(email: string, dateNow: number, first_name: strin
     html: `Здравствуйте ${first_name}! Был инициирован процесс смены пароля, если это были вы, пожалуйста перейдите по <a href="${link}">ссылке</a>, <i>которая действительна в течении ${LINK_EXPIRE} дней.</i>`,
   };
 
-  return new Promise(resolve => {
-    transporter.sendMail(userMessage)
-      .then(data => {
-        resolve({
-          error: 0,
-          data,
-        });
-      })
-      .catch(e => {
-        console.error(`<${Date()}>`, '[Error send email to forgot password user]', e);
-        resolve({
-          error: 1,
-          data: e.message,
-        });
-      });
-  });
+  return sendEmail(userMessage, 'Error send email to forgot password user');
 }

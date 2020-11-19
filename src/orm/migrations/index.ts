@@ -1,5 +1,5 @@
-import connection from '../connection';
-import Types from '../../types';
+import * as Types from '../../types';
+import * as lib from '../../lib';
 import countries from '../../scripts/countries';
 
 /**
@@ -18,6 +18,7 @@ export function createTableUsers(needDelete = false): Promise<Types.OrmResult> {
     email VARCHAR(50),\
     company VARCHAR(255),\
     skype VARCHAR(25),\
+    balance FLOAT(8, 2),\
     password VARCHAR(255),\
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\
@@ -25,22 +26,7 @@ export function createTableUsers(needDelete = false): Promise<Types.OrmResult> {
     )';
   const deleteQuery = 'DROP TABLE `users`';
   const query = needDelete ? deleteQuery : createQuery;
-  return new Promise(resolve => {
-    connection.query(query, (err, result) => {
-      if (err) {
-        console.error(`<${Date()}>`, '[Error create table "users"]', err);
-        resolve({
-          error: 1,
-          data: err.message,
-        });
-      } else {
-        resolve({
-          error: 0,
-          data: result,
-        });
-      }
-    });
-  });
+  return lib.runDBQuery(query, 'Error create table "users"');
 }
 
 /**
@@ -54,9 +40,8 @@ export function createTableCampaigns(needDelete = false): Promise<Types.OrmResul
     title VARCHAR(255),\
     status ENUM(\'active\', \'pause\', \'pending\', \'budget\') NOT NULL DEFAULT \'pending\',\
     link VARCHAR(255),\
-    postback VARCHAR(255),\
     countries JSON,\
-    cost FLOAT(8, 2) UNSIGNED DEFAULT NULL,\
+    price FLOAT(8, 2) UNSIGNED DEFAULT NULL,\
     user_id INT NOT NULL,\
     offer_id INT NULL,\
     budget FLOAT(8, 2) UNSIGNED DEFAULT NULL,\
@@ -72,22 +57,7 @@ export function createTableCampaigns(needDelete = false): Promise<Types.OrmResul
     )';
   const deleteQuery = 'DROP TABLE `campaigns`';
   const query = needDelete ? deleteQuery : createQuery;
-  return new Promise(resolve => {
-    connection.query(query, (err, result) => {
-      if (err) {
-        console.error(`<${Date()}>`, '[Error create table "campaigns"]', err);
-        resolve({
-          error: 1,
-          data: err.message,
-        });
-      } else {
-        resolve({
-          error: 0,
-          data: result,
-        });
-      }
-    });
-  });
+  return lib.runDBQuery(query, 'Error create table "campaigns"');
 }
 
 /**
@@ -112,29 +82,14 @@ export function createTableOffers(needDelete = false): Promise<Types.OrmResult> 
     )';
   const deleteQuery = 'DROP TABLE `offers`';
   const query = needDelete ? deleteQuery : createQuery;
-  return new Promise(resolve => {
-    connection.query(query, (err, result) => {
-      if (err) {
-        console.error(`<${Date()}>`, '[Error create table "offers"]', err);
-        resolve({
-          error: 1,
-          data: err.message,
-        });
-      } else {
-        resolve({
-          error: 0,
-          data: result,
-        });
-      }
-    });
-  });
+  return lib.runDBQuery(query, 'Error create table "offers"');
 }
 
 /**
  * Создание таблицы countries
  * @param needDelete 
  */
-export function createTableCountries(needDelete = false): Promise<Types.OrmResult> {
+export async function createTableCountries(needDelete = false): Promise<Types.OrmResult> {
 
   const createQuery = 'CREATE TABLE IF NOT EXISTS `countries` (\
     id INT NOT NULL AUTO_INCREMENT,\
@@ -145,41 +100,27 @@ export function createTableCountries(needDelete = false): Promise<Types.OrmResul
     )';
   const deleteQuery = 'DROP TABLE `countries`';
   const query = needDelete ? deleteQuery : createQuery;
-  return new Promise(resolve => {
-    connection.query(query, (err, result) => {
-      if (err) {
-        console.error(`<${Date()}>`, '[Error create table "counries"]', err);
-        resolve({
-          error: 1,
-          data: err.message,
-        });
-      } else {
-        const ctrs: any = countries;
-        // Наполнение странами
-        for (const prop in ctrs.countries) {
-          connection.query('INSERT INTO `countries` (code, name) VALUES (?,?)',
-            [
-              prop,
-              ctrs.countries[prop],
-            ], (error, res) => {
-              if (error) {
-                // Не показывает ошибки дублирования ключей в таблице стран
-                if (error.errno !== 1062) {
-                  console.error(`<${Date()}>`, '[Error insert values in table "countries"]', error);
-                }
-              }
-              if (prop === 'ZW') {
-                resolve({
-                  error: 0,
-                  data: res,
-                });
-              }
-            },
-          );
-        }
-      }
-    });
-  });
+  const createRes = await lib.runDBQuery(query, 'Error create table "counries"');
+  if (createRes.error === 1) {
+    return createRes;
+  }
+  if (createRes.data.warningStatus !== 1) {
+    const ctrs: any = countries;
+    // Наполнение странами
+    const dinQuery = 'INSERT INTO `countries` (code, name) VALUES (?,?)';
+    for (const prop in ctrs.countries) {
+      const values = [
+        prop,
+        ctrs.countries[prop],
+      ];
+      await lib.runDBQuery(dinQuery, 'Error insert values in table "countries"', values);
+    }
+  }
+  return {
+    error: 0,
+    data: 'success',
+    message: 'All values inserted into countries',
+  };
 }
 
 /**
@@ -200,26 +141,13 @@ export function createTableHourly(needDelete = false): Promise<Types.OrmResult> 
     cost FLOAT(8,4) UNSIGNED DEFAULT NULL,\
     PRIMARY KEY (id),\
     FOREIGN KEY (campaign) REFERENCES campaigns (id),\
-    KEY groupby (date, subid, country, campaign)\
+    KEY groupby (date, subid, country, campaign),\
+    KEY orderby (date, subid, country, campaign, requests, impressions, clicks, cost),\
+    KEY date (date)\
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;';
   const deleteQuery = 'DROP TABLE `hourly`';
   const query = needDelete ? deleteQuery : createQuery;
-  return new Promise(resolve => {
-    connection.query(query, (err, result) => {
-      if (err) {
-        console.error(`<${Date()}>`, '[Error create table "hourly"]', err);
-        resolve({
-          error: 1,
-          data: err.message,
-        });
-      } else {
-        resolve({
-          error: 0,
-          data: result,
-        });
-      }
-    });
-  });
+  return lib.runDBQuery(query, 'Error create table "hourly"');
 }
 
 /**
@@ -240,66 +168,64 @@ export function createTableDayly(needDelete = false): Promise<Types.OrmResult> {
     cost float(8,4) UNSIGNED DEFAULT NULL,\
     PRIMARY KEY (id),\
     FOREIGN KEY (campaign) REFERENCES campaigns (id),\
-    KEY groupby (date, subid, country, campaign)\
+    KEY groupby (date, subid, country, campaign),\
+    KEY orderby (date, subid, country, campaign, requests, impressions, clicks, cost),\
+    KEY date (date)\
   ) ENGINE=InnoDB DEFAULT CHARSET=latin1;';
   const deleteQuery = 'DROP TABLE `dayly`';
   const query = needDelete ? deleteQuery : createQuery;
-  return new Promise(resolve => {
-    connection.query(query, (err, result) => {
-      if (err) {
-        console.error(`<${Date()}>`, '[Error create table "daily"]', err);
-        resolve({
-          error: 1,
-          data: err.message,
-        });
-      } else {
-        resolve({
-          error: 0,
-          data: result,
-        });
-      }
-    });
-  });
+  return lib.runDBQuery(query, 'Error create table "daily"');
+}
+
+/**
+ * Создание таблицы transactions
+ * @param needDelete 
+ */
+export function createTableTransactions(needDelete = false): Promise<Types.OrmResult> {
+
+  const createQuery = 'CREATE TABLE IF NOT EXISTS transactions (\
+    id INT NOT NULL AUTO_INCREMENT,\
+    date DATETIME NOT NULL,\
+    user_id INT NOT NULL,\
+    amount FLOAT(8, 2) UNSIGNED DEFAULT NULL,\
+    comment TEXT DEFAULT NULL,\
+    PRIMARY KEY (id),\
+    FOREIGN KEY (user_id) REFERENCES users (id),\
+    KEY date (date),\
+    KEY user_id (user_id)\
+  ) ENGINE=InnoDB DEFAULT CHARSET=latin1;';
+  const deleteQuery = 'DROP TABLE `transactions`';
+  const query = needDelete ? deleteQuery : createQuery;
+  return lib.runDBQuery(query, 'Error create table "transactions"');
 }
 
 /**
  * Вставляет тестовые данные в hourly
  * @param needDelete 
  */
-export async function insertTestdataInHourly(): Promise<any> {
+export async function insertTestdataInHourly(): Promise<Types.OrmResult> {
+  console.info(`<${Date()}>`, 'Start inserting test data into hourly');
   for (const prop in countries.countries) {
-    const res: Types.OrmResult = await new Promise(resolve => {
-      const date = new Date();
-      date.setDate(date.getDate() - parseInt((Math.random() * 30).toFixed(0), 10));
-      connection.query('INSERT INTO hourly (date, campaign, subid, country, requests, impressions, clicks, cost) VALUES (?,?,?,?,?,?,?,?)',
-        [
-          date,
-          parseInt((Math.random() * 2).toFixed(0), 10) || 1,
-          `${prop}-subid`,
-          prop,
-          parseInt((Math.random() * 50).toFixed(0), 10),
-          parseInt((Math.random() * 100).toFixed(0), 10),
-          parseInt((Math.random() * 20).toFixed(0), 10),
-          parseInt((Math.random() * 10).toFixed(2), 10),
-        ], (err, result) => {
-          if (err) {
-            console.error(`<${Date()}>`, '[Error insert test data in "hourly"]', err);
-            resolve({
-              error: 1,
-              data: err.message,
-            });
-          } else {
-            resolve({
-              error: 0,
-              data: result,
-            });
-          }
-        });
-    });
-    if (res.error === 1) {
-      break;
-    }
+    const date = new Date();
+    date.setDate(date.getDate() - parseInt((Math.random() * 30).toFixed(0), 10));
+    const query = 'INSERT INTO hourly (date, campaign, subid, country, requests, impressions, clicks, cost) VALUES (?,?,?,?,?,?,?,?)';
+    const values = [
+      date,
+      parseInt((Math.random() * 2).toFixed(0), 10) || 1,
+      `${prop}-subid`,
+      prop,
+      parseInt((Math.random() * 50).toFixed(0), 10),
+      parseInt((Math.random() * 100).toFixed(0), 10),
+      parseInt((Math.random() * 20).toFixed(0), 10),
+      parseInt((Math.random() * 10).toFixed(2), 10),
+    ];
+    await lib.runDBQuery(query, 'Error insert test data in "hourly"', values);
   }
+  return {
+    error: 0,
+    data: 'success',
+    message: 'All testings values inserted into hourly',
+  };
 }
 
 /**
@@ -307,37 +233,26 @@ export async function insertTestdataInHourly(): Promise<any> {
  * @param needDelete 
  */
 export async function insertTestdataInDayly(): Promise<any> {
+  console.info(`<${Date()}>`, 'Start inserting test data into daily');
   for (const prop in countries.countries) {
-    const res: Types.OrmResult = await new Promise(resolve => {
-      const date = new Date();
-      date.setDate(date.getDate() - parseInt((Math.random() * 400).toFixed(0), 10));
-      connection.query('INSERT INTO daily (date, campaign, subid, country, requests, impressions, clicks, cost) VALUES (?,?,?,?,?,?,?,?)',
-        [
-          date,
-          parseInt((Math.random() * 2).toFixed(0), 10) || 1,
-          `${prop}-subid`,
-          prop,
-          parseInt((Math.random() * 50).toFixed(0), 10),
-          parseInt((Math.random() * 100).toFixed(0), 10),
-          parseInt((Math.random() * 20).toFixed(0), 10),
-          parseInt((Math.random() * 10).toFixed(2), 10),
-        ], (err, result) => {
-          if (err) {
-            console.error(`<${Date()}>`, '[Error insert test data in "daily"]', err);
-            resolve({
-              error: 1,
-              data: err.message,
-            });
-          } else {
-            resolve({
-              error: 0,
-              data: result,
-            });
-          }
-        });
-    });
-    if (res.error === 1) {
-      break;
-    }
+    const date = new Date();
+    date.setDate(date.getDate() - parseInt((Math.random() * 400).toFixed(0), 10));
+    const query = 'INSERT INTO daily (date, campaign, subid, country, requests, impressions, clicks, cost) VALUES (?,?,?,?,?,?,?,?)';
+    const values = [
+      date,
+      parseInt((Math.random() * 2).toFixed(0), 10) || 1,
+      `${prop}-subid`,
+      prop,
+      parseInt((Math.random() * 50).toFixed(0), 10),
+      parseInt((Math.random() * 100).toFixed(0), 10),
+      parseInt((Math.random() * 20).toFixed(0), 10),
+      parseInt((Math.random() * 10).toFixed(2), 10),
+    ];
+    await lib.runDBQuery(query, 'Error insert test data in "daily"', values);
   }
+  return {
+    error: 0,
+    data: 'success',
+    message: 'All testings values inserted into daily',
+  };
 }

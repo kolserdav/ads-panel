@@ -30,6 +30,7 @@ export default async function getSession(req: express.Request, res: express.Resp
     return res.status(500).json(errRes);
   }
 
+  // eslint-disable-next-line prefer-destructuring
   const User: Types.User = user.data[0];
 
   User.password = '';

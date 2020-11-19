@@ -19,6 +19,24 @@
 export type OrmResult = {
   error: number
   data: any
+  message: string
+};
+
+export type GraphStatisticParams = {
+  self: 1 | 0
+  time: Time
+  customTime: Date[] | undefined
+};
+
+export type TableStatisticParams = {
+  limit: number
+  current: number
+  group: GroupBy
+  time: Time
+  customTime: Date[] | undefined
+  self: 1 | 0
+  sort: OrderByVariants
+  desc: boolean
 };
 
 // Объект статистики, используется и для таблицы и для графика
@@ -65,6 +83,8 @@ export type ServerHandlerResponse = {
     campaigns?: Campaign[]
     count?: number
     all?: any
+    insertId?: number
+    transactions?: Transaction[]
   }
 };
 
@@ -104,11 +124,11 @@ export type Campaign = {
   title: string
   status: CampaignStatus
   link: string
-  postback: string
   countries: string[]
-  cost: number
+  price: number
   user_id: number
   budget: number
+  offer_id: number
   ip_pattern: string[]
   white_list: string[]
   black_list: string[]
@@ -129,6 +149,16 @@ export type Offer = {
   image?: string
 };
 
+export type OrderByVariants = 'id' | 'date' | 'campaign' | 'subid' | 'country' | 'requests' | 'impressions' | 'clicks' | 'cost';
+
+export type Email = {
+  from: string
+  to: string
+  subject: string
+  text: string
+  html: string
+};
+
 // Заголовки посредника, не реализованы, просто описаны тут для понимания
 interface HeadersMiddleware {
   uid: string
@@ -137,3 +167,13 @@ interface HeadersMiddleware {
   host: string
   admin: '0' | '1'
 }
+
+
+export type Transaction = {
+  amount: number
+  user_id?: number
+  date?: date
+  comment: string
+};
+
+export type TransactionFilter = 'date' | 'user';

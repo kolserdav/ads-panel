@@ -24,15 +24,14 @@ export default async function putUpdateCampaign(req: express.Request, res: expre
   const {
     title,
     link,
-    postback,
     countries,
-    cost,
+    price,
     budget,
     ip_pattern,
     white_list,
     black_list,
     offer_id,
-  }: any = req.body;
+  }: Types.Campaign = req.body;
 
   const { id } = req.params;
   const cId = parseInt(id, 10);
@@ -49,7 +48,7 @@ export default async function putUpdateCampaign(req: express.Request, res: expre
       });
       const errUpdateTit: Types.ServerHandlerResponse = {
         result: 'error',
-        message: 'Ошибка изменения названия кампании',
+        message: updateTitRes.message,
         body: {
           stdErrMessage: updateTitRes.data,
         },
@@ -67,30 +66,12 @@ export default async function putUpdateCampaign(req: express.Request, res: expre
       });
       const errUpdateLin: Types.ServerHandlerResponse = {
         result: 'error',
-        message: 'Ошибка изменения ссылки кампании',
+        message: updateLinRes.message,
         body: {
           stdErrMessage: updateLinRes.data,
         },
       };
       return res.status(500).json(errUpdateLin);
-    }
-  }
-
-  if (postback) {
-    const updatePostRes: Types.OrmResult = await orm.campaign.updatePostback(postback, cId);
-    if (updatePostRes.error === 1) {
-      console.warn(`<${Date()}>`, '[Warning: updatePostRes.error === 1]', {
-        url: req.url,
-        headers: req.headers,
-      });
-      const errUpdatePost: Types.ServerHandlerResponse = {
-        result: 'error',
-        message: 'Ошибка изменения постбек ссылки кампании',
-        body: {
-          stdErrMessage: updatePostRes.data,
-        },
-      };
-      return res.status(500).json(errUpdatePost);
     }
   }
 
@@ -120,8 +101,8 @@ export default async function putUpdateCampaign(req: express.Request, res: expre
     }
   }
 
-  if (cost) {
-    const updateCostRes: Types.OrmResult = await orm.campaign.updateCost(cost, cId);
+  if (price) {
+    const updateCostRes: Types.OrmResult = await orm.campaign.updateCost(price, cId);
     if (updateCostRes.error === 1) {
       console.warn(`<${Date()}>`, '[Warning: updateCostRes.error === 1]', {
         url: req.url,
@@ -251,6 +232,7 @@ export default async function putUpdateCampaign(req: express.Request, res: expre
       };
       return res.status(500).json(offerErr);
     }
+    // eslint-disable-next-line prefer-destructuring
     const offer: Types.Offer = offerRes.data[0];
     if (!offer) {
       const offerWarn: Types.ServerHandlerResponse = {

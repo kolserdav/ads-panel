@@ -23,3 +23,6 @@ export { default as putStatusOffer } from './offer/put.status';
 // Роуты статистики
 export { default as getTableStatistic } from './statistic/get.table';
 export { default as getGraphStatistic } from './statistic/get.graph';
+// Транзакции
+export { default as postCreateTransaction } from './transtaction/post.create';
+export { default as getTransactions } from './transtaction/get.all';

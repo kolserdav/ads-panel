@@ -25,9 +25,26 @@ export default async function getAllStatistic(req: express.Request, res: express
     time,
     customTime,
     self,
-  } = req.body;
+    sort,
+    desc,
+  }: Types.TableStatisticParams = req.body;
 
-  let customTimeInt = 0;
+
+  // eslint-disable-next-line no-undefined
+  if (sort !== undefined) {
+    if (lib.OrderByVariants.indexOf(sort) === -1) {
+      const oBwarn: Types.ServerHandlerResponse = {
+        result: 'warning',
+        message: 'Value of variable \'sort\' should be one of enum',
+        body: {
+          require: lib.OrderByVariants,
+        },
+      };
+      return res.status(400).json(oBwarn);
+    }
+  }
+
+  let customTimeRange: Date[] | undefined;
 
   // проверяет что time один из приемлемых TODO если убрать то просто будет за сегодня
   // eslint-disable-next-line no-undefined
@@ -55,7 +72,19 @@ export default async function getAllStatistic(req: express.Request, res: express
       };
       return res.status(400).json(warnCustomT);
     }
-    customTimeInt = parseInt(customTime, 10);
+
+    if (!Array.isArray(customTime)) {
+      const custTWarn: Types.ServerHandlerResponse = {
+        result: 'warning',
+        message: 'Value of variable \'customTime\' should be an array',
+        body: {
+          require: ['2020-10-17T16:56:37.000Z', '2020-11-17T16:56:37.000Z'],
+          received: customTime,
+        },
+      };
+      return res.status(400).json(custTWarn);
+    }
+    customTimeRange = customTime.map((item: Date) => new Date(item));
   }
 
   // Проверяет соответствует ли группировка возможным вариантам TODO убирать нельзя, иначе нужно дорабатывать orm
@@ -75,7 +104,7 @@ export default async function getAllStatistic(req: express.Request, res: express
   }
 
   // Current не должен быть нулевым
-  if (current === 0 || current === '0') {
+  if (current === 0) {
     const warnCurRes: Types.ServerHandlerResponse = {
       result: 'warning',
       message: 'Variable `current` can\'t have zero value',
@@ -88,7 +117,7 @@ export default async function getAllStatistic(req: express.Request, res: express
   const start = limit * current - limit;
   // если админ запрашивает свои кампании
   const uId = admin === '1' && self !== 1 ? null : userId;
-  const getRes: Types.OrmResult = await orm.statistic.getTableStatistic(uId, start, limit, group, time, customTimeInt);
+  const getRes: Types.OrmResult = await orm.statistic.getTableStatistic(uId, start, limit, group, time, customTimeRange, sort, desc);
   if (getRes.error === 1) {
     console.warn(`<${Date()}>`, '[Warning: todayRes.error === 1]', {
       url: req.url,

@@ -1,40 +1,22 @@
 /**
  * Методы обращения к таблице offers
- * DEPRECATED - все методы, на данный момент работают и безопасно реализованы, но для 
- * дальнейшей более удобной разработки, нужно учесть опыт orm/statistic/index.ts см. orm/README.md
  */
 
 import * as Types from '../../types';
-import connection from '../connection';
+import * as lib from '../../lib';
 
 /**
  * Создание нового оффера
  * @param offer 
  */
 export function createNew(offer: Types.Offer): Promise<Types.OrmResult> {
-  return new Promise(resolve => {
-    connection.query(
-      'INSERT INTO `offers` (user_id, title, description) VALUES (?,?,?)',
-      [
-        offer.user_id,
-        offer.title,
-        offer.description,
-      ],
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error create new offer]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  const query = 'INSERT INTO `offers` (user_id, title, description) VALUES (?,?,?)';
+  const values = [
+    offer.user_id,
+    offer.title,
+    offer.description,
+  ];
+  return lib.runDBQuery(query, 'Error create new offer', values);
 }
 
 /**
@@ -42,25 +24,9 @@ export function createNew(offer: Types.Offer): Promise<Types.OrmResult> {
  * @param id 
  */
 export function getById(id: number): Promise<Types.OrmResult> {
-  return new Promise(resolve => {
-    connection.query(
-      'SELECT * FROM `offers` WHERE `id`=?',
-      [ id ],
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error get offer by id]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  const query = 'SELECT * FROM `offers` WHERE `id`=?';
+  const values = [ id ];
+  return lib.runDBQuery(query, 'Error get offer by id', values);
 }
 
 /**
@@ -69,25 +35,9 @@ export function getById(id: number): Promise<Types.OrmResult> {
  * @param id 
  */
 export function changeIcon(icon: string, id: number): Promise<Types.OrmResult> {
-  return new Promise(resolve => {
-    connection.query(
-      'UPDATE `offers` SET icon=?, updated=? WHERE `id`=?',
-      [ icon, new Date(), id ],
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error update offer icon]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  const query = 'UPDATE `offers` SET icon=?, updated=? WHERE `id`=?';
+  const values = [ icon, new Date(), id ];
+  return lib.runDBQuery(query, 'Error update offer icon', values);
 }
 
 /**
@@ -96,25 +46,9 @@ export function changeIcon(icon: string, id: number): Promise<Types.OrmResult> {
  * @param id 
  */
 export function changeImage(image: string, id: number): Promise<Types.OrmResult> {
-  return new Promise(resolve => {
-    connection.query(
-      'UPDATE `offers` SET image=?, updated=? WHERE `id`=?',
-      [ image, new Date(), id ],
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error update offer image]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  const query = 'UPDATE `offers` SET image=?, updated=? WHERE `id`=?';
+  const values = [ image, new Date(), id ];
+  return lib.runDBQuery(query, 'Error update offer image', values);
 }
 
 /**
@@ -123,25 +57,9 @@ export function changeImage(image: string, id: number): Promise<Types.OrmResult>
  * @param id 
  */
 export function updateTitle(title: string, id: number): Promise<Types.OrmResult> {
-  return new Promise(resolve => {
-    connection.query(
-      'UPDATE `offers` SET title=?, updated=? WHERE `id`=?',
-      [ title, new Date(), id ],
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error update offer title]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  const query = 'UPDATE `offers` SET title=?, updated=? WHERE `id`=?';
+  const values = [ title, new Date(), id ];
+  return lib.runDBQuery(query, 'Error update offer title', values);
 }
 
 
@@ -151,25 +69,9 @@ export function updateTitle(title: string, id: number): Promise<Types.OrmResult>
  * @param id 
  */
 export function updateComment(description: string, id: number): Promise<Types.OrmResult> {
-  return new Promise(resolve => {
-    connection.query(
-      'UPDATE `offers` SET description=?, updated=? WHERE `id`=?',
-      [ description, new Date(), id ],
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error update offer description]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  const query = 'UPDATE `offers` SET description=?, updated=? WHERE `id`=?';
+  const values = [ description, new Date(), id ];
+  return lib.runDBQuery(query, 'Error update offer description', values);
 }
 
 /**
@@ -178,29 +80,13 @@ export function updateComment(description: string, id: number): Promise<Types.Or
  * @param id 
  */
 export function updateStatus(status: string, id: number): Promise<Types.OrmResult> {
-  return new Promise(resolve => {
-    connection.query(
-      'UPDATE `offers` SET status=?, updated=? WHERE id=?',
-      [
-        status,
-        new Date(),
-        id,
-      ],
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error update offer status]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  const query = 'UPDATE `offers` SET status=?, updated=? WHERE id=?';
+  const values = [
+    status,
+    new Date(),
+    id,
+  ];
+  return lib.runDBQuery(query, 'Error update offer status', values);
 }
 
 /**
@@ -209,27 +95,11 @@ export function updateStatus(status: string, id: number): Promise<Types.OrmResul
  * @param id 
  */
 export function updateWarning(warning: string, id: number): Promise<Types.OrmResult> {
-  return new Promise(resolve => {
-    connection.query(
-      'UPDATE `offers` SET warning=?, updated=? WHERE id=?',
-      [
-        warning,
-        new Date(),
-        id,
-      ],
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error update offer warning message]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  const query = 'UPDATE `offers` SET warning=?, updated=? WHERE id=?';
+  const values = [
+    warning,
+    new Date(),
+    id,
+  ];
+  return lib.runDBQuery(query, 'Error update offer warning message', values);
 }

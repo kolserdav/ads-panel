@@ -45,6 +45,8 @@ const upload = multer({ storage });
 
 // Если нужно удалить все таблицы, чтобы потом создать заново то true но ОСТОРОЖНО!!!
 const dropTables = false;
+// Для наполения тестовыми данными true
+const testData = false;
 
 // Создает нужные таблицы.
 console.info(`<${Date()}>`, 'Start create tables script ...');
@@ -55,8 +57,9 @@ void Promise.all([
   migrations.createTableCountries(dropTables),
   migrations.createTableHourly(dropTables),
   migrations.createTableDayly(dropTables),
-  migrations.insertTestdataInHourly(),
-  migrations.insertTestdataInDayly(),
+  migrations.createTableTransactions(dropTables),
+  testData ? migrations.insertTestdataInHourly() : () => {/** */},
+  testData ? migrations.insertTestdataInDayly() : () => {/** */},
 ])
   .then(data => {
     let errors = 0;
@@ -106,6 +109,9 @@ app.put('/offer/status/:id', middle.auth, middle.onlyAdmin, router.putStatusOffe
 // API статистики
 app.get('/statistic/table', middle.auth, router.getTableStatistic);
 app.get('/statistic/graph', middle.auth, router.getGraphStatistic);
+// Транзакции
+app.post('/transaction', middle.auth, router.postCreateTransaction);
+app.get('/transaction', middle.auth, middle.onlyAdmin, router.getTransactions);
 
 
 app.listen(parseInt(API_PORT, 10), () => {

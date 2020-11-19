@@ -22,7 +22,7 @@ export default async function getGraphStatistic(req: express.Request, res: expre
   const { uid, admin }: any = req.headers;
   const uId = admin === '1' && self !== 1 ? null : parseInt(uid, 10);
 
-  let customTimeInt = 0;
+  let customTimeRange: Date[] | undefined;
 
   // проверяет что time один из приемлемых TODO если убрать то просто будет за сегодня
   // eslint-disable-next-line no-undefined
@@ -50,10 +50,21 @@ export default async function getGraphStatistic(req: express.Request, res: expre
       };
       return res.status(400).json(warnCustomT);
     }
-    customTimeInt = parseInt(customTime, 10);
+    if (!Array.isArray(customTime)) {
+      const custTWarn: Types.ServerHandlerResponse = {
+        result: 'warning',
+        message: 'Value of variable \'customTime\' should be an array',
+        body: {
+          require: ['2020-10-17T16:56:37.000Z', '2020-11-17T16:56:37.000Z'],
+          received: customTime,
+        },
+      };
+      return res.status(400).json(custTWarn);
+    }
+    customTimeRange = customTime.map((item: Date) => new Date(item));
   }
 
-  const statiscticsRes: Types.OrmResult = await orm.statistic.getGraphStatistic(uId, time, customTimeInt);
+  const statiscticsRes: Types.OrmResult = await orm.statistic.getGraphStatistic(uId, time, customTimeRange);
   if (statiscticsRes.error === 1) {
     console.warn(`<${Date()}>`, '[Warning: statisticsRes.error === 1]', {
       url: req.url,

@@ -1,47 +1,28 @@
 /**
  * Медоды обращения к таблице campaign
- * DEPRECATED! - все методы, на данный момент работают и безопасно реализованы, но для 
- * дальнейшей более удобной разработки, нужно учесть опыт orm/statistic/index.ts см. orm/README.md
  */
 
 import * as Types from '../../types';
-import connection from '../connection';
+import * as lib from '../../lib';
 
 /**
  * Создание новой кампании
  * @param campaign 
  */
 export function createNew(campaign: Types.Campaign): Promise<Types.OrmResult> {
-  return new Promise(resolve => {
-    connection.query(
-      'INSERT INTO `campaigns` (user_id, title, link, postback, countries, cost, budget, ip_pattern, white_list, black_list) VALUES (?,?,?,?,?,?,?,?,?,?)',
-      [
-        campaign.user_id,
-        campaign.title,
-        campaign.link,
-        campaign.postback,
-        JSON.stringify(campaign.countries),
-        campaign.cost,
-        campaign.budget,
-        JSON.stringify(campaign.ip_pattern),
-        JSON.stringify(campaign.white_list),
-        JSON.stringify(campaign.black_list),
-      ],
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error create new campaign]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  const query = 'INSERT INTO `campaigns` (user_id, title, link, countries, price, budget, ip_pattern, white_list, black_list) VALUES (?,?,?,?,?,?,?,?,?)';
+  const values = [
+    campaign.user_id,
+    campaign.title,
+    campaign.link,
+    JSON.stringify(campaign.countries),
+    campaign.price,
+    campaign.budget,
+    JSON.stringify(campaign.ip_pattern),
+    JSON.stringify(campaign.white_list),
+    JSON.stringify(campaign.black_list),
+  ];
+  return lib.runDBQuery(query, 'Error create new campaign', values);
 }
 
 /**
@@ -50,29 +31,13 @@ export function createNew(campaign: Types.Campaign): Promise<Types.OrmResult> {
  * @param id 
  */
 export function updateOfferId(offer_id: number, id: number): Promise<Types.OrmResult> {
-  return new Promise(resolve => {
-    connection.query(
-      'UPDATE `campaigns` SET offer_id=?, updated=? WHERE id=?',
-      [
-        offer_id,
-        new Date(),
-        id,
-      ],
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error update offer_id for campaign]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  const query = 'UPDATE `campaigns` SET offer_id=?, updated=? WHERE id=?';
+  const values = [
+    offer_id,
+    new Date(),
+    id,
+  ];
+  return lib.runDBQuery(query, 'Error update offer_id for campaign', values);
 }
 
 /**
@@ -80,25 +45,9 @@ export function updateOfferId(offer_id: number, id: number): Promise<Types.OrmRe
  * @param id 
  */
 export function getById(id: number): Promise<Types.OrmResult> {
-  return new Promise(resolve => {
-    connection.query(
-      'SELECT * FROM `campaigns` WHERE `id`=?',
-      [ id ],
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error get campaign by id]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  const query = 'SELECT * FROM `campaigns` WHERE `id`=?';
+  const values = [ id ];
+  return lib.runDBQuery(query, 'Error get campaign by id', values);
 }
 
 /**
@@ -107,29 +56,13 @@ export function getById(id: number): Promise<Types.OrmResult> {
  * @param id 
  */
 export function updateTitle(title: string, id: number): Promise<Types.OrmResult> {
-  return new Promise(resolve => {
-    connection.query(
-      'UPDATE `campaigns` SET title=?, updated=? WHERE id=?',
-      [
-        title,
-        new Date(),
-        id,
-      ],
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error update campaign title]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  const query = 'UPDATE `campaigns` SET title=?, updated=? WHERE id=?';
+  const values = [
+    title,
+    new Date(),
+    id,
+  ];
+  return lib.runDBQuery(query, 'Error update campaign title', values);
 }
 
 /**
@@ -138,29 +71,13 @@ export function updateTitle(title: string, id: number): Promise<Types.OrmResult>
  * @param id 
  */
 export function updateLink(link: string, id: number): Promise<Types.OrmResult> {
-  return new Promise(resolve => {
-    connection.query(
-      'UPDATE `campaigns` SET link=?, updated=? WHERE id=?',
-      [
-        link,
-        new Date(),
-        id,
-      ],
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error update campaign link]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  const query = 'UPDATE `campaigns` SET link=?, updated=? WHERE id=?';
+  const values = [
+    link,
+    new Date(),
+    id,
+  ];
+  return lib.runDBQuery(query, 'Error update campaign link', values);
 }
 
 /**
@@ -169,29 +86,13 @@ export function updateLink(link: string, id: number): Promise<Types.OrmResult> {
  * @param id 
  */
 export function updatePostback(postback: string, id: number): Promise<Types.OrmResult> {
-  return new Promise(resolve => {
-    connection.query(
-      'UPDATE `campaigns` SET postback=?, updated=? WHERE id=?',
-      [
-        postback,
-        new Date(),
-        id,
-      ],
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error update campaign postback]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  const query = 'UPDATE `campaigns` SET postback=?, updated=? WHERE id=?';
+  const values = [
+    postback,
+    new Date(),
+    id,
+  ];
+  return lib.runDBQuery(query, 'Error update campaign postback', values);
 }
 
 /**
@@ -200,29 +101,13 @@ export function updatePostback(postback: string, id: number): Promise<Types.OrmR
  * @param id 
  */
 export function updateCountries(countries: string[], id: number): Promise<Types.OrmResult> {
-  return new Promise(resolve => {
-    connection.query(
-      'UPDATE `campaigns` SET countries=?, updated=? WHERE id=?',
-      [
-        JSON.stringify(countries),
-        new Date(),
-        id,
-      ],
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error update campaign countries]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  const query = 'UPDATE `campaigns` SET countries=?, updated=? WHERE id=?';
+  const values = [
+    JSON.stringify(countries),
+    new Date(),
+    id,
+  ];
+  return lib.runDBQuery(query, 'Error update campaign countries', values);
 }
 
 /**
@@ -231,29 +116,13 @@ export function updateCountries(countries: string[], id: number): Promise<Types.
  * @param id 
  */
 export function updateCost(cost: number, id: number): Promise<Types.OrmResult> {
-  return new Promise(resolve => {
-    connection.query(
-      'UPDATE `campaigns` SET cost=?, updated=? WHERE id=?',
-      [
-        cost,
-        new Date(),
-        id,
-      ],
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error update campaign cost]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  const query = 'UPDATE `campaigns` SET cost=?, updated=? WHERE id=?';
+  const values = [
+    cost,
+    new Date(),
+    id,
+  ];
+  return lib.runDBQuery(query, 'Error update campaign cost', values);
 }
 
 /**
@@ -262,29 +131,13 @@ export function updateCost(cost: number, id: number): Promise<Types.OrmResult> {
  * @param id 
  */
 export function updateBudget(budget: number, id: number): Promise<Types.OrmResult> {
-  return new Promise(resolve => {
-    connection.query(
-      'UPDATE `campaigns` SET budget=?, updated=? WHERE id=?',
-      [
-        budget,
-        new Date(),
-        id,
-      ],
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error update campaign budget]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  const query = 'UPDATE `campaigns` SET budget=?, updated=? WHERE id=?';
+  const values = [
+    budget,
+    new Date(),
+    id,
+  ];
+  return lib.runDBQuery(query, 'Error update campaign budget', values);
 }
 
 /**
@@ -293,29 +146,13 @@ export function updateBudget(budget: number, id: number): Promise<Types.OrmResul
  * @param id 
  */
 export function updateIPPattern(ip_pattern: string[], id: number): Promise<Types.OrmResult> {
-  return new Promise(resolve => {
-    connection.query(
-      'UPDATE `campaigns` SET ip_pattern=?, updated=? WHERE id=?',
-      [
-        JSON.stringify(ip_pattern),
-        new Date(),
-        id,
-      ],
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error update campaign IP pattern]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  const query = 'UPDATE `campaigns` SET ip_pattern=?, updated=? WHERE id=?';
+  const values = [
+    JSON.stringify(ip_pattern),
+    new Date(),
+    id,
+  ];
+  return lib.runDBQuery(query, 'Error update campaign IP pattern', values);
 }
 
 /**
@@ -324,29 +161,13 @@ export function updateIPPattern(ip_pattern: string[], id: number): Promise<Types
  * @param id 
  */
 export function updateWhitelist(white_list: string[], id: number): Promise<Types.OrmResult> {
-  return new Promise(resolve => {
-    connection.query(
-      'UPDATE `campaigns` SET white_list=?, updated=? WHERE id=?',
-      [
-        JSON.stringify(white_list),
-        new Date(),
-        id,
-      ],
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error update campaign white list]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  const query = 'UPDATE `campaigns` SET white_list=?, updated=? WHERE id=?';
+  const values = [
+    JSON.stringify(white_list),
+    new Date(),
+    id,
+  ];
+  return lib.runDBQuery(query, 'Error update campaign white list', values);
 }
 
 /**
@@ -355,29 +176,13 @@ export function updateWhitelist(white_list: string[], id: number): Promise<Types
  * @param id 
  */
 export function updateBlacklist(black_list: string[], id: number): Promise<Types.OrmResult> {
-  return new Promise(resolve => {
-    connection.query(
-      'UPDATE `campaigns` SET black_list=?, updated=? WHERE id=?',
-      [
-        JSON.stringify(black_list),
-        new Date(),
-        id,
-      ],
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error update campaign black list]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  const query = 'UPDATE `campaigns` SET black_list=?, updated=? WHERE id=?';
+  const values = [
+    JSON.stringify(black_list),
+    new Date(),
+    id,
+  ];
+  return lib.runDBQuery(query, 'Error update campaign black list', values);
 }
 
 /**
@@ -386,73 +191,29 @@ export function updateBlacklist(black_list: string[], id: number): Promise<Types
  * @param id 
  */
 export function updateStatus(status: string, id: number): Promise<Types.OrmResult> {
-  return new Promise(resolve => {
-    connection.query(
-      'UPDATE `campaigns` SET status=?, updated=? WHERE id=?',
-      [
-        status,
-        new Date(),
-        id,
-      ],
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error update campaign status]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  const query = 'UPDATE `campaigns` SET status=?, updated=? WHERE id=?';
+  const values = [
+    status,
+    new Date(),
+    id,
+  ];
+  return lib.runDBQuery(query, 'Error update campaign status', values);
 }
 
+/**
+ * получает все кампании
+ * @param status 
+ */
 export function getAll(status: string): Promise<Types.OrmResult> {
-  return new Promise(resolve => {
-    connection.query(
-      'SELECT * FROM ORDER BY CASE WHEN status=? THEN 1 ELSE 2 END `campaigns`',
-      [ status ],
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error get all campaigns]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  const query = 'SELECT * FROM ORDER BY CASE WHEN status=? THEN 1 ELSE 2 END `campaigns`';
+  const values = [ status ];
+  return lib.runDBQuery(query, 'Error get all campaigns', values);
 }
 
 export function getAllByUid(status: string, user_id: number): Promise<Types.OrmResult> {
-  return new Promise(resolve => {
-    connection.query(
-      'SELECT * FROM `campaigns` WHERE user_id=? ORDER BY CASE WHEN status=? THEN 1 ELSE 2 END',
-      [ user_id, status ],
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error get all you campaigns]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  const query = 'SELECT * FROM `campaigns` WHERE user_id=? ORDER BY CASE WHEN status=? THEN 1 ELSE 2 END';
+  const values = [ user_id, status ];
+  return lib.runDBQuery(query, 'Error get all you campaigns', values);
 }
 
 /**
@@ -462,25 +223,9 @@ export function getAllByUid(status: string, user_id: number): Promise<Types.OrmR
  * @param count - количество элементов
  */
 export function filterAllByUid(user_id: number, status: string, start: number, count: number): Promise<Types.OrmResult> {
-  return new Promise(resolve => {
-    connection.query(
-      'SELECT * FROM `campaigns` WHERE user_id=? ORDER BY CASE WHEN status=? THEN 1 ELSE 2 END LIMIT ?,?',
-      [ user_id, status, start, count ],
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error get list of your campaigns]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  const query = 'SELECT * FROM `campaigns` WHERE user_id=? ORDER BY CASE WHEN status=? THEN 1 ELSE 2 END LIMIT ?,?';
+  const values = [ user_id, status, start, count ];
+  return lib.runDBQuery(query, 'Error get list of your campaigns', values);
 }
 
 /**
@@ -489,49 +234,17 @@ export function filterAllByUid(user_id: number, status: string, start: number, c
  * @param count - количество элементов
  */
 export function filterAll(status: string, start: number, count: number): Promise<Types.OrmResult> {
-  return new Promise(resolve => {
-    connection.query(
-      'SELECT * FROM `campaigns` ORDER BY CASE WHEN status=? THEN 1 ELSE 2 END LIMIT ?,? ',
-      [ status, start, count ],
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error get list of campaigns]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  const query = 'SELECT * FROM `campaigns` ORDER BY CASE WHEN status=? THEN 1 ELSE 2 END LIMIT ?,? ';
+  const values = [ status, start, count ];
+  return lib.runDBQuery(query, 'Error get list of campaigns', values);
 }
 
 /**
  * Получает общее количество кампаний
  */
 export function getCountAll(): Promise<Types.OrmResult> {
-  return new Promise(resolve => {
-    connection.query(
-      'SELECT COUNT(*) FROM `campaigns`',
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error get all count campaigns]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  const query = 'SELECT COUNT(*) FROM `campaigns`';
+  return lib.runDBQuery(query, 'Error get all count campaigns');
 }
 
 /**
@@ -539,23 +252,7 @@ export function getCountAll(): Promise<Types.OrmResult> {
  * @param user_id 
  */
 export function getCountByUid(user_id: number): Promise<Types.OrmResult> {
-  return new Promise(resolve => {
-    connection.query(
-      'SELECT COUNT(*) FROM `campaigns` WHERE user_id=?',
-      [ user_id ],
-      (err, results) => {
-        if (err) {
-          console.error(`<${Date()}>`, '[Error get user count campaigns]', err);
-          resolve({
-            error: 1,
-            data: err.message,
-          });
-        }
-        resolve({
-          error: 0,
-          data: results,
-        });
-      },
-    );
-  });
+  const query = 'SELECT COUNT(*) FROM `campaigns` WHERE user_id=?';
+  const values = [ user_id ];
+  return lib.runDBQuery(query, 'Error get user count campaigns', values);
 }

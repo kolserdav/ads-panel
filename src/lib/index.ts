@@ -1,8 +1,43 @@
+/* eslint-disable no-case-declarations */
+/**
+ * Здесь методы делающе операции, которые просто возвращают нужные данные,
+ * но не делают изменений ни на дистке ни в облаке.
+ */
+
 import * as Types from '../types';
+import { FieldPacket, QueryError } from 'mysql2';
+import connection from '../orm/connection';
 import jwt from 'jsonwebtoken';
-import { get } from 'https';
 
 const { LINK_EXPIRE, JWT_SECRET }: any = process.env;
+
+/**
+ * Обработка запроса к базе данных
+ * @param sql - запрос возможно с ?
+ * @param values - массив значений
+ * @param errMessage - сообщение об ошибке для лога и ответа
+ */
+export function runDBQuery(sql: string, errMessage: string, values: any = []): Promise<Types.OrmResult> {
+  return new Promise(resolve => {
+    connection.query(sql, values, (err: QueryError | null, result: any, fields: FieldPacket[]) => {
+      if (err) {
+        console.error(`<${Date()}>`, `[${errMessage}]`, err);
+        resolve({
+          error: 1,
+          message: errMessage,
+          data: err.message,
+        });
+      } else {
+        resolve({
+          error: 0,
+          data: result,
+          message: 'Success request to datebase',
+        });
+      }
+    });
+  });
+}
+
 
 /**
  *  Проверяет соответствует ли строка регулярному выражению для email
@@ -122,9 +157,10 @@ export const TimeShiftVariants: Types.Time[] = [
  * @param shift 
  * @param customDays 
  */
-export function calculateDate(shift: Types.Time, customDays: number): Types.TimeCalculator {
+export function calculateDate(shift: Types.Time, customDays: Date[] | undefined): Types.TimeCalculator {
   const date = getTodayTimeStart();
   let range = 'TIME(h.date)';
+  // Для шаблонов считает дату и интервал группировки для графика
   switch (shift) {
     case 'yesterday':
       range = 'TIME(h.date)';
@@ -164,10 +200,22 @@ export function calculateDate(shift: Types.Time, customDays: number): Types.Time
       range = 'QUARTER(h.date)';
       date.setFullYear(date.getFullYear() - 1);
       break;
-    case 'custom':
+  }
+  // Для пользовательского интервала дат считает только интервал группировки. Это только для графика.
+  if (shift === 'custom') {
+    // @ts-ignore 
+    const days = Math.floor((customDays[1].getTime() - customDays[0].getTime()) / 86400000);
+    if (days <= 3) {
+      range = 'TIME(h.date)';
+    } else if (days <= 30) {
       range = 'DAY(h.date)';
-      date.setDate(date.getDate() - customDays);
-      break;
+    } else if (days <= 90) {
+      range = 'WEEK(h.date)';
+    } else if (days <= 360) {
+      range = 'MONTH(h.date)';
+    } else {
+      range = 'MONTH(h.date)';
+    }
   }
   return {
     time: date,
@@ -184,3 +232,11 @@ export const CampaignStatuses: Types.CampaignStatus[] = ['active', 'pause', 'pen
  *  Возможные варианты группировки статистики 
  */
 export const GroupByVariants: Types.GroupBy[] = ['date', 'user', 'campaign', 'subid', 'country'];
+
+
+/**
+ * Возможные варианты сортировки статистики 
+ */
+export const OrderByVariants: Types.OrderByVariants[] = ['id', 'date', 'campaign', 'subid', 'country', 'requests', 'impressions', 'clicks', 'cost'];
+
+export const TransactionFilterVariants: Types.TransactionFilter[] = ['date', 'user'];
