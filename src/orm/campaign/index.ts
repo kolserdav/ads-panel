@@ -1,3 +1,9 @@
+/**
+ * Медоды обращения к таблице campaign
+ * DEPRECATED! - все методы, на данный момент работают и безопасно реализованы, но для 
+ * дальнейшей более удобной разработки, нужно учесть опыт orm/statistic/index.ts см. orm/README.md
+ */
+
 import * as Types from '../../types';
 import connection from '../connection';
 
@@ -21,7 +27,7 @@ export function createNew(campaign: Types.Campaign): Promise<Types.OrmResult> {
         JSON.stringify(campaign.white_list),
         JSON.stringify(campaign.black_list),
       ],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error create new campaign]', err);
           resolve({
@@ -52,7 +58,7 @@ export function updateOfferId(offer_id: number, id: number): Promise<Types.OrmRe
         new Date(),
         id,
       ],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error update offer_id for campaign]', err);
           resolve({
@@ -78,7 +84,7 @@ export function getById(id: number): Promise<Types.OrmResult> {
     connection.query(
       'SELECT * FROM `campaigns` WHERE `id`=?',
       [ id ],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error get campaign by id]', err);
           resolve({
@@ -109,7 +115,7 @@ export function updateTitle(title: string, id: number): Promise<Types.OrmResult>
         new Date(),
         id,
       ],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error update campaign title]', err);
           resolve({
@@ -140,7 +146,7 @@ export function updateLink(link: string, id: number): Promise<Types.OrmResult> {
         new Date(),
         id,
       ],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error update campaign link]', err);
           resolve({
@@ -171,7 +177,7 @@ export function updatePostback(postback: string, id: number): Promise<Types.OrmR
         new Date(),
         id,
       ],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error update campaign postback]', err);
           resolve({
@@ -202,7 +208,7 @@ export function updateCountries(countries: string[], id: number): Promise<Types.
         new Date(),
         id,
       ],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error update campaign countries]', err);
           resolve({
@@ -233,7 +239,7 @@ export function updateCost(cost: number, id: number): Promise<Types.OrmResult> {
         new Date(),
         id,
       ],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error update campaign cost]', err);
           resolve({
@@ -264,7 +270,7 @@ export function updateBudget(budget: number, id: number): Promise<Types.OrmResul
         new Date(),
         id,
       ],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error update campaign budget]', err);
           resolve({
@@ -295,7 +301,7 @@ export function updateIPPattern(ip_pattern: string[], id: number): Promise<Types
         new Date(),
         id,
       ],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error update campaign IP pattern]', err);
           resolve({
@@ -326,7 +332,7 @@ export function updateWhitelist(white_list: string[], id: number): Promise<Types
         new Date(),
         id,
       ],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error update campaign white list]', err);
           resolve({
@@ -357,7 +363,7 @@ export function updateBlacklist(black_list: string[], id: number): Promise<Types
         new Date(),
         id,
       ],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error update campaign black list]', err);
           resolve({
@@ -388,7 +394,7 @@ export function updateStatus(status: string, id: number): Promise<Types.OrmResul
         new Date(),
         id,
       ],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error update campaign status]', err);
           resolve({
@@ -410,7 +416,7 @@ export function getAll(status: string): Promise<Types.OrmResult> {
     connection.query(
       'SELECT * FROM ORDER BY CASE WHEN status=? THEN 1 ELSE 2 END `campaigns`',
       [ status ],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error get all campaigns]', err);
           resolve({
@@ -432,7 +438,7 @@ export function getAllByUid(status: string, user_id: number): Promise<Types.OrmR
     connection.query(
       'SELECT * FROM `campaigns` WHERE user_id=? ORDER BY CASE WHEN status=? THEN 1 ELSE 2 END',
       [ user_id, status ],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error get all you campaigns]', err);
           resolve({
@@ -460,7 +466,7 @@ export function filterAllByUid(user_id: number, status: string, start: number, c
     connection.query(
       'SELECT * FROM `campaigns` WHERE user_id=? ORDER BY CASE WHEN status=? THEN 1 ELSE 2 END LIMIT ?,?',
       [ user_id, status, start, count ],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error get list of your campaigns]', err);
           resolve({
@@ -487,7 +493,7 @@ export function filterAll(status: string, start: number, count: number): Promise
     connection.query(
       'SELECT * FROM `campaigns` ORDER BY CASE WHEN status=? THEN 1 ELSE 2 END LIMIT ?,? ',
       [ status, start, count ],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error get list of campaigns]', err);
           resolve({
@@ -511,7 +517,7 @@ export function getCountAll(): Promise<Types.OrmResult> {
   return new Promise(resolve => {
     connection.query(
       'SELECT COUNT(*) FROM `campaigns`',
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error get all count campaigns]', err);
           resolve({
@@ -537,7 +543,7 @@ export function getCountByUid(user_id: number): Promise<Types.OrmResult> {
     connection.query(
       'SELECT COUNT(*) FROM `campaigns` WHERE user_id=?',
       [ user_id ],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error get user count campaigns]', err);
           resolve({

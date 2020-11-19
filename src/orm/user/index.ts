@@ -1,3 +1,9 @@
+/**
+ * Методы обращения к таблице users
+ * DEPRECATED - все методы, на данный момент работают и безопасно реализованы, но для 
+ * дальнейшей более удобной разработки, нужно учесть опыт orm/statistic/index.ts см. orm/README.md
+ * однако это на любителя
+ */
 import * as Types from '../../types';
 import connection from '../connection';
 
@@ -10,7 +16,7 @@ export function getByEmail(email: string): Promise<Types.OrmResult> {
     connection.query(
       'SELECT * FROM `users` WHERE `email`=?',
       [email],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error get user by email]', err);
           resolve({
@@ -36,7 +42,7 @@ export function getById(id: number): Promise<Types.OrmResult> {
     connection.query(
       'SELECT * FROM `users` WHERE `id`=?',
       [id],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error get user by id]', err);
           resolve({
@@ -71,7 +77,7 @@ export function createNew(user: Types.User): Promise<Types.OrmResult> {
         user.skype,
         user.updated,
       ],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error create new user]', err);
           resolve({
@@ -97,7 +103,7 @@ export function confirm(id: number): Promise<Types.OrmResult> {
     connection.query(
       'UPDATE `users` SET confirm=1, updated=? WHERE id=?',
       [new Date(), id],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error confirm email]', err);
           resolve({
@@ -125,7 +131,7 @@ export function changeUpdated(dateNow: number, id: number): Promise<Types.OrmRes
     connection.query(
       'UPDATE `users` SET updated=? WHERE id=?',
       [new Date(dateNow), id],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error change updated]', err);
           resolve({
@@ -152,7 +158,7 @@ export function changePassword(password: string, id: number): Promise<Types.OrmR
     connection.query(
       'UPDATE `users` SET password=? WHERE id=?',
       [password, id],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error change password]', err);
           resolve({
@@ -179,7 +185,7 @@ export function changeFirstName(first_name: string, id: number): Promise<Types.O
     connection.query(
       'UPDATE `users` SET first_name=? WHERE id=?',
       [first_name, id],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error change first_name]', err);
           resolve({
@@ -206,7 +212,7 @@ export function changeLastName(last_name: string, id: number): Promise<Types.Orm
     connection.query(
       'UPDATE `users` SET last_name=? WHERE id=?',
       [last_name, id],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error change last_name]', err);
           resolve({
@@ -233,7 +239,7 @@ export function changeCompany(company: string, id: number): Promise<Types.OrmRes
     connection.query(
       'UPDATE `users` SET company=? WHERE id=?',
       [company, id],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error change company]', err);
           resolve({
@@ -260,7 +266,7 @@ export function changeSkype(skype: string, id: number): Promise<Types.OrmResult>
     connection.query(
       'UPDATE `users` SET skype=? WHERE id=?',
       [skype, id],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error change skype]', err);
           resolve({
@@ -288,7 +294,7 @@ export function changeEmail(email: string, id: number): Promise<Types.OrmResult>
     connection.query(
       'UPDATE `users` SET confirm=0, email=? WHERE id=?',
       [email, id],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error change email]', err);
           resolve({

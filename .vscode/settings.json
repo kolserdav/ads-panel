@@ -1,0 +1,21 @@
+{
+  "git.ignoreLimitWarning": true,
+  "editor.tabSize": 2,
+  "git.ignoreMissingGitWarning": true,
+  "editor.detectIndentation": false,
+  "extensions.ignoreRecommendations": false,
+  "git.ignoreLegacyWarning": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "editor.renderControlCharacters": true,
+  "debug.onTaskErrors": "debugAnyway",
+  "eslint.validate": [
+      "javascript",
+      "javascriptreact",
+      "typescriptreact",
+      "typescript"
+  ],
+  "eslint.workingDirectories": [
+  { "directory": "node", "changeProcessCWD": true },
+  { "directory": "app", "changeProcessCWD": true },
+  ]
+}

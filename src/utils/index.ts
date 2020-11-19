@@ -5,10 +5,10 @@ import transporter from './transporter';
 const {
   SMTP_EMAIL,
   LINK_EXPIRE,
+  LINK_HOST,
 }: any = process.env;
 const dev = process.env.NODE_ENV === 'development';
 const protocol = dev ? 'http' : 'https';
-const remoteHost = 'test.uyem.ru';
 
 
 /**
@@ -26,7 +26,7 @@ export function getConfirmEmail(email: string, dateNow: number, first_name: stri
 
   const key = lib.encodeBase64(new Date(dateNow).toString());
 
-  const newHost = dev ? host : remoteHost;
+  const newHost = dev ? host : LINK_HOST;
   const link = `${protocol}://${newHost}/user/confirm?e=${email}&k=${key}`;
 
   const userMessage = {
@@ -59,7 +59,7 @@ export function getForgotEmail(email: string, dateNow: number, first_name: strin
 
   const key = lib.encodeBase64(new Date(dateNow).toString());
 
-  const newHost = dev ? host : remoteHost;
+  const newHost = dev ? host : LINK_HOST;
   const link = `${protocol}://${newHost}/user/forgot?e=${email}&k=${key}`;
 
   const userMessage = {

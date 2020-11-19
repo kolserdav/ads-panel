@@ -1,3 +1,9 @@
+/**
+ * Методы обращения к таблице offers
+ * DEPRECATED - все методы, на данный момент работают и безопасно реализованы, но для 
+ * дальнейшей более удобной разработки, нужно учесть опыт orm/statistic/index.ts см. orm/README.md
+ */
+
 import * as Types from '../../types';
 import connection from '../connection';
 
@@ -14,7 +20,7 @@ export function createNew(offer: Types.Offer): Promise<Types.OrmResult> {
         offer.title,
         offer.description,
       ],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error create new offer]', err);
           resolve({
@@ -40,7 +46,7 @@ export function getById(id: number): Promise<Types.OrmResult> {
     connection.query(
       'SELECT * FROM `offers` WHERE `id`=?',
       [ id ],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error get offer by id]', err);
           resolve({
@@ -67,7 +73,7 @@ export function changeIcon(icon: string, id: number): Promise<Types.OrmResult> {
     connection.query(
       'UPDATE `offers` SET icon=?, updated=? WHERE `id`=?',
       [ icon, new Date(), id ],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error update offer icon]', err);
           resolve({
@@ -94,7 +100,7 @@ export function changeImage(image: string, id: number): Promise<Types.OrmResult>
     connection.query(
       'UPDATE `offers` SET image=?, updated=? WHERE `id`=?',
       [ image, new Date(), id ],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error update offer image]', err);
           resolve({
@@ -121,7 +127,7 @@ export function updateTitle(title: string, id: number): Promise<Types.OrmResult>
     connection.query(
       'UPDATE `offers` SET title=?, updated=? WHERE `id`=?',
       [ title, new Date(), id ],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error update offer title]', err);
           resolve({
@@ -149,7 +155,7 @@ export function updateComment(description: string, id: number): Promise<Types.Or
     connection.query(
       'UPDATE `offers` SET description=?, updated=? WHERE `id`=?',
       [ description, new Date(), id ],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error update offer description]', err);
           resolve({
@@ -180,7 +186,7 @@ export function updateStatus(status: string, id: number): Promise<Types.OrmResul
         new Date(),
         id,
       ],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error update offer status]', err);
           resolve({
@@ -211,7 +217,7 @@ export function updateWarning(warning: string, id: number): Promise<Types.OrmRes
         new Date(),
         id,
       ],
-      (err, results, fields) => {
+      (err, results) => {
         if (err) {
           console.error(`<${Date()}>`, '[Error update offer warning message]', err);
           resolve({

@@ -1,5 +1,6 @@
 import * as Types from '../types';
 import jwt from 'jsonwebtoken';
+import { get } from 'https';
 
 const { LINK_EXPIRE, JWT_SECRET }: any = process.env;
 
@@ -96,5 +97,90 @@ export function parseToken(token: string): Types.JWT {
   return parsedToken;
 }
 
+/**
+ * Возвращает дату начала сегодняшнего дня
+ */
+export function getTodayTimeStart(): Date {
+  const date = new Date();
+  date.setHours(0);
+  date.setMinutes(0);
+  date.setSeconds(0);
+  date.setUTCMilliseconds(0);
+  return date;
+}
 
+/**
+ * Возможные варианты временного отрезка
+ */
+export const TimeShiftVariants: Types.Time[] = [
+  'today', 'yesterday', 'last-3-days', 'last-7-days', 'this-month',
+  'last-30-days', 'last-month', 'this-quarter', 'this-year', 'last-year', 'custom',
+];
+
+/**
+ * высчитывает дату по вариантам временного отрезка
+ * @param shift 
+ * @param customDays 
+ */
+export function calculateDate(shift: Types.Time, customDays: number): Types.TimeCalculator {
+  const date = getTodayTimeStart();
+  let range = 'TIME(h.date)';
+  switch (shift) {
+    case 'yesterday':
+      range = 'TIME(h.date)';
+      date.setDate(date.getDate() - 1);
+      break;
+    case 'last-3-days':
+      range = 'DAY(h.date)';
+      date.setDate(date.getDate() - 3);
+      break;
+    case 'last-7-days':
+      range = 'DAY(h.date)';
+      date.setDate(date.getDate() - 7);
+      break;
+    case 'this-month':
+      range = 'DAY(h.date)';
+      date.setDate(1);
+      break;
+    case 'last-30-days':
+      range = 'WEEK(h.date)';
+      date.setDate(date.getDate() - 30);
+      break;
+    case 'last-month':
+      range = 'WEEK(h.date)';
+      date.setMonth(date.getMonth() - 1);
+      date.setDate(1);
+      break;
+    case 'this-quarter':
+      range = 'MONTH(h.date)';
+      date.setMonth(date.getMonth() - 3);
+      break;
+    case 'this-year':
+      range = 'QUARTER(h.date)';
+      date.setMonth(1);
+      date.setDate(1);
+      break;
+    case 'last-year':
+      range = 'QUARTER(h.date)';
+      date.setFullYear(date.getFullYear() - 1);
+      break;
+    case 'custom':
+      range = 'DAY(h.date)';
+      date.setDate(date.getDate() - customDays);
+      break;
+  }
+  return {
+    time: date,
+    range,
+  };
+}
+
+/**
+ * Возможные варианты статуса кампании
+ */
 export const CampaignStatuses: Types.CampaignStatus[] = ['active', 'pause', 'pending', 'budget'];
+
+/**
+ *  Возможные варианты группировки статистики 
+ */
+export const GroupByVariants: Types.GroupBy[] = ['date', 'user', 'campaign', 'subid', 'country'];

@@ -20,3 +20,6 @@ export { default as postImageOffer } from './offer/post.image';
 export { default as postIconOffer } from './offer/post.icon';
 export { default as putUpdateOffer } from './offer/put.update';
 export { default as putStatusOffer } from './offer/put.status';
+// Роуты статистики
+export { default as getTableStatistic } from './statistic/get.table';
+export { default as getGraphStatistic } from './statistic/get.graph';

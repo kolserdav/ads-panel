@@ -46,11 +46,30 @@ const upload = multer({ storage });
 // Если нужно удалить все таблицы, чтобы потом создать заново то true но ОСТОРОЖНО!!!
 const dropTables = false;
 
-const cTURes: Promise<Types.OrmResult> = migrations.createTableUsers(dropTables);
-const cTORes: Promise<Types.OrmResult> = migrations.createTableOffers(dropTables);
-const cTCRes: Promise<Types.OrmResult> = migrations.createTableCampaigns(dropTables);
-const cTCounries: Promise<Types.OrmResult> = migrations.createTableCountries(dropTables);
-
+// Создает нужные таблицы.
+console.info(`<${Date()}>`, 'Start create tables script ...');
+void Promise.all([
+  migrations.createTableUsers(dropTables),
+  migrations.createTableOffers(dropTables),
+  migrations.createTableCampaigns(dropTables),
+  migrations.createTableCountries(dropTables),
+  migrations.createTableHourly(dropTables),
+  migrations.createTableDayly(dropTables),
+  migrations.insertTestdataInHourly(),
+  migrations.insertTestdataInDayly(),
+])
+  .then(data => {
+    let errors = 0;
+    data.map(item => {
+      if (item.error === 1) {
+        errors++;
+      }
+    });
+    console.info(`<${Date()}>`, 'Table create results', data, `Creating ${data.length} tables ended with ${errors} errors.`);
+  })
+  .catch(e => {
+    console.error(`<${Date()}>`, 'Error create table', e);
+  });
 
 const { API_PORT }: any = process.env;
 
@@ -84,6 +103,11 @@ app.post('/offer/icon/:id', middle.auth, middle.selfOffer, upload.single('icon')
 app.post('/offer/image/:id', middle.auth, middle.selfOffer, upload.single('image'), router.postImageOffer);
 app.put('/offer/:id', middle.auth, middle.selfOffer, router.putUpdateOffer);
 app.put('/offer/status/:id', middle.auth, middle.onlyAdmin, router.putStatusOffer);
+// API статистики
+app.get('/statistic/table', middle.auth, router.getTableStatistic);
+app.get('/statistic/graph', middle.auth, router.getGraphStatistic);
 
 
-app.listen(parseInt(API_PORT, 10));
+app.listen(parseInt(API_PORT, 10), () => {
+  console.info(`\nListen on http://localhost:${API_PORT}\n`);
+});

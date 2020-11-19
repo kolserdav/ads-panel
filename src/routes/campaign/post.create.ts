@@ -233,7 +233,7 @@ export default async function postCreateCampaign(req: express.Request, res: expr
     result: 'success',
     message: 'Кампания создана',
     body: {
-      campaign,
+      campaign: { id: saveRes.data.insertId, ...campaign },
     },
   };
   return res.status(201).json(successRes);

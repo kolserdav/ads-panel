@@ -101,7 +101,7 @@ export function createTableOffers(needDelete = false): Promise<Types.OrmResult> 
     title VARCHAR(255),\
     description VARCHAR(255),\
     status ENUM(\'verified\', \'pending\', \'warning\') DEFAULT \'pending\',\
-    warning JSON NULL,\
+    warning TEXT NULL,\
     icon VARCHAR(255),\
     image VARCHAR(255),\
     user_id INT NOT NULL,\
@@ -138,7 +138,7 @@ export function createTableCountries(needDelete = false): Promise<Types.OrmResul
 
   const createQuery = 'CREATE TABLE IF NOT EXISTS `countries` (\
     id INT NOT NULL AUTO_INCREMENT,\
-    code VARCHAR(4),\
+    code CHAR(2) UNIQUE,\
     name VARCHAR(255),\
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\
     PRIMARY KEY (id)\
@@ -163,18 +163,16 @@ export function createTableCountries(needDelete = false): Promise<Types.OrmResul
               ctrs.countries[prop],
             ], (error, res) => {
               if (error) {
-                console.error(`<${Date()}>`, '[Error insert values in table "countries"]', error);
-                resolve({
-                  error: 1,
-                  data: error.message,
-                });
-              } else {
-                if (prop === 'ZW') {
-                  resolve({
-                    error: 0,
-                    data: res,
-                  });
+                // Не показывает ошибки дублирования ключей в таблице стран
+                if (error.errno !== 1062) {
+                  console.error(`<${Date()}>`, '[Error insert values in table "countries"]', error);
                 }
+              }
+              if (prop === 'ZW') {
+                resolve({
+                  error: 0,
+                  data: res,
+                });
               }
             },
           );
@@ -182,4 +180,164 @@ export function createTableCountries(needDelete = false): Promise<Types.OrmResul
       }
     });
   });
+}
+
+/**
+ * Создание таблицы hourly
+ * @param needDelete 
+ */
+export function createTableHourly(needDelete = false): Promise<Types.OrmResult> {
+
+  const createQuery = 'CREATE TABLE IF NOT EXISTS hourly (\
+    id INT NOT NULL AUTO_INCREMENT,\
+    date DATETIME NOT NULL,\
+    campaign INT NOT NULL,\
+    subid VARCHAR(256) DEFAULT NULL,\
+    country CHAR(2) DEFAULT NULL,\
+    requests INT(10) UNSIGNED DEFAULT NULL,\
+    impressions INT(10) UNSIGNED DEFAULT NULL,\
+    clicks INT(10) UNSIGNED DEFAULT NULL,\
+    cost FLOAT(8,4) UNSIGNED DEFAULT NULL,\
+    PRIMARY KEY (id),\
+    FOREIGN KEY (campaign) REFERENCES campaigns (id),\
+    KEY groupby (date, subid, country, campaign)\
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;';
+  const deleteQuery = 'DROP TABLE `hourly`';
+  const query = needDelete ? deleteQuery : createQuery;
+  return new Promise(resolve => {
+    connection.query(query, (err, result) => {
+      if (err) {
+        console.error(`<${Date()}>`, '[Error create table "hourly"]', err);
+        resolve({
+          error: 1,
+          data: err.message,
+        });
+      } else {
+        resolve({
+          error: 0,
+          data: result,
+        });
+      }
+    });
+  });
+}
+
+/**
+ * Создание таблицы dayly
+ * @param needDelete 
+ */
+export function createTableDayly(needDelete = false): Promise<Types.OrmResult> {
+
+  const createQuery = 'CREATE TABLE IF NOT EXISTS daily (\
+    id INT NOT NULL AUTO_INCREMENT,\
+    date DATETIME NOT NULL,\
+    campaign INT NOT NULL,\
+    subid VARCHAR(256) DEFAULT NULL,\
+    country CHAR(2) DEFAULT NULL,\
+    requests INT(10) UNSIGNED DEFAULT NULL,\
+    impressions INT(10) UNSIGNED DEFAULT NULL,\
+    clicks INT(10) UNSIGNED DEFAULT NULL,\
+    cost float(8,4) UNSIGNED DEFAULT NULL,\
+    PRIMARY KEY (id),\
+    FOREIGN KEY (campaign) REFERENCES campaigns (id),\
+    KEY groupby (date, subid, country, campaign)\
+  ) ENGINE=InnoDB DEFAULT CHARSET=latin1;';
+  const deleteQuery = 'DROP TABLE `dayly`';
+  const query = needDelete ? deleteQuery : createQuery;
+  return new Promise(resolve => {
+    connection.query(query, (err, result) => {
+      if (err) {
+        console.error(`<${Date()}>`, '[Error create table "daily"]', err);
+        resolve({
+          error: 1,
+          data: err.message,
+        });
+      } else {
+        resolve({
+          error: 0,
+          data: result,
+        });
+      }
+    });
+  });
+}
+
+/**
+ * Вставляет тестовые данные в hourly
+ * @param needDelete 
+ */
+export async function insertTestdataInHourly(): Promise<any> {
+  for (const prop in countries.countries) {
+    const res: Types.OrmResult = await new Promise(resolve => {
+      const date = new Date();
+      date.setDate(date.getDate() - parseInt((Math.random() * 30).toFixed(0), 10));
+      connection.query('INSERT INTO hourly (date, campaign, subid, country, requests, impressions, clicks, cost) VALUES (?,?,?,?,?,?,?,?)',
+        [
+          date,
+          parseInt((Math.random() * 2).toFixed(0), 10) || 1,
+          `${prop}-subid`,
+          prop,
+          parseInt((Math.random() * 50).toFixed(0), 10),
+          parseInt((Math.random() * 100).toFixed(0), 10),
+          parseInt((Math.random() * 20).toFixed(0), 10),
+          parseInt((Math.random() * 10).toFixed(2), 10),
+        ], (err, result) => {
+          if (err) {
+            console.error(`<${Date()}>`, '[Error insert test data in "hourly"]', err);
+            resolve({
+              error: 1,
+              data: err.message,
+            });
+          } else {
+            resolve({
+              error: 0,
+              data: result,
+            });
+          }
+        });
+    });
+    if (res.error === 1) {
+      break;
+    }
+  }
+}
+
+/**
+ * Вставляет тестовые данные в hourly
+ * @param needDelete 
+ */
+export async function insertTestdataInDayly(): Promise<any> {
+  for (const prop in countries.countries) {
+    const res: Types.OrmResult = await new Promise(resolve => {
+      const date = new Date();
+      date.setDate(date.getDate() - parseInt((Math.random() * 400).toFixed(0), 10));
+      connection.query('INSERT INTO daily (date, campaign, subid, country, requests, impressions, clicks, cost) VALUES (?,?,?,?,?,?,?,?)',
+        [
+          date,
+          parseInt((Math.random() * 2).toFixed(0), 10) || 1,
+          `${prop}-subid`,
+          prop,
+          parseInt((Math.random() * 50).toFixed(0), 10),
+          parseInt((Math.random() * 100).toFixed(0), 10),
+          parseInt((Math.random() * 20).toFixed(0), 10),
+          parseInt((Math.random() * 10).toFixed(2), 10),
+        ], (err, result) => {
+          if (err) {
+            console.error(`<${Date()}>`, '[Error insert test data in "daily"]', err);
+            resolve({
+              error: 1,
+              data: err.message,
+            });
+          } else {
+            resolve({
+              error: 0,
+              data: result,
+            });
+          }
+        });
+    });
+    if (res.error === 1) {
+      break;
+    }
+  }
 }

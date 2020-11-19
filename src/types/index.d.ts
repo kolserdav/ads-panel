@@ -1,12 +1,56 @@
+/**
+ * Заметка для новичка в Typescript
+ * 
+ * Файл глобальных типов, этот файл только для удобства разработки, в 
+ * бандл из него ничего не попадает, так как тут нет значений. Только типы
+ * перед использованием одних типов данных в разных файлах,
+ * описываем тут их типы, чтобы Visual Studio подсказывал и подсвечивал.
+ * 
+ * Не особо заморачиватся с описанием типов, так как цель использование типов
+ * это получение дополнительных возможностей, а не желание в них затеряться) типы типами, но
+ * значения часто важнее, в плане, тех же подсказок.
+ * 
+ * И аннотации перед методами желательно везде писать, чтобы в любом месте, при наведении на
+ * метод, разворачивалась информация с того места. И были Дополнительные подсказки при
+ * его использовании.
+ */
+
+// Единая форма результатов запросов к базе, нужно проверять не равен ли error 1
 export type OrmResult = {
   error: number
   data: any
 };
 
+// Объект статистики, используется и для таблицы и для графика
+export type TableStatistic = {
+  date: Date
+  campaign: number
+  subid: string
+  country: string
+  requests: number
+  impressions: number
+  clicks: number
+  cost: number
+  win_ratio?: number
+  ctr?: number
+};
+
+// Возможные варианты временного шаблона
+export type Time = 'today' | 'yesterday' | 'last-3-days' | 'last-7-days' | 'this-month' | 'last-30-days' | 'last-month' | 'this-quarter' | 'this-year' | 'last-year' | 'custom';
+
+// Возвращаемое значение функции lib.calculateTime
+export type TimeCalculator = {
+  time: Date
+  range: string
+};
+
+// Объект возвращаемый на клиента
 export type ServerHandlerResponse = {
   result: 'error' | 'warning' | 'success'
   message: string
   body: {
+    table?: TableStatistic[]
+    graph?: TableStatistic[]
     require?: any
     received?: any
     email?: string
@@ -20,9 +64,11 @@ export type ServerHandlerResponse = {
     campaign?: Campaign
     campaigns?: Campaign[]
     count?: number
+    all?: any
   }
 };
 
+// Тип пользователя
 export type User = {
   id?: number
   confirm?: 0 | 1
@@ -37,7 +83,10 @@ export type User = {
   updated: Date
 };
 
+// Возможные варианты группировок
+export type GroupBy = 'date' | 'user' | 'campaign' | 'subid' | 'country';
 
+// Тип объекта вебтокена
 export type JWT = {
   id: number
   admin: 0 | 1
@@ -46,9 +95,12 @@ export type JWT = {
   password: string
 };
 
+// Тип  статусов кампаний 
 export type CampaignStatus = 'active' | 'pause' | 'pending' | 'budget';
 
+// Тип модели кампания
 export type Campaign = {
+  id?: number
   title: string
   status: CampaignStatus
   link: string
@@ -62,8 +114,10 @@ export type Campaign = {
   black_list: string[]
 };
 
+// Статусы офферов
 export type OfferStatus = 'verified' | 'pending' | 'warning';
 
+// Тим модели оффер
 export type Offer = {
   id?: number
   status: OfferStatus
@@ -75,9 +129,11 @@ export type Offer = {
   image?: string
 };
 
-export interface HeadersMiddleware {
+// Заголовки посредника, не реализованы, просто описаны тут для понимания
+interface HeadersMiddleware {
   uid: string
   xxemail: string
   name: string
   host: string
+  admin: '0' | '1'
 }
