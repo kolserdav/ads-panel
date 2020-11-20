@@ -8,15 +8,16 @@ import sha256 from 'sha256';
 const { PASSWORD_MIN }: any = process.env;
 
 /**
- *   Регистрация пользователя.
- * Обязательные параметры
- * email,
-    first_name,
-    last_name,
-    password,
-    password_repeat,
-    company,
-    skype,
+ * /user POST
+ *  Регистрация пользователя.
+ *  @email {string} - почта
+    @first_name {string} - имя
+    @last_name {string} - фамилия
+    @password {string} - пароль
+    @password_repeat {string} - повтор пароля
+    @company {string} - компания
+    @skype {string} - скайп
+ * 
     При успешной регистрации отправляет письмо с сылкой подтверждения почты
  * @param req 
  * @param res 

@@ -5,14 +5,18 @@ import * as utils from '../../utils';
 import express from 'express';
 
 /**
+ * /user PUT
  *  Изменение данных пользователя. 
  * Открыто только для пользователя с токеном переданным в заголовке xx-auth
  * ID пользователя сервер берет из токена расшифровывая его секретным ключом из .env - JWT_SECRET.
- * @param req 
- * @param res 
+ *  @email {string} - почта
+    @first_name {string} - имя
+    @last_name {string} - фамилия
+    @company {string} - компания
+    @skype {string} - скайп
+    @sendConfirm {1|0} - если нужно просто отправить ссылку на подтверждение 
  */
-
-export default async function (req: express.Request, res: express.Response): Promise<any> {
+export default async function putUpdate(req: express.Request, res: express.Response): Promise<any> {
 
   const { uid }: any = req.headers;
   const id = parseInt(uid, 10);

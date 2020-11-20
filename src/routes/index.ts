@@ -14,6 +14,7 @@ export { default as putUpdateCampaign } from './campaign/put.update';
 export { default as putStatusCampaign } from './campaign/put.status';
 export { default as getCampaign } from './campaign/get.campaign';
 export { default as getCampaigns } from './campaign/get.campaigns';
+export { default as deleteCampaign } from './campaign/del.campaign';
 // Роуты офферов
 export { default as postCreateOffer } from './offer/post.create';
 export { default as postImageOffer } from './offer/post.image';

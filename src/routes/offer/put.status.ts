@@ -6,8 +6,8 @@ import express from 'express';
  * /offer/status PUT
  * Изменение статуса оффера.
  * Скрыто за посредниками auth, и onlyAdmin
- * @param req 
- * @param res 
+ * @status {Types.OffferStatus} - статус
+ * @warning {string?}
  */
 export default async function putStatusOffer(req: express.Request, res: express.Response): Promise<any> {
 

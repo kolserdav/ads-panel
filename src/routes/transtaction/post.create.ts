@@ -3,9 +3,10 @@ import * as orm from '../../orm';
 import express from 'express';
 
 /**
+ * /transaction POST
  * Создание транзакции
- * @amount
- * @comment
+ * @amount {number} - сумма
+ * @comment {string} - комментарий
  */
 export default async function postCreateTransaction(req: express.Request, res: express.Response): Promise<any> {
 

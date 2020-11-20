@@ -25,7 +25,7 @@ export type OrmResult = {
 export type GraphStatisticParams = {
   self: 1 | 0
   time: Time
-  customTime: Date[] | undefined
+  customTime: Date[]
 };
 
 export type TableStatisticParams = {
@@ -33,10 +33,11 @@ export type TableStatisticParams = {
   current: number
   group: GroupBy
   time: Time
-  customTime: Date[] | undefined
+  customTime: Date[]
   self: 1 | 0
   sort: OrderByVariants
   desc: boolean
+  campaign: number | undefined
 };
 
 // Объект статистики, используется и для таблицы и для графика

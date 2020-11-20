@@ -5,10 +5,11 @@ import express from 'express';
 import sha256 from 'sha256';
 
 /**
+ * /user/login POST
  * Апи входа. Ожидвет email и password в результате возвращает токен.
  * Который в закрытых узлах ожидается в заголовке xx-auth.
- * @param req 
- * @param res 
+ * @email {string} - почта
+ * @password {string} - пароль
  */
 export default async function postLogin(req: express.Request, res: express.Response): Promise<any> {
 

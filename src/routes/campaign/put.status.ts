@@ -7,8 +7,7 @@ import express from 'express';
  * /campaign/status PUT
  * Изменение статуса кампании.
  * Скрыто за посредниками auth, и onlyAdmin
- * @param req 
- * @param res 
+ * @status {Types.CampaignStatus} - статус
  */
 export default async function putStatusCampaign(req: express.Request, res: express.Response): Promise<any> {
 

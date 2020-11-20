@@ -31,7 +31,7 @@ export function runDBQuery(sql: string, errMessage: string, values: any = []): P
         resolve({
           error: 0,
           data: result,
-          message: 'Success request to datebase',
+          message: 'Success request to database',
         });
       }
     });

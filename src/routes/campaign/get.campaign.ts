@@ -5,8 +5,6 @@ import express from 'express';
 /**
  * Получение кампании по id.
  *  Имеет доступ только создатель и админы. Благодаря посредникам selfCampaign и orAdmin
- * @param req 
- * @param res 
  */
 export default async function getCampaign(req: express.Request, res: express.Response): Promise<any> {
 

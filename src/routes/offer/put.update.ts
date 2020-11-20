@@ -5,16 +5,16 @@ import express from 'express';
 /**
  * /offer PUT
  * Изменение Названия и комментария оффера.
- *  Принимает title и comment, если передан один из них то меняет только его, 
+ *  Принимает title и description, если передан один из них то меняет только его, 
  *  если ничего не передано, ничего не меняет. если переданы оба, то меняет оба последовательно.
- * @param req 
- * @param res 
+ * @title {string} - название
+ * @description {string} - описание
  */
 export default async function putUpdateOffer(req: express.Request, res: express.Response): Promise<any> {
 
   const { id } = req.params;
   const offerId = parseInt(id, 10);
-  const { title, comment }: any = req.body;
+  const { title, description }: any = req.body;
 
   if (title) {
     const updateTitleRes: Types.OrmResult = await orm.offer.updateTitle(title, offerId);
@@ -34,8 +34,8 @@ export default async function putUpdateOffer(req: express.Request, res: express.
     }
   }
 
-  if (comment) {
-    const updateCommentRes: Types.OrmResult = await orm.offer.updateComment(comment, offerId);
+  if (description) {
+    const updateCommentRes: Types.OrmResult = await orm.offer.updateComment(description, offerId);
     if (updateCommentRes.error === 1) {
       console.warn(`<${Date()}>`, '[Warning: updateCommentRes.error === 1]', {
         url: req.url,

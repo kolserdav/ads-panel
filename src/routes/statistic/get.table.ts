@@ -10,8 +10,11 @@ import express from 'express';
     @current {number} - запрашиваемая страница
     @group {Types.GroupBy} - по какому полю сгруппировать
     @time {Types.Time} - шаблон отсчета времени
-    @customTime {number?} - количество дней отнять от сегодня
-    @self {number?} - когда админ запрашивает для себя
+    @customTime {Date[]} - промежуток дат
+    @self {1|0} - когда админ запрашивает для себя
+    @sort {Types.OrderByVariants} - сортировка по столбцу
+    @desc {boolean} - сортировка с конца
+    @campaign {number?} - номер кампании, когда нужна только одна
  */
 export default async function getAllStatistic(req: express.Request, res: express.Response): Promise<any> {
 
@@ -27,6 +30,7 @@ export default async function getAllStatistic(req: express.Request, res: express
     self,
     sort,
     desc,
+    campaign,
   }: Types.TableStatisticParams = req.body;
 
 
@@ -44,7 +48,7 @@ export default async function getAllStatistic(req: express.Request, res: express
     }
   }
 
-  let customTimeRange: Date[] | undefined;
+  let customTimeRange: Date[] = [];
 
   // проверяет что time один из приемлемых TODO если убрать то просто будет за сегодня
   // eslint-disable-next-line no-undefined
@@ -73,7 +77,7 @@ export default async function getAllStatistic(req: express.Request, res: express
       return res.status(400).json(warnCustomT);
     }
 
-    if (!Array.isArray(customTime)) {
+    if (time === 'custom' && !Array.isArray(customTime)) {
       const custTWarn: Types.ServerHandlerResponse = {
         result: 'warning',
         message: 'Value of variable \'customTime\' should be an array',
@@ -84,8 +88,10 @@ export default async function getAllStatistic(req: express.Request, res: express
       };
       return res.status(400).json(custTWarn);
     }
-    customTimeRange = customTime.map((item: Date) => new Date(item));
+    customTimeRange = customTime ? customTime.map((item: Date) => new Date(item)) : customTimeRange;
   }
+
+  customTimeRange = time !== 'custom' ? [] : customTimeRange;
 
   // Проверяет соответствует ли группировка возможным вариантам TODO убирать нельзя, иначе нужно дорабатывать orm
   // eslint-disable-next-line no-undefined
@@ -117,7 +123,7 @@ export default async function getAllStatistic(req: express.Request, res: express
   const start = limit * current - limit;
   // если админ запрашивает свои кампании
   const uId = admin === '1' && self !== 1 ? null : userId;
-  const getRes: Types.OrmResult = await orm.statistic.getTableStatistic(uId, start, limit, group, time, customTimeRange, sort, desc);
+  const getRes: Types.OrmResult = await orm.statistic.getTableStatistic(uId, start, limit, group, time, customTimeRange, sort, desc, campaign);
   if (getRes.error === 1) {
     console.warn(`<${Date()}>`, '[Warning: todayRes.error === 1]', {
       url: req.url,

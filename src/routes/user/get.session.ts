@@ -6,8 +6,6 @@ import express from 'express';
 /**
  * /user/session GET
  * Возвращает данные пользователя. Защищен посредником auth.
- * @param req 
- * @param res 
  */
 export default async function getSession(req: express.Request, res: express.Response): Promise<any> {
 

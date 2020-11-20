@@ -3,9 +3,9 @@ import * as orm from '../../orm';
 import express from 'express';
 
 /**
- *  Обработчик вызова /user GET в результате отвечает success если почта доступна для регистрации
- * @param req 
- * @param res 
+ * /user GET
+ *  Обработчик вызова в результате отвечает success если почта доступна для регистрации
+ * @email {string} - почта которую нужно проверить
  */
 export default async function getUserByEmail(req: express.Request, res: express.Response): Promise<any> {
 

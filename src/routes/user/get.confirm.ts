@@ -5,12 +5,13 @@ import express from 'express';
 
 
 /**
- *  Подтверждение почты /user/confirm GET
+ * /user/confirm GET
+ *  Подтверждение почты
  *  Ожидает QueryString e=email и k=key
  *  Которые сформированы из ссылки отправленой при регистрации  
  * 
- * @param req 
- * @param res 
+ * @e {string} - почта 
+ * @k {string} - ключ
  */
 export default async function getConfirmUser(req: express.Request, res: express.Response): Promise<any> {
 

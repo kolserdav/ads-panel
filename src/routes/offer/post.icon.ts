@@ -7,8 +7,7 @@ import express from 'express';
  * /offer/icon/:id POST
  * Изменяет иконку оффера. Ожидает передаваемую иконку в multipart.
  * Название FormData объекта 'icon'
- * @param req 
- * @param res 
+ * @icon {FormData}
  */
 export default async function postIconOffer(req: express.Request, res: express.Response): Promise<any> {
 

@@ -8,12 +8,14 @@ const { PASSWORD_MIN }: any = process.env;
 
 
 /**
- * Смена пароля PUT /user/pass
+ * PUT /user/pass
+ * Смена пароля
  * Ожидает заголовок xx-token сформированный через POST /user/forgot - при переходе по ссылке из письма или обновленный, через
  * GET /user/forgot.
  * Также обязательно передаем email, password, password_repeat
- * @param req 
- * @param res 
+ * @password {string} 
+ * @password_repeat {string} 
+ * @email {string}
  */
 export default async function putPass(req: express.Request, res: express.Response): Promise<any> {
 

@@ -48,6 +48,7 @@ export function createTableCampaigns(needDelete = false): Promise<Types.OrmResul
     ip_pattern JSON,\
     white_list JSON,\
     black_list JSON,\
+    archive BOOLEAN DEFAULT FALSE,\
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\
     PRIMARY KEY (id),\

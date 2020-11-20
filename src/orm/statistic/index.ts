@@ -5,6 +5,8 @@
 import * as Types from '../../types';
 import * as lib from '../../lib';
 
+const { MAX_DB_ID }: any = process.env;
+
 /**
  * 
  * Берет статистику для таблицы. Группирует в зависимости от параметров.
@@ -17,11 +19,11 @@ import * as lib from '../../lib';
  * @param customTime - количество дней отнять от сегодня
  */
 export function getTableStatistic(user_id: number | null, start: number, count: number,
-  groupBy: Types.GroupBy, time: Types.Time, customTime: Date[] | undefined, orderBy: string, desc: boolean): Promise<Types.OrmResult> {
+  groupBy: Types.GroupBy, time: Types.Time, customTime: Date[], orderBy: string, desc: boolean, campaign: number | undefined): Promise<Types.OrmResult> {
 
   const user = user_id !== null ? `AND c.user_id=${user_id}` : '';
   const first = start ? start : 0;
-  const all = count ? count : 18446744073709550000;
+  const all = count ? count : parseInt(MAX_DB_ID, 10);
   let group: string;
   switch (groupBy) {
     case 'campaign':
@@ -51,7 +53,7 @@ export function getTableStatistic(user_id: number | null, start: number, count: 
   const table = time === 'today' ? 'hourly' : 'daily';
 
   let whereDate, values;
-  if (!customTime) {
+  if (customTime.length === 0) {
     whereDate = 'h.date>=?';
     values = [
       lib.calculateDate(time, customTime).time,
@@ -68,6 +70,9 @@ export function getTableStatistic(user_id: number | null, start: number, count: 
     ];
   }
 
+  // eslint-disable-next-line no-undefined
+  const whereCampaign = campaign !== undefined ? `AND h.campaign=${campaign}` : '';
+
   const query = `SELECT ${group},\
     MIN(h.date) as dateMin,\
     MAX(h.date) as dateMax,\
@@ -81,7 +86,7 @@ export function getTableStatistic(user_id: number | null, start: number, count: 
     CAST(SUM(h.impressions) AS INTEGER) as impressions \
     FROM ${table} h LEFT JOIN campaigns c ON h.campaign = c.id \
     LEFT JOIN users u ON c.user_id = u.id \
-    WHERE ${whereDate} ${user} GROUP BY ${group} ${order} LIMIT ?,?`;
+    WHERE ${whereDate} ${user} ${whereCampaign} GROUP BY ${group} ${order} LIMIT ?,?`;
   return lib.runDBQuery(query, 'Error get table statistic', values);
 }
 
@@ -92,7 +97,7 @@ export function getTableStatistic(user_id: number | null, start: number, count: 
  * @param time {Types.Time} - шаблон выборки времени
  * @param customTime {number?} - когда time === custom
  */
-export function getGraphStatistic(userId: number | null, time: Types.Time, customTime: Date[] | undefined): Promise<Types.OrmResult> {
+export function getGraphStatistic(userId: number | null, time: Types.Time, customTime: Date[], campaign: number | undefined): Promise<Types.OrmResult> {
 
   const user = userId !== null ? `AND c.user_id=${userId}` : '';
 
@@ -100,7 +105,7 @@ export function getGraphStatistic(userId: number | null, time: Types.Time, custo
   const table = time === 'today' ? 'hourly' : 'daily';
   const date = lib.calculateDate(time, customTime);
   let whereDate, values;
-  if (!customTime) {
+  if (customTime.length === 0) {
     whereDate = 'h.date>=?';
     values = [date.time];
   } else {
@@ -110,6 +115,10 @@ export function getGraphStatistic(userId: number | null, time: Types.Time, custo
       customTime[1],
     ];
   }
+
+  // eslint-disable-next-line no-undefined
+  const whereCampaign = campaign !== undefined ? `AND h.campaign=${campaign}` : '';
+
   const query = `SELECT MIN(h.date) as dateMin,\
     MAX(h.date) as dateMax,\
     Count(*) as count,\
@@ -118,6 +127,6 @@ export function getGraphStatistic(userId: number | null, time: Types.Time, custo
     CAST(SUM(h.clicks) AS INTEGER) as clicks,\
     CAST(SUM(h.impressions) AS INTEGER) as impressions \
     FROM ${table} h LEFT JOIN campaigns c ON h.campaign = c.id \
-    WHERE ${whereDate} ${user} GROUP BY ${date.range} ORDER BY date ASC`;
+    WHERE ${whereDate} ${user} ${whereCampaign} GROUP BY ${date.range} ORDER BY date ASC`;
   return lib.runDBQuery(query, 'Error get all statistic', values);
 }

@@ -99,6 +99,7 @@ app.post('/campaign', middle.auth, router.postCreateCampaign);
 app.put('/campaign/:id', middle.auth, middle.selfCampaign, router.putUpdateCampaign);
 app.put('/campaign/status/:id', middle.auth, middle.onlyAdmin, router.putStatusCampaign);
 app.get('/campaign/:id', middle.auth, middle.orAdmin, middle.selfCampaign, router.getCampaign);
+app.delete('/campaign/:id', middle.auth, middle.selfCampaign, router.deleteCampaign);
 app.get('/campaign', middle.auth, router.getCampaigns);
 // API офферов
 app.post('/offer', middle.auth, router.postCreateOffer);
@@ -111,7 +112,7 @@ app.get('/statistic/table', middle.auth, router.getTableStatistic);
 app.get('/statistic/graph', middle.auth, router.getGraphStatistic);
 // Транзакции
 app.post('/transaction', middle.auth, router.postCreateTransaction);
-app.get('/transaction', middle.auth, middle.onlyAdmin, router.getTransactions);
+app.get('/transaction', middle.auth, router.getTransactions);
 
 
 app.listen(parseInt(API_PORT, 10), () => {

@@ -12,8 +12,6 @@ import express from 'express';
  * @current - текущая страница
  * @limit - количество на странице 
  * @status - сортировка по статусу
- * @param req 
- * @param res 
  */
 export default async function getCampaigns(req: express.Request, res: express.Response): Promise<any> {
 

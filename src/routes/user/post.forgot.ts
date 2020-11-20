@@ -5,11 +5,11 @@ import * as utils from '../../utils';
 import express from 'express';
 
 /**
- * Запрос на смену пароля POST /user/forgot. 
+ * POST /user/forgot
+ * Запрос на смену пароля . 
  * Передаётся почта в email, создается и отправляется ключ, который при переходе на GET /user/forgot
  * проверяет ключ и генерирует токен на смену пароля. 
- * @param req 
- * @param res 
+ * @email {string} - почта
  */
 export default async function postForgot(req: express.Request, res: express.Response): Promise<any> {
 

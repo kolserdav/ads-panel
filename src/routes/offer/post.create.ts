@@ -8,8 +8,8 @@ import express from 'express';
  *  Создание нового оффера.
  *  Ид пользователя берет из токена при аутентификации вызова.
  *  Принимает 'title', 'comment'.
- * @param req 
- * @param res 
+ * @title {string} - название
+ * @description {string} - описание
  */
 export default async function postCreateOffer(req: express.Request, res: express.Response): Promise<any> {
 

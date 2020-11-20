@@ -5,19 +5,16 @@ import express from 'express';
 /**
  * /campaign/:id PUT
  *  Обновление данных кампании.
- *  title,
-    link,
-    postback,
-    countries,
-    cost,
-    budget,
-    ip_pattern,
-    white_list,
-    black_list,
-    offer_id,
+ *  @title {string}
+    @link {string}
+    @countries {string[]}
+    @price {string[]}
+    @budget {number}
+    @ip_pattern {string[]}
+    @white_list {string[]}
+    @black_list {string[]}
+    @offer_id {number}
     Можно менять по одному или все вместе.
- * @param req 
- * @param res 
  */
 export default async function putUpdateCampaign(req: express.Request, res: express.Response): Promise<any> {
 

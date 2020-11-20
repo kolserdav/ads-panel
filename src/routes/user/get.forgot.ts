@@ -5,14 +5,15 @@ import express from 'express';
 
 
 /**
- *  Запрос токена смены пароля /user/forgot GET
+ * /user/forgot GET
+ *  Запрос токена смены пароля 
  *  Ожидает QueryString e=email и k=key
  *  Которые сформированы из ссылки отправленой при запросе смены пароля  
  *  Внимание с одним key генерация токена смены пароля сработает только один раз, 
  *  для повторной генерации нового токена нужно передавать полученный токен вместо key.
  *  Полученный здесь токен смены пароля работает в смене пароля по PUT /user/pass 
- * @param req 
- * @param res 
+ * @e {string} - почта
+ * @k {string} - ключ
  */
 export default async function getForgot(req: express.Request, res: express.Response): Promise<any> {
 

@@ -41,11 +41,23 @@ export function updateOfferId(offer_id: number, id: number): Promise<Types.OrmRe
 }
 
 /**
+ * Удаление кампании
+ * @param id 
+ * @param id 
+ */
+export function deleteCampaign(id: number): Promise<Types.OrmResult> {
+  const query = 'UPDATE campaigns SET archive=1 WHERE campaigns.id=?';
+  const values = [id];
+  return lib.runDBQuery(query, 'Error delete campaign', values);
+}
+
+
+/**
  * Получение кампании по id
  * @param id 
  */
 export function getById(id: number): Promise<Types.OrmResult> {
-  const query = 'SELECT * FROM `campaigns` WHERE `id`=?';
+  const query = 'SELECT * FROM `campaigns` WHERE `id`=? AND archive=0';
   const values = [ id ];
   return lib.runDBQuery(query, 'Error get campaign by id', values);
 }
@@ -205,13 +217,13 @@ export function updateStatus(status: string, id: number): Promise<Types.OrmResul
  * @param status 
  */
 export function getAll(status: string): Promise<Types.OrmResult> {
-  const query = 'SELECT * FROM ORDER BY CASE WHEN status=? THEN 1 ELSE 2 END `campaigns`';
+  const query = 'SELECT * FROM campaigns WHERE archive=0 ORDER BY CASE WHEN status=? THEN 1 ELSE 2 END';
   const values = [ status ];
   return lib.runDBQuery(query, 'Error get all campaigns', values);
 }
 
 export function getAllByUid(status: string, user_id: number): Promise<Types.OrmResult> {
-  const query = 'SELECT * FROM `campaigns` WHERE user_id=? ORDER BY CASE WHEN status=? THEN 1 ELSE 2 END';
+  const query = 'SELECT * FROM `campaigns` WHERE user_id=? AND archive=0 ORDER BY CASE WHEN status=? THEN 1 ELSE 2 END';
   const values = [ user_id, status ];
   return lib.runDBQuery(query, 'Error get all you campaigns', values);
 }
@@ -223,7 +235,7 @@ export function getAllByUid(status: string, user_id: number): Promise<Types.OrmR
  * @param count - количество элементов
  */
 export function filterAllByUid(user_id: number, status: string, start: number, count: number): Promise<Types.OrmResult> {
-  const query = 'SELECT * FROM `campaigns` WHERE user_id=? ORDER BY CASE WHEN status=? THEN 1 ELSE 2 END LIMIT ?,?';
+  const query = 'SELECT * FROM `campaigns` WHERE user_id=? AND archive=0 ORDER BY CASE WHEN status=? THEN 1 ELSE 2 END LIMIT ?,?';
   const values = [ user_id, status, start, count ];
   return lib.runDBQuery(query, 'Error get list of your campaigns', values);
 }
@@ -234,7 +246,7 @@ export function filterAllByUid(user_id: number, status: string, start: number, c
  * @param count - количество элементов
  */
 export function filterAll(status: string, start: number, count: number): Promise<Types.OrmResult> {
-  const query = 'SELECT * FROM `campaigns` ORDER BY CASE WHEN status=? THEN 1 ELSE 2 END LIMIT ?,? ';
+  const query = 'SELECT * FROM `campaigns` WHERE archive=0 ORDER BY CASE WHEN status=? THEN 1 ELSE 2 END LIMIT ?,? ';
   const values = [ status, start, count ];
   return lib.runDBQuery(query, 'Error get list of campaigns', values);
 }
@@ -243,7 +255,7 @@ export function filterAll(status: string, start: number, count: number): Promise
  * Получает общее количество кампаний
  */
 export function getCountAll(): Promise<Types.OrmResult> {
-  const query = 'SELECT COUNT(*) FROM `campaigns`';
+  const query = 'SELECT COUNT(*) FROM `campaigns` WHERE archive=0';
   return lib.runDBQuery(query, 'Error get all count campaigns');
 }
 
@@ -252,7 +264,7 @@ export function getCountAll(): Promise<Types.OrmResult> {
  * @param user_id 
  */
 export function getCountByUid(user_id: number): Promise<Types.OrmResult> {
-  const query = 'SELECT COUNT(*) FROM `campaigns` WHERE user_id=?';
+  const query = 'SELECT COUNT(*) FROM `campaigns` WHERE user_id=? AND archive=0';
   const values = [ user_id ];
   return lib.runDBQuery(query, 'Error get user count campaigns', values);
 }

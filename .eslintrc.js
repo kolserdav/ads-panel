@@ -139,7 +139,8 @@ module.exports = {
 		"@typescript-eslint/prefer-readonly": "warn",
 		"@typescript-eslint/no-explicit-any": "off",
 		"@typescript-eslint/explicit-function-return-type": ["warn", { "allowExpressions": true }],
-		"@typescript-eslint/interface-name-prefix": "off",
+    "@typescript-eslint/interface-name-prefix": "off",
+    "@typescript-eslint/no-unsafe-call": "off",
 		"@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_$" }]
   },
   settings: {
