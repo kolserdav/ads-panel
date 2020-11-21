@@ -1,0 +1,963 @@
+{
+	"info": {
+		"_postman_id": "a6956b50-e241-458b-9c41-52e7c56e171c",
+		"name": "ADS Panel Local",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Registration",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"19_pek@mail.ru\",\n    \"first_name\": \"Ivan\",\n    \"last_name\": \"Ivanov\",\n    \"password\": \"123456\",\n    \"password_repeat\": \"123456\",\n    \"company\": \"My Company LTD\",\n    \"skype\": \"ivan34\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by email",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/user?email=19_pek@mail.ru",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"user"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "19_pek@mail.ru"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "xx-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWRtaW4iOjEsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjhkOTY5ZWVmNmVjYWQzYzI5YTNhNjI5MjgwZTY4NmNmMGMzZjVkNWE4NmFmZjNjYTEyMDIwYzkyM2FkYzZjOTIiLCJpYXQiOjE2MDU2NTA1MzN9.zTxgEIyRkKTYsCexZvrPaUdEar_eZ0NernW5ULDVuTM",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"19_pek@mail.ru\",\n    \"password\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/user/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "xx-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjA0MWJmMjYzOGU2NTMxNDNlZTVkM2FmMzdkYWU0ZWJhMDczMTkwODNkMjllYWVhN2NlMTlhNjViOGYyMWJmZTYiLCJpYXQiOjE2MDU1NTk3MDd9.MpOoVeS4RzrXvKIhFE9qokx6BR4otTkGO5QAaxbX5bc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"serega12101983@gmail.com\",\n    \"sendConfirm\": \"1\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot password",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "xx-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjhkOTY5ZWVmNmVjYWQzYzI5YTNhNjI5MjgwZTY4NmNmMGMzZjVkNWE4NmFmZjNjYTEyMDIwYzkyM2FkYzZjOTIiLCJpYXQiOjE2MDU1MTk4OTd9.HSSbBGvIYFwv6pJQZjG2dCjzt48lm5RvJ_2I-TVYj3Y",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3001/user/forgot?e=19_pek@mail.ru&k=TW9uIE5vdiAxNiAyMDIwIDE5OjM4OjAwIEdNVCswNzAwIChLcmFzbm95YXJzayBTdGFuZGFyZCBUaW1lKQ==",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"user",
+								"forgot"
+							],
+							"query": [
+								{
+									"key": "e",
+									"value": "19_pek@mail.ru"
+								},
+								{
+									"key": "k",
+									"value": "TW9uIE5vdiAxNiAyMDIwIDE5OjM4OjAwIEdNVCswNzAwIChLcmFzbm95YXJzayBTdGFuZGFyZCBUaW1lKQ=="
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post forgot",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"19_pek@mail.ru\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/user/forgot",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"user",
+								"forgot"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update pass",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "xx-token",
+								"value": "TW9uIE5vdiAxNiAyMDIwIDE5OjM4OjM5IEdNVCswNzAwIChLcmFzbm95YXJzayBTdGFuZGFyZCBUaW1lKQ==",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"19_pek@mail.ru\",\n    \"password\": \"1222222\",\n    \"password_repeat\": \"1222222\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/user/pass",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"user",
+								"pass"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get session",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "xx-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjA0MWJmMjYzOGU2NTMxNDNlZTVkM2FmMzdkYWU0ZWJhMDczMTkwODNkMjllYWVhN2NlMTlhNjViOGYyMWJmZTYiLCJpYXQiOjE2MDU1NTk3MDd9.MpOoVeS4RzrXvKIhFE9qokx6BR4otTkGO5QAaxbX5bc",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3001/user/session",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"user",
+								"session"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Campaign",
+			"item": [
+				{
+					"name": "Create new",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "xx-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiYWRtaW4iOjAsImVtYWlsIjoiMTlfcGVrQG1haWwucnVkIiwidXNlckFnZW50IjoiUG9zdG1hblJ1bnRpbWUvNy4yNi44IiwicGFzc3dvcmQiOiI4ZDk2OWVlZjZlY2FkM2MyOWEzYTYyOTI4MGU2ODZjZjBjM2Y1ZDVhODZhZmYzY2ExMjAyMGM5MjNhZGM2YzkyIiwiaWF0IjoxNjA1OTkxMjI5fQ.fiywhid7CnDFFNPAvfxSMQT7yFuVHo6qVWHi5iSlSnY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Первая кампания\",\n    \"link\": \"http://mysite.com\",\n    \"countries\": [\"UA\", \"RU\"],\n    \"price\": 4.30,\n    \"budget\": 50.00,\n    \"ip_pattern\": [\"192.168.0.1\", \"192.168.0.2\", \"192.168.0.3\"],\n    \"white_list\": [\"192.169.0.5\"],\n    \"black_list\": [\"192.168.0.3\"],\n    \"offer_id\": \"1\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/campaign",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"campaign"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update campaign",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "xx-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWRtaW4iOjAsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjhkOTY5ZWVmNmVjYWQzYzI5YTNhNjI5MjgwZTY4NmNmMGMzZjVkNWE4NmFmZjNjYTEyMDIwYzkyM2FkYzZjOTIiLCJpYXQiOjE2MDU2MTI0ODN9.WyGWDVt2PR5el2Tm1rdBhHwFYv6pe8xmkfmAnzVHs_w",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Новое название для кампании\",\n    \"link\": \"http://newsite.clom\",\n    \"postback\": \"http://newsite.clom/postback\",\n    \"const\": 222.00,\n    \"countries\": [\"US\", \"UK\"],\n    \"ip_pattern\": [\"192.168.0.8\", \"192.168.0.9\", \"192.168.0.11\"],\n    \"white_list\": [\"192.169.0.14\"],\n    \"black_list\": [\"192.168.0.8\"],\n    \"budget\": 8000.01,\n    \"offer_id\": \"1\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/campaign/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"campaign",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change status",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "xx-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWRtaW4iOjEsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjhkOTY5ZWVmNmVjYWQzYzI5YTNhNjI5MjgwZTY4NmNmMGMzZjVkNWE4NmFmZjNjYTEyMDIwYzkyM2FkYzZjOTIiLCJpYXQiOjE2MDU2NDQyMjR9.XCHE2N6XXI7vYh7mNYJqIWWTx7OecnvuR6Q7SnG63g0",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3001/campaign/status/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"campaign",
+								"status",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get campaign",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "xx-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWRtaW4iOjEsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjhkOTY5ZWVmNmVjYWQzYzI5YTNhNjI5MjgwZTY4NmNmMGMzZjVkNWE4NmFmZjNjYTEyMDIwYzkyM2FkYzZjOTIiLCJpYXQiOjE2MDU2NTA1MzN9.zTxgEIyRkKTYsCexZvrPaUdEar_eZ0NernW5ULDVuTM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3001/campaign/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"campaign",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get campaigns",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "xx-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWRtaW4iOjAsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjhkOTY5ZWVmNmVjYWQzYzI5YTNhNjI5MjgwZTY4NmNmMGMzZjVkNWE4NmFmZjNjYTEyMDIwYzkyM2FkYzZjOTIiLCJpYXQiOjE2MDU2NjMyMjR9.g9LGa2_BmsNVU-VpSO4oB_awSSIgd_Y0Lue5XOBgNUI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"self\": 1,\n    \"limit\": 1,\n    \"current\": 1,\n    \"status\": \"pause\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/campaign",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"campaign"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete campaign",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "xx-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiYWRtaW4iOjAsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjhkOTY5ZWVmNmVjYWQzYzI5YTNhNjI5MjgwZTY4NmNmMGMzZjVkNWE4NmFmZjNjYTEyMDIwYzkyM2FkYzZjOTIiLCJpYXQiOjE2MDU4NzU4ODN9.23N7GKXZGYHhTC2mtxQDhrgZPHw32326TFO0z52q4Pg",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3001/campaign/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"campaign",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Offer",
+			"item": [
+				{
+					"name": "Create new",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "xx-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWRtaW4iOjAsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjhkOTY5ZWVmNmVjYWQzYzI5YTNhNjI5MjgwZTY4NmNmMGMzZjVkNWE4NmFmZjNjYTEyMDIwYzkyM2FkYzZjOTIiLCJpYXQiOjE2MDU4NzcwNjF9.kVxip_J-MOdKkylt35ltGky9O1ImJGHTi8L-krkhRT8",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "xx-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiYWRtaW4iOjAsImVtYWlsIjoiMTlfcGVrQG1haWwucnVkIiwidXNlckFnZW50IjoiUG9zdG1hblJ1bnRpbWUvNy4yNi44IiwicGFzc3dvcmQiOiI4ZDk2OWVlZjZlY2FkM2MyOWEzYTYyOTI4MGU2ODZjZjBjM2Y1ZDVhODZhZmYzY2ExMjAyMGM5MjNhZGM2YzkyIiwiaWF0IjoxNjA1OTkxMjI5fQ.fiywhid7CnDFFNPAvfxSMQT7yFuVHo6qVWHi5iSlSnY",
+								"description": "other user",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Самый первый оффер 1w\",\n    \"description\": \"Комментарий самого первого оффера\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/offer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"offer"
+							],
+							"query": [
+								{
+									"key": "C",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "icon",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post icon",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "xx-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiIxOV9wZWtAbWFpbC5ydSIsInVzZXJBZ2VudCI6IlBvc3RtYW5SdW50aW1lLzcuMjYuOCIsInBhc3N3b3JkIjoiOGQ5NjllZWY2ZWNhZDNjMjlhM2E2MjkyODBlNjg2Y2YwYzNmNWQ1YTg2YWZmM2NhMTIwMjBjOTIzYWRjNmM5MiIsImlhdCI6MTYwNTU3MzcxOX0.2k3F9IQXogqIGfDap6Ja7MVa3ob_4pNHMQAMW9K5veE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "icon",
+									"type": "file",
+									"src": "/home/sergey/Pictures/Screenshot from 2020-06-14 18-29-03.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3001/offer/icon/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"offer",
+								"icon",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post image",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "xx-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiIxOV9wZWtAbWFpbC5ydSIsInVzZXJBZ2VudCI6IlBvc3RtYW5SdW50aW1lLzcuMjYuOCIsInBhc3N3b3JkIjoiOGQ5NjllZWY2ZWNhZDNjMjlhM2E2MjkyODBlNjg2Y2YwYzNmNWQ1YTg2YWZmM2NhMTIwMjBjOTIzYWRjNmM5MiIsImlhdCI6MTYwNTU3ODAyNH0.KKX-U6YxJQQQJBnyXxKW8MYdbkYzaEhjejNCFzcfh5o",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/home/sergey/Pictures/Screenshot from 2020-06-18 16-30-24.png",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3001/offer/image/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"offer",
+								"image",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update offer",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "xx-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWRtaW4iOjAsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjhkOTY5ZWVmNmVjYWQzYzI5YTNhNjI5MjgwZTY4NmNmMGMzZjVkNWE4NmFmZjNjYTEyMDIwYzkyM2FkYzZjOTIiLCJpYXQiOjE2MDU2MTI0ODN9.WyGWDVt2PR5el2Tm1rdBhHwFYv6pe8xmkfmAnzVHs_w",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Измененный заголовок оффера\",\n    \"comment\": \"Измененный комментарий оффера\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/offer/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"offer",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change status",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "xx-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWRtaW4iOjEsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjhkOTY5ZWVmNmVjYWQzYzI5YTNhNjI5MjgwZTY4NmNmMGMzZjVkNWE4NmFmZjNjYTEyMDIwYzkyM2FkYzZjOTIiLCJpYXQiOjE2MDU2NDYzOTJ9.f1yV48ptGtloLGxwSXfWNUmbNLlzb5PgVfwvQF5D_8U",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"warning\",\n    \"warning\": \"Надо что-то подправить\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/offer/status/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"offer",
+								"status",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get offer",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "xx-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWRtaW4iOjEsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjhkOTY5ZWVmNmVjYWQzYzI5YTNhNjI5MjgwZTY4NmNmMGMzZjVkNWE4NmFmZjNjYTEyMDIwYzkyM2FkYzZjOTIiLCJpYXQiOjE2MDU5OTQzNjB9.VQumHEryWLaxGSXH7ISMAaWWSZ30NBeW9xfBXMf-gik",
+								"description": "self user or admin",
+								"type": "text"
+							},
+							{
+								"key": "xx-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiYWRtaW4iOjAsImVtYWlsIjoiMTlfcGVrQG1haWwucnVkIiwidXNlckFnZW50IjoiUG9zdG1hblJ1bnRpbWUvNy4yNi44IiwicGFzc3dvcmQiOiI4ZDk2OWVlZjZlY2FkM2MyOWEzYTYyOTI4MGU2ODZjZjBjM2Y1ZDVhODZhZmYzY2ExMjAyMGM5MjNhZGM2YzkyIiwiaWF0IjoxNjA1OTkxMjI5fQ.fiywhid7CnDFFNPAvfxSMQT7yFuVHo6qVWHi5iSlSnY",
+								"description": "other user",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3001/offer/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"offer",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get offers",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "xx-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiYWRtaW4iOjAsImVtYWlsIjoiMTlfcGVrQG1haWwucnVkIiwidXNlckFnZW50IjoiUG9zdG1hblJ1bnRpbWUvNy4yNi44IiwicGFzc3dvcmQiOiI4ZDk2OWVlZjZlY2FkM2MyOWEzYTYyOTI4MGU2ODZjZjBjM2Y1ZDVhODZhZmYzY2ExMjAyMGM5MjNhZGM2YzkyIiwiaWF0IjoxNjA1OTkxMjI5fQ.fiywhid7CnDFFNPAvfxSMQT7yFuVHo6qVWHi5iSlSnY",
+								"description": "self",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "xx-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWRtaW4iOjEsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjhkOTY5ZWVmNmVjYWQzYzI5YTNhNjI5MjgwZTY4NmNmMGMzZjVkNWE4NmFmZjNjYTEyMDIwYzkyM2FkYzZjOTIiLCJpYXQiOjE2MDU5OTQzNjB9.VQumHEryWLaxGSXH7ISMAaWWSZ30NBeW9xfBXMf-gik",
+								"description": "admin",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"limit\": 2,\n    \"current\": 1,\n    \"self\": 0\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/offer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"offer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete offer",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "xx-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiYWRtaW4iOjAsImVtYWlsIjoiMTlfcGVrQG1haWwucnVkIiwidXNlckFnZW50IjoiUG9zdG1hblJ1bnRpbWUvNy4yNi44IiwicGFzc3dvcmQiOiI4ZDk2OWVlZjZlY2FkM2MyOWEzYTYyOTI4MGU2ODZjZjBjM2Y1ZDVhODZhZmYzY2ExMjAyMGM5MjNhZGM2YzkyIiwiaWF0IjoxNjA1OTkxMjI5fQ.fiywhid7CnDFFNPAvfxSMQT7yFuVHo6qVWHi5iSlSnY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3001/offer/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"offer",
+								"1"
+							],
+							"query": [
+								{
+									"key": "Conte",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Statistic",
+			"item": [
+				{
+					"name": "Table statistic",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "xx-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWRtaW4iOjEsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjhkOTY5ZWVmNmVjYWQzYzI5YTNhNjI5MjgwZTY4NmNmMGMzZjVkNWE4NmFmZjNjYTEyMDIwYzkyM2FkYzZjOTIiLCJpYXQiOjE2MDU5OTc0MTh9.Vi1-cl4W3Af5KHDjU_Zs_zPxnfk7mrnKorXWnjgBcV0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"group\": \"campaign\",\n    \"time\": \"last-year\",\n    \"self\": 0,\n    \"limit\": 5,\n    \"current\": 1,\n    \"customTime\": [\"2020-11-17T12:56:37.000Z\", \"2020-11-20T16:56:37.000Z\"],\n    \"sort\": \"clicks\",\n    \"desc\": true\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/statistic/table",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"statistic",
+								"table"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Graph statistic",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "xx-auth",
+								"type": "text",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiYWRtaW4iOjAsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjhkOTY5ZWVmNmVjYWQzYzI5YTNhNjI5MjgwZTY4NmNmMGMzZjVkNWE4NmFmZjNjYTEyMDIwYzkyM2FkYzZjOTIiLCJpYXQiOjE2MDU4NzUxMzd9.xUlzrEsYu3N6s6tPBv9OJD9gGUBib1d46wNCbY8GV8s"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"time\": \"custom\",\n    \"customTime\": [\"2020-11-14T12:56:37.000Z\", \"2020-11-17T16:56:37.000Z\"],\n    \"self\": 0,\n    \"campaign\": 2\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/statistic/graph",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"statistic",
+								"graph"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Transaction",
+			"item": [
+				{
+					"name": "Create new",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "xx-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiYWRtaW4iOjEsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjhkOTY5ZWVmNmVjYWQzYzI5YTNhNjI5MjgwZTY4NmNmMGMzZjVkNWE4NmFmZjNjYTEyMDIwYzkyM2FkYzZjOTIiLCJpYXQiOjE2MDU4MTYwNTB9.wCu9IBLQt6bC29xY93ycsSwsU9-Ub-75q5jpmXrnShE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": 12.50,\n    \"comment\": \"first comment\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/transaction",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get transactions",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "xx-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiYWRtaW4iOjEsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjhkOTY5ZWVmNmVjYWQzYzI5YTNhNjI5MjgwZTY4NmNmMGMzZjVkNWE4NmFmZjNjYTEyMDIwYzkyM2FkYzZjOTIiLCJpYXQiOjE2MDU4MTYwNTB9.wCu9IBLQt6bC29xY93ycsSwsU9-Ub-75q5jpmXrnShE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"filter\": \"date\",\n    \"value\": \"2020-11-11\",\n    \"self\": 0,\n    \"limit\": 2,\n    \"current\": 1\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/transaction",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

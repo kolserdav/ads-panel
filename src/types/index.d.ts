@@ -80,6 +80,7 @@ export type ServerHandlerResponse = {
     errRole?: boolean
     user?: User
     offer?: Offer
+    offers?: Offer[]
     campaign?: Campaign
     campaigns?: Campaign[]
     count?: number
@@ -148,6 +149,7 @@ export type Offer = {
   description: string
   icon?: string
   image?: string
+  count?: number
 };
 
 export type OrderByVariants = 'id' | 'date' | 'campaign' | 'subid' | 'country' | 'requests' | 'impressions' | 'clicks' | 'cost';

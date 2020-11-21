@@ -76,6 +76,7 @@ export function createTableOffers(needDelete = false): Promise<Types.OrmResult> 
     icon VARCHAR(255),\
     image VARCHAR(255),\
     user_id INT NOT NULL,\
+    archive BOOLEAN DEFAULT FALSE,\
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\
     updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\
     PRIMARY KEY (id),\

@@ -26,7 +26,7 @@ export default async function postImageOffer(req: express.Request, res: express.
     return res.status(400).json(warnRes);
   }
 
-  const url = `/img/${imageDir}/${imageFile.originalname}`;
+  const url = `/img/offers/${imageDir}/${imageFile.originalname}`;
   const updateRes: Types.OrmResult = await orm.offer.changeImage(url, parseInt(id, 10));
   if (updateRes.error === 1) {
     console.warn(`<${Date()}>`, '[Warning: updateRes.error === 1]', {

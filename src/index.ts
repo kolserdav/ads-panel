@@ -29,11 +29,11 @@ const storage = multer.diskStorage({
     }
     const dir = req.params.id;
     req.imageDir = dir;
-    const dirPath = path.resolve(__dirname, `../public/img/${dir}`);
+    const dirPath = path.resolve(__dirname, `../public/img/offers/${dir}`);
     if (!fs.existsSync(dirPath)) {
       fs.mkdirSync(dirPath);
     }
-    cb(null, `public/img/${dir}`);
+    cb(null, `public/img/offers/${dir}`);
   },
   filename: (req: any, file, cb) => {
     req.imageFile = file;
@@ -107,6 +107,9 @@ app.post('/offer/icon/:id', middle.auth, middle.selfOffer, upload.single('icon')
 app.post('/offer/image/:id', middle.auth, middle.selfOffer, upload.single('image'), router.postImageOffer);
 app.put('/offer/:id', middle.auth, middle.selfOffer, router.putUpdateOffer);
 app.put('/offer/status/:id', middle.auth, middle.onlyAdmin, router.putStatusOffer);
+app.get('/offer/:id', middle.auth, middle.orAdmin, middle.selfOffer, router.getOffer);
+app.get('/offer', middle.auth, router.getOffers);
+app.delete('/offer/:id', middle.auth, middle.selfOffer, router.deleteOffer);
 // API статистики
 app.get('/statistic/table', middle.auth, router.getTableStatistic);
 app.get('/statistic/graph', middle.auth, router.getGraphStatistic);
