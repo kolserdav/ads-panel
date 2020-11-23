@@ -10,6 +10,7 @@ import express from 'express';
 import fs from 'fs';
 import multer from 'multer';
 import path from 'path';
+import cors from 'cors';
 
 // Отлавливаем тут всё что случайно не отловили где-то там, чтобы если упало то не всё.
 process.on('unhandledRejection', (e: Error) => {
@@ -74,12 +75,14 @@ void Promise.all([
     console.error(`<${Date()}>`, 'Error create table', e);
   });
 
-const { API_PORT }: any = process.env;
+const { API_PORT, APP_ORIGIN }: any = process.env;
 
 const app = express();
 
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(cors({ origin: APP_ORIGIN}));
 
 // Выдает статичные изображения
 app.use('/img', express.static(path.resolve(__dirname, '../public/img')));
