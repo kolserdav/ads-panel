@@ -82,7 +82,7 @@ const app = express();
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(cors({ origin: APP_ORIGIN}));
+app.use(cors({ origin: APP_ORIGIN }));
 
 // Выдает статичные изображения
 app.use('/img', express.static(path.resolve(__dirname, '../public/img')));

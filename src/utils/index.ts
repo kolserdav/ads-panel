@@ -10,10 +10,9 @@ import transporter from './transporter';
 const {
   SMTP_EMAIL,
   LINK_EXPIRE,
-  LINK_HOST,
+  APP_ORIGIN,
 }: any = process.env;
 const dev = process.env.NODE_ENV === 'development';
-const protocol = dev ? 'http' : 'https';
 
 function sendEmail(message: Types.Email, errMess: string): Promise<Types.OrmResult> {
   return new Promise(resolve => {
@@ -52,8 +51,8 @@ export function getConfirmEmail(email: string, dateNow: number, first_name: stri
 
   const key = lib.encodeBase64(new Date(dateNow).toString());
 
-  const newHost = dev ? host : LINK_HOST;
-  const link = `${protocol}://${newHost}/user/confirm?e=${email}&k=${key}`;
+  const newHost = dev ? host : APP_ORIGIN;
+  const link = `${newHost}/confirm?e=${email}&k=${key}`;
 
   const userMessage: Types.Email = {
     from: SMTP_EMAIL,
@@ -70,8 +69,8 @@ export function getForgotEmail(email: string, dateNow: number, first_name: strin
 
   const key = lib.encodeBase64(new Date(dateNow).toString());
 
-  const newHost = dev ? host : LINK_HOST;
-  const link = `${protocol}://${newHost}/user/forgot?e=${email}&k=${key}`;
+  const newHost = dev ? host : APP_ORIGIN;
+  const link = `$${newHost}/forgot?e=${email}&k=${key}`;
 
   const userMessage = {
     from: SMTP_EMAIL,
