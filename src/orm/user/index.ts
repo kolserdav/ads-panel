@@ -72,8 +72,8 @@ export function changeUpdated(dateNow: number, id: number): Promise<Types.OrmRes
  * @param id 
  */
 export function changePassword(password: string, id: number): Promise<Types.OrmResult> {
-  const query = 'UPDATE `users` SET password=? WHERE id=?';
-  const values = [password, id];
+  const query = 'UPDATE `users` SET password=?, updated=? WHERE id=?';
+  const values = [password, new Date(), id];
   return lib.runDBQuery(query, 'Error change password', values);
 }
 

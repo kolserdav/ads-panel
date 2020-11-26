@@ -70,8 +70,7 @@ export function getForgotEmail(email: string, dateNow: number, first_name: strin
   const key = lib.encodeBase64(new Date(dateNow).toString());
 
   const newHost = dev ? host : APP_ORIGIN;
-  const link = `$${newHost}/forgot?e=${email}&k=${key}`;
-
+  const link = `${newHost}/change-user-pwd?e=${email}&k=${key}`;
   const userMessage = {
     from: SMTP_EMAIL,
     to: email,
