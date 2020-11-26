@@ -218,7 +218,7 @@ export async function insertTestdataInHourly(): Promise<Types.OrmResult> {
       prop,
       parseInt((Math.random() * 50).toFixed(0), 10),
       parseInt((Math.random() * 100).toFixed(0), 10),
-      parseInt((Math.random() * 20).toFixed(0), 10),
+      parseInt((Math.random() * 11).toFixed(0), 10),
       parseInt((Math.random() * 10).toFixed(2), 10),
     ];
     await lib.runDBQuery(query, 'Error insert test data in "hourly"', values);
@@ -247,7 +247,7 @@ export async function insertTestdataInDayly(): Promise<any> {
       prop,
       parseInt((Math.random() * 50).toFixed(0), 10),
       parseInt((Math.random() * 100).toFixed(0), 10),
-      parseInt((Math.random() * 20).toFixed(0), 10),
+      parseInt((Math.random() * 11).toFixed(0), 10),
       parseInt((Math.random() * 10).toFixed(2), 10),
     ];
     await lib.runDBQuery(query, 'Error insert test data in "daily"', values);
