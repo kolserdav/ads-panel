@@ -115,7 +115,7 @@ app.get('/offer', middle.auth, router.getOffers);
 app.delete('/offer/:id', middle.auth, middle.selfOffer, router.deleteOffer);
 // API статистики
 app.get('/statistic/table', middle.auth, router.getTableStatistic);
-app.get('/statistic/graph', middle.auth, router.getGraphStatistic);
+app.post('/statistic/graph', middle.auth, router.getGraphStatistic);
 // Транзакции
 app.post('/transaction', middle.auth, router.postCreateTransaction);
 app.get('/transaction', middle.auth, router.getTransactions);

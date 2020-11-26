@@ -26,7 +26,7 @@ export { default as getOffers } from './offer/get.offers';
 export { default as deleteOffer } from './offer/del.offer';
 // Роуты статистики
 export { default as getTableStatistic } from './statistic/get.table';
-export { default as getGraphStatistic } from './statistic/get.graph';
+export { default as getGraphStatistic } from './statistic/post.graph';
 // Транзакции
 export { default as postCreateTransaction } from './transtaction/post.create';
 export { default as getTransactions } from './transtaction/get.all';
