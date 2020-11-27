@@ -92,8 +92,9 @@ yarn prod
 ```ini
 PASSWORD_MIN=6 # минимальная длина пароля
 API_PORT=3001 # порт сервера
-APP_ORIGIN=http://localhost:3000 # ресурс которому разрешены запросы из браузера
-APP_ORIGIN=http://test-app.uyem.ru # URL для генерации ссылки в письме, указан напрямую, так как сервер может быть за балансировщиком и видеть req.headers['host'] как localhost
+APP_ORIGIN_LOCAL=http://localhost:3000 # локальный ресурс которому разрешены запросы из браузера и URL для генерации ссылки в письме
+APP_ORIGIN=http://test-app.uyem.ru # удаленный ресурс которому разрешены запросы из браузера и URL для генерации ссылки в письме
+APP_ORIGIN_TEST=http://ads.loc # тестовый, для имитации удаленного в рабочей среде ресурс которому разрешены запросы из браузера и URL для генерации ссылки в письме
 JWT_SECRET=fsdkjlk87987HKHJHKJlklkhd7879jlkhsld # секретный ключ шифрования веб токена
 SMTP_HOST=smtp.gmail.com # сервер почты SMTP
 SMTP_PORT=587 # порт ЫMTP почты

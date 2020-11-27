@@ -1,6 +1,6 @@
 {
   "name": "ads-panel",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "description": "no desc",
   "main": "dist/index.js",
   "repository": "https://github.com/kolserdav/ads-panel",
@@ -12,6 +12,9 @@
     "ts:build": "tsc -p .",
     "start": "NODE_ENV=development nodemon dist/index.js",
     "start:deploy": "NODE_ENV=production node dist/index.js",
+    "start:predeploy": "NODE_ENV=development node dist/index.js",
+    "start:test": "NODE_ENV=test node dist/index.js",
+    "start:dev": "NODE_ENV=development node dist/index.js",
     "prod": "echo logfile ~/logs/api-${npm_package_version}.log > ~/.screenrc && screen -dmS api -L yarn start:deploy",
     "logs": "cat ~/logs/api-${npm_package_version}.log",
     "get": "screen -x api",

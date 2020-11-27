@@ -166,9 +166,7 @@ export default async function postCreateUser(req: express.Request, res: express.
     });
   }
 
-  const { host }: any = req.headers;
-
-  const sendRes: Types.OrmResult = await utils.getConfirmEmail(email, dateNow, first_name, host);
+  const sendRes: Types.OrmResult = await utils.getConfirmEmail(email, dateNow, first_name);
 
   const userAgent: any = req.headers['user-agent'];
 

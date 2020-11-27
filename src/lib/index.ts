@@ -140,7 +140,7 @@ export function getTodayTimeStart(): Date {
   date.setHours(0);
   date.setMinutes(0);
   date.setSeconds(0);
-  date.setUTCMilliseconds(0);
+  date.setUTCMilliseconds(1);
   return date;
 }
 

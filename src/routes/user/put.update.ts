@@ -34,7 +34,7 @@ export default async function putUpdate(req: express.Request, res: express.Respo
   // Если передан sendConfirm - то обновляет updated пользователя, формирует ссылку с ключем по updated времени и отправляет письмо
   // Берет timestamp
   const dateNow = Date.now();
-  const { host, xxemail, name }: any = req.headers;
+  const { xxemail, name }: any = req.headers;
   if (sendConfirm === 1 || parseInt(sendConfirm, 10) === 1) {
     // Изменяет updated на основе timestamp
     const updateRes: Types.OrmResult = await orm.user.changeUpdated(dateNow, id);
@@ -107,7 +107,7 @@ export default async function putUpdate(req: express.Request, res: express.Respo
       }
     }
     // Отправляет письмо с передачей timestamp для генерации ключа
-    const sendRes: Types.OrmResult = await utils.getConfirmEmail(newEmail, dateNow, name, host);
+    const sendRes: Types.OrmResult = await utils.getConfirmEmail(newEmail, dateNow, name);
     if (sendRes.error === 1) {
       console.warn(`<${Date()}>`, '[Warning: sendRes.error === 1]', {
         url: req.url,

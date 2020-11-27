@@ -804,11 +804,8 @@
 			"item": [
 				{
 					"name": "Table statistic",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -842,11 +839,8 @@
 				},
 				{
 					"name": "Graph statistic",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -856,12 +850,12 @@
 							{
 								"key": "xx-auth",
 								"type": "text",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiYWRtaW4iOjAsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjhkOTY5ZWVmNmVjYWQzYzI5YTNhNjI5MjgwZTY4NmNmMGMzZjVkNWE4NmFmZjNjYTEyMDIwYzkyM2FkYzZjOTIiLCJpYXQiOjE2MDU4NzUxMzd9.xUlzrEsYu3N6s6tPBv9OJD9gGUBib1d46wNCbY8GV8s"
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiYWRtaW4iOjEsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjhkOTY5ZWVmNmVjYWQzYzI5YTNhNjI5MjgwZTY4NmNmMGMzZjVkNWE4NmFmZjNjYTEyMDIwYzkyM2FkYzZjOTIiLCJpYXQiOjE2MDYzNjMwMTJ9.Cy-A4liDXlzDk7bO4mBl03hhPvkDMlwocG9B3UJWZSA"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"time\": \"custom\",\n    \"customTime\": [\"2020-11-14T12:56:37.000Z\", \"2020-11-17T16:56:37.000Z\"],\n    \"self\": 0,\n    \"campaign\": 2\n}"
+							"raw": "{\n    \"time\": \"last-year\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:3001/statistic/graph",

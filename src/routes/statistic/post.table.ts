@@ -4,7 +4,7 @@ import * as orm from '../../orm';
 import express from 'express';
 
 /**
- * /statistic/table GET
+ * /statistic/table POST
  * Возвращает статистику для таблицы, группированную по одному из типов
  *  @limit {number} - количество эелементов на странице
     @current {number} - запрашиваемая страница
@@ -152,9 +152,14 @@ export default async function getAllStatistic(req: express.Request, res: express
 
   const successRes: Types.ServerHandlerResponse = {
     result: 'success',
-    message: 'Statistic received',
+    message: 'Table statistic received',
     body: {
+      group,
       table,
+      sort,
+      desc,
+      limit,
+      current,
     },
   };
 

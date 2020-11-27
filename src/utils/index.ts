@@ -8,11 +8,15 @@ import * as lib from '../lib';
 import transporter from './transporter';
 
 const {
+  NODE_ENV,
   SMTP_EMAIL,
   LINK_EXPIRE,
   APP_ORIGIN,
+  APP_ORIGIN_LOCAL
 }: any = process.env;
-const dev = process.env.NODE_ENV === 'development';
+const dev = NODE_ENV === 'development';
+
+const appOrigin = dev ? APP_ORIGIN_LOCAL : APP_ORIGIN;
 
 function sendEmail(message: Types.Email, errMess: string): Promise<Types.OrmResult> {
   return new Promise(resolve => {
@@ -47,12 +51,11 @@ function sendEmail(message: Types.Email, errMess: string): Promise<Types.OrmResu
  * @param first_name 
  * @param host 
  */
-export function getConfirmEmail(email: string, dateNow: number, first_name: string, host: string): Promise<Types.OrmResult> {
+export function getConfirmEmail(email: string, dateNow: number, first_name: string): Promise<Types.OrmResult> {
 
   const key = lib.encodeBase64(new Date(dateNow).toString());
 
-  const newHost = dev ? host : APP_ORIGIN;
-  const link = `${newHost}/confirm?e=${email}&k=${key}`;
+  const link = `${appOrigin}/confirm?e=${email}&k=${key}`;
 
   const userMessage: Types.Email = {
     from: SMTP_EMAIL,
@@ -65,12 +68,11 @@ export function getConfirmEmail(email: string, dateNow: number, first_name: stri
   return sendEmail(userMessage, 'Error send email to registered user');
 }
 
-export function getForgotEmail(email: string, dateNow: number, first_name: string, host: string): Promise<Types.OrmResult> {
+export function getForgotEmail(email: string, dateNow: number, first_name: string): Promise<Types.OrmResult> {
 
   const key = lib.encodeBase64(new Date(dateNow).toString());
 
-  const newHost = dev ? host : APP_ORIGIN;
-  const link = `${newHost}/change-user-pwd?e=${email}&k=${key}`;
+  const link = `${appOrigin}/change-user-pwd?e=${email}&k=${key}`;
   const userMessage = {
     from: SMTP_EMAIL,
     to: email,

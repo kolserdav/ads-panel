@@ -15,8 +15,6 @@ export default async function postForgot(req: express.Request, res: express.Resp
 
   const { email } = req.body;
 
-  const { host }: any = req.headers;
-
   if (!email) {
     return res.status(400).json({
       result: 'warning',
@@ -80,7 +78,7 @@ export default async function postForgot(req: express.Request, res: express.Resp
     return res.status(500).json(updateWarnRes);
   }
   // Отправляет письмо с сылкой на смену пароля
-  const sendRes: Types.OrmResult = await utils.getForgotEmail(user.email, dateNow, user.first_name, host);
+  const sendRes: Types.OrmResult = await utils.getForgotEmail(user.email, dateNow, user.first_name);
   if (sendRes.error === 1) {
     console.warn(`<${Date()}>`, '[Warning: sendRes.error === 1]', {
       url: req.url,

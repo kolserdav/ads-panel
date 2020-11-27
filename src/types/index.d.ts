@@ -87,6 +87,11 @@ export type ServerHandlerResponse = {
     all?: any
     insertId?: number
     transactions?: Transaction[]
+    group?: GroupBy
+    desc?: boolean
+    sort?: any
+    limit?: number
+    current?: number
   }
 };
 

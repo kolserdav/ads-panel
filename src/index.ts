@@ -75,14 +75,20 @@ void Promise.all([
     console.error(`<${Date()}>`, 'Error create table', e);
   });
 
-const { API_PORT, APP_ORIGIN }: any = process.env;
+const { NODE_ENV, API_PORT, APP_ORIGIN, APP_ORIGIN_LOCAL, APP_ORIGIN_TEST }: any = process.env;
+
+const dev = NODE_ENV === 'development';
+const test = NODE_ENV === 'test';
+
+let appOrigin = dev ? APP_ORIGIN_LOCAL : APP_ORIGIN;
+appOrigin = test ? APP_ORIGIN_TEST : appOrigin;
 
 const app = express();
 
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(cors({ origin: APP_ORIGIN }));
+app.use(cors({ origin: appOrigin }));
 
 // Выдает статичные изображения
 app.use('/img', express.static(path.resolve(__dirname, '../public/img')));
@@ -114,7 +120,7 @@ app.get('/offer/:id', middle.auth, middle.orAdmin, middle.selfOffer, router.getO
 app.get('/offer', middle.auth, router.getOffers);
 app.delete('/offer/:id', middle.auth, middle.selfOffer, router.deleteOffer);
 // API статистики
-app.get('/statistic/table', middle.auth, router.getTableStatistic);
+app.post('/statistic/table', middle.auth, router.getTableStatistic);
 app.post('/statistic/graph', middle.auth, router.getGraphStatistic);
 // Транзакции
 app.post('/transaction', middle.auth, router.postCreateTransaction);

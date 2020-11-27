@@ -80,6 +80,9 @@ export function getTableStatistic(user_id: number | null, start: number, count: 
     u.first_name,\
     u.last_name,\
     c.user_id,\
+    h.subid,\
+    h.country,\
+    c.title,\
     SUM(h.cost) as cost,\
     CAST(SUM(h.requests) AS INTEGER) as requests,\
     CAST(SUM(h.clicks) AS INTEGER) as clicks,\
