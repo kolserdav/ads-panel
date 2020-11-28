@@ -13,7 +13,7 @@ export { default as postCreateCampaign } from './campaign/post.create';
 export { default as putUpdateCampaign } from './campaign/put.update';
 export { default as putStatusCampaign } from './campaign/put.status';
 export { default as getCampaign } from './campaign/get.campaign';
-export { default as getCampaigns } from './campaign/get.campaigns';
+export { default as getCampaigns } from './campaign/post.getCampaigns';
 export { default as deleteCampaign } from './campaign/del.campaign';
 // Роуты офферов
 export { default as postCreateOffer } from './offer/post.create';
@@ -30,3 +30,5 @@ export { default as getGraphStatistic } from './statistic/post.graph';
 // Транзакции
 export { default as postCreateTransaction } from './transtaction/post.create';
 export { default as getTransactions } from './transtaction/get.all';
+// Страны
+export { default as getSearchCountries } from './countries/get.search';

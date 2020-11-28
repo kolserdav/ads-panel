@@ -92,7 +92,14 @@ export type ServerHandlerResponse = {
     sort?: any
     limit?: number
     current?: number
+    countries?: Country[]
   }
+};
+
+export type Country = {
+  id: number
+  name: string
+  code: string
 };
 
 // Тип пользователя

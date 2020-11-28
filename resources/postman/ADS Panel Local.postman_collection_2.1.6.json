@@ -244,7 +244,7 @@
 							},
 							{
 								"key": "xx-auth",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjA0MWJmMjYzOGU2NTMxNDNlZTVkM2FmMzdkYWU0ZWJhMDczMTkwODNkMjllYWVhN2NlMTlhNjViOGYyMWJmZTYiLCJpYXQiOjE2MDU1NTk3MDd9.MpOoVeS4RzrXvKIhFE9qokx6BR4otTkGO5QAaxbX5bc",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWRtaW4iOjEsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjhkOTY5ZWVmNmVjYWQzYzI5YTNhNjI5MjgwZTY4NmNmMGMzZjVkNWE4NmFmZjNjYTEyMDIwYzkyM2FkYzZjOTIiLCJpYXQiOjE2MDYxNjI0NjN9.F7tvCTHmwbQztg05502nt1-fxb5mDdkLwCWhi_q4bsU",
 								"type": "text"
 							}
 						],
@@ -287,7 +287,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Первая кампания\",\n    \"link\": \"http://mysite.com\",\n    \"countries\": [\"UA\", \"RU\"],\n    \"price\": 4.30,\n    \"budget\": 50.00,\n    \"ip_pattern\": [\"192.168.0.1\", \"192.168.0.2\", \"192.168.0.3\"],\n    \"white_list\": [\"192.169.0.5\"],\n    \"black_list\": [\"192.168.0.3\"],\n    \"offer_id\": \"1\"\n}"
+							"raw": "{\n    \"title\": \"Первая кампания\",\n    \"link\": \"http://mysite.com\",\n    \"countries\": [\"UA\", \"RU\"],\n    \"price\": 4.30,\n    \"budget\": 50.00,\n    \"ip_pattern\": [\"192.168.0.1\", \"192.168.0.2\", \"192.168.0.3\"],\n    \"white_list\": [\"192.169.0.5\"],\n    \"black_list\": [\"192.168.0.3\"],\n    \"offer_id\": \"4\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:3001/campaign",
@@ -403,11 +403,8 @@
 				},
 				{
 					"name": "Get campaigns",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -425,14 +422,15 @@
 							"raw": "{\n    \"self\": 1,\n    \"limit\": 1,\n    \"current\": 1,\n    \"status\": \"pause\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3001/campaign",
+							"raw": "http://localhost:3001/campaign/get",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3001",
 							"path": [
-								"campaign"
+								"campaign",
+								"get"
 							]
 						}
 					},
@@ -814,7 +812,7 @@
 							},
 							{
 								"key": "xx-auth",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWRtaW4iOjEsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjhkOTY5ZWVmNmVjYWQzYzI5YTNhNjI5MjgwZTY4NmNmMGMzZjVkNWE4NmFmZjNjYTEyMDIwYzkyM2FkYzZjOTIiLCJpYXQiOjE2MDU5OTc0MTh9.Vi1-cl4W3Af5KHDjU_Zs_zPxnfk7mrnKorXWnjgBcV0",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiYWRtaW4iOjEsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjhkOTY5ZWVmNmVjYWQzYzI5YTNhNjI5MjgwZTY4NmNmMGMzZjVkNWE4NmFmZjNjYTEyMDIwYzkyM2FkYzZjOTIiLCJpYXQiOjE2MDY0NTE2ODh9.xddQahFJ9Utf4xriSaYjblX77W0xHXWro3I-zbhZWtI",
 								"type": "text"
 							}
 						],
@@ -944,6 +942,48 @@
 							"port": "3001",
 							"path": [
 								"transaction"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Countries",
+			"item": [
+				{
+					"name": "Search countries",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "xx-auth",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiYWRtaW4iOjEsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjhkOTY5ZWVmNmVjYWQzYzI5YTNhNjI5MjgwZTY4NmNmMGMzZjVkNWE4NmFmZjNjYTEyMDIwYzkyM2FkYzZjOTIiLCJpYXQiOjE2MDY1NDE3NzB9.NOe4H0R1EcE_zWRwTgVYuK6tKb7laN7oPV8EwjNX6Go",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3001/countries?search=uk",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"countries"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "uk"
+								}
 							]
 						}
 					},

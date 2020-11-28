@@ -54,7 +54,7 @@ export default async function putStatusCampaign(req: express.Request, res: expre
   }
 
   const successRes: Types.ServerHandlerResponse = {
-    result: 'warning',
+    result: 'success',
     message: 'Status of campaign is changed',
     body: {},
   };

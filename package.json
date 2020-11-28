@@ -1,6 +1,6 @@
 {
   "name": "ads-panel",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "description": "no desc",
   "main": "dist/index.js",
   "repository": "https://github.com/kolserdav/ads-panel",
