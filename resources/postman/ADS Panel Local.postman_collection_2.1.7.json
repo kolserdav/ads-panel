@@ -287,7 +287,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Первая кампания\",\n    \"link\": \"http://mysite.com\",\n    \"countries\": [\"UA\", \"RU\"],\n    \"price\": 4.30,\n    \"budget\": 50.00,\n    \"ip_pattern\": [\"192.168.0.1\", \"192.168.0.2\", \"192.168.0.3\"],\n    \"white_list\": [\"192.169.0.5\"],\n    \"black_list\": [\"192.168.0.3\"],\n    \"offer_id\": \"4\"\n}"
+							"raw": "{\n    \"title\": \"Первая кампания fsdfdsf \",\n    \"link\": \"http://mysite.com\",\n    \"countries\": [\"UA\", \"RU\"],\n    \"price\": 4.30,\n    \"budget\": 50.00,\n    \"ip_pattern\": [\"192.168.0.1\", \"192.168.0.2\", \"192.168.0.3\"],\n    \"white_list\": [\"192.169.0.5\"],\n    \"black_list\": [\"192.168.0.3\"],\n    \"offer_id\": \"4\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:3001/campaign",
@@ -413,13 +413,13 @@
 							},
 							{
 								"key": "xx-auth",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWRtaW4iOjAsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjhkOTY5ZWVmNmVjYWQzYzI5YTNhNjI5MjgwZTY4NmNmMGMzZjVkNWE4NmFmZjNjYTEyMDIwYzkyM2FkYzZjOTIiLCJpYXQiOjE2MDU2NjMyMjR9.g9LGa2_BmsNVU-VpSO4oB_awSSIgd_Y0Lue5XOBgNUI",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiYWRtaW4iOjEsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjhkOTY5ZWVmNmVjYWQzYzI5YTNhNjI5MjgwZTY4NmNmMGMzZjVkNWE4NmFmZjNjYTEyMDIwYzkyM2FkYzZjOTIiLCJpYXQiOjE2MDY2MjQ3NDB9.c2ZIT1I7A3KoKFrvSr9iCmFeOskBcPrHclbHNqlJTFU",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"self\": 1,\n    \"limit\": 1,\n    \"current\": 1,\n    \"status\": \"pause\"\n}"
+							"raw": "{\n    \"self\": 1,\n    \"limit\": 5,\n    \"current\": 1,\n    \"status\": \"pause\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:3001/campaign/get",
@@ -491,14 +491,14 @@
 							},
 							{
 								"key": "xx-auth",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiYWRtaW4iOjAsImVtYWlsIjoiMTlfcGVrQG1haWwucnVkIiwidXNlckFnZW50IjoiUG9zdG1hblJ1bnRpbWUvNy4yNi44IiwicGFzc3dvcmQiOiI4ZDk2OWVlZjZlY2FkM2MyOWEzYTYyOTI4MGU2ODZjZjBjM2Y1ZDVhODZhZmYzY2ExMjAyMGM5MjNhZGM2YzkyIiwiaWF0IjoxNjA1OTkxMjI5fQ.fiywhid7CnDFFNPAvfxSMQT7yFuVHo6qVWHi5iSlSnY",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiYWRtaW4iOjEsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjhkOTY5ZWVmNmVjYWQzYzI5YTNhNjI5MjgwZTY4NmNmMGMzZjVkNWE4NmFmZjNjYTEyMDIwYzkyM2FkYzZjOTIiLCJpYXQiOjE2MDY2MTE1NTZ9.xbSB3odrS-JhjQhrjXqk_1jx0OEveXGZJENxXaosIpw",
 								"description": "other user",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"title\": \"Самый первый оффер 1w\",\n    \"description\": \"Комментарий самого первого оффера\"\n}"
+							"raw": "{\n    \"title\": \"Самый первый оффер 1w1212\",\n    \"description\": \"Комментарий самого первого оффера\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:3001/offer",
@@ -533,7 +533,7 @@
 						"header": [
 							{
 								"key": "xx-auth",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiIxOV9wZWtAbWFpbC5ydSIsInVzZXJBZ2VudCI6IlBvc3RtYW5SdW50aW1lLzcuMjYuOCIsInBhc3N3b3JkIjoiOGQ5NjllZWY2ZWNhZDNjMjlhM2E2MjkyODBlNjg2Y2YwYzNmNWQ1YTg2YWZmM2NhMTIwMjBjOTIzYWRjNmM5MiIsImlhdCI6MTYwNTU3MzcxOX0.2k3F9IQXogqIGfDap6Ja7MVa3ob_4pNHMQAMW9K5veE",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiYWRtaW4iOjEsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjhkOTY5ZWVmNmVjYWQzYzI5YTNhNjI5MjgwZTY4NmNmMGMzZjVkNWE4NmFmZjNjYTEyMDIwYzkyM2FkYzZjOTIiLCJpYXQiOjE2MDY2MjQ3NDB9.c2ZIT1I7A3KoKFrvSr9iCmFeOskBcPrHclbHNqlJTFU",
 								"type": "text"
 							}
 						],
@@ -548,7 +548,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:3001/offer/icon/1",
+							"raw": "http://localhost:3001/offer/icon/41",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -557,7 +557,7 @@
 							"path": [
 								"offer",
 								"icon",
-								"1"
+								"41"
 							]
 						}
 					},
@@ -713,11 +713,8 @@
 				},
 				{
 					"name": "Get offers",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -733,7 +730,7 @@
 							},
 							{
 								"key": "xx-auth",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiYWRtaW4iOjEsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjhkOTY5ZWVmNmVjYWQzYzI5YTNhNjI5MjgwZTY4NmNmMGMzZjVkNWE4NmFmZjNjYTEyMDIwYzkyM2FkYzZjOTIiLCJpYXQiOjE2MDU5OTQzNjB9.VQumHEryWLaxGSXH7ISMAaWWSZ30NBeW9xfBXMf-gik",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiYWRtaW4iOjEsImVtYWlsIjoiMTlfcGVrQG1haWwucnUiLCJ1c2VyQWdlbnQiOiJQb3N0bWFuUnVudGltZS83LjI2LjgiLCJwYXNzd29yZCI6IjhkOTY5ZWVmNmVjYWQzYzI5YTNhNjI5MjgwZTY4NmNmMGMzZjVkNWE4NmFmZjNjYTEyMDIwYzkyM2FkYzZjOTIiLCJpYXQiOjE2MDY2MTA4NjV9.R7SqhhmwktpUWyTs6XD1wtcyuBIxgu9xBQy9F102hbA",
 								"description": "admin",
 								"type": "text"
 							}
@@ -743,14 +740,15 @@
 							"raw": "{\n    \"limit\": 2,\n    \"current\": 1,\n    \"self\": 0\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3001/offer",
+							"raw": "http://localhost:3001/offer/get",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3001",
 							"path": [
-								"offer"
+								"offer",
+								"get"
 							]
 						}
 					},

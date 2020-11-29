@@ -22,7 +22,7 @@ export { default as postIconOffer } from './offer/post.icon';
 export { default as putUpdateOffer } from './offer/put.update';
 export { default as putStatusOffer } from './offer/put.status';
 export { default as getOffer } from './offer/get.offer';
-export { default as getOffers } from './offer/get.offers';
+export { default as getOffers } from './offer/post.offers';
 export { default as deleteOffer } from './offer/del.offer';
 // Роуты статистики
 export { default as getTableStatistic } from './statistic/post.table';

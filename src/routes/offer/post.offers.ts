@@ -3,7 +3,7 @@ import * as orm from '../../orm';
 import express from 'express';
 
 /**
- * /offer GET
+ * /offer/get POST
  * Получение списка офферов
  * self {1|0} - своих ли список офферов запрашивает админ  
  * limit {number} - количество на странице

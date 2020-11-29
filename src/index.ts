@@ -117,7 +117,7 @@ app.post('/offer/image/:id', middle.auth, middle.selfOffer, upload.single('image
 app.put('/offer/:id', middle.auth, middle.selfOffer, router.putUpdateOffer);
 app.put('/offer/status/:id', middle.auth, middle.onlyAdmin, router.putStatusOffer);
 app.get('/offer/:id', middle.auth, middle.orAdmin, middle.selfOffer, router.getOffer);
-app.get('/offer', middle.auth, router.getOffers);
+app.post('/offer/get', middle.auth, router.getOffers);
 app.delete('/offer/:id', middle.auth, middle.selfOffer, router.deleteOffer);
 // API статистики
 app.post('/statistic/table', middle.auth, router.getTableStatistic);
