@@ -128,7 +128,7 @@ export function updateCountries(countries: string[], id: number): Promise<Types.
  * @param id 
  */
 export function updateCost(cost: number, id: number): Promise<Types.OrmResult> {
-  const query = 'UPDATE `campaigns` SET cost=?, updated=? WHERE id=?';
+  const query = 'UPDATE `campaigns` SET price=?, updated=? WHERE id=?';
   const values = [
     cost,
     new Date(),
@@ -217,14 +217,14 @@ export function updateStatus(status: string, id: number): Promise<Types.OrmResul
  * @param status 
  */
 export function getAll(status: string): Promise<Types.OrmResult> {
-  const query = 'SELECT c.*, u.first_name, u.last_name, c.id as id, u.id as user_id, o.title as offer FROM campaigns c LEFT JOIN users u ON c.user_id = u.id\
+  const query = 'SELECT c.*, u.first_name, u.last_name, c.id as id, u.id as user_id, o.title as offer, o.archive as offer_archive FROM campaigns c LEFT JOIN users u ON c.user_id = u.id\
   LEFT JOIN offers o ON c.offer_id = o.id WHERE c.archive=0 ORDER BY CASE WHEN c.status=? THEN 1 ELSE 2 END ';
   const values = [ status ];
   return lib.runDBQuery(query, 'Error get all campaigns', values);
 }
 
 export function getAllByUid(status: string, user_id: number): Promise<Types.OrmResult> {
-  const query = 'SELECT c.*, u.first_name, u.last_name, c.id as id, u.id as user_id, o.title as offer FROM `campaigns` c LEFT JOIN users u ON c.user_id = u.id\
+  const query = 'SELECT c.*, u.first_name, u.last_name, c.id as id, u.id as user_id, o.title as offer, o.archive as offer_archive FROM `campaigns` c LEFT JOIN users u ON c.user_id = u.id\
   LEFT JOIN offers o ON c.offer_id = o.id WHERE c.user_id=? AND c.archive=0 ORDER BY CASE WHEN c.status=? THEN 1 ELSE 2 END';
   const values = [ user_id, status ];
   return lib.runDBQuery(query, 'Error get all you campaigns', values);
@@ -237,7 +237,7 @@ export function getAllByUid(status: string, user_id: number): Promise<Types.OrmR
  * @param count - количество элементов
  */
 export function filterAllByUid(user_id: number, status: string, start: number, count: number): Promise<Types.OrmResult> {
-  const query = 'SELECT c.*, u.first_name, u.last_name, c.id as id, u.id as user_id, o.title as offer\
+  const query = 'SELECT c.*, u.first_name, u.last_name, c.id as id, u.id as user_id, o.title as offer, o.archive as offer_archive\
    FROM `campaigns` c LEFT JOIN users u ON c.user_id = u.id LEFT JOIN offers o ON c.offer_id = o.id WHERE c.user_id=? AND c.archive=0 ORDER BY CASE WHEN c.status=? THEN 1 ELSE 2 END LIMIT ?,?';
   const values = [ user_id, status, start, count ];
   return lib.runDBQuery(query, 'Error get list of your campaigns', values);
@@ -249,7 +249,7 @@ export function filterAllByUid(user_id: number, status: string, start: number, c
  * @param count - количество элементов
  */
 export function filterAll(status: string, start: number, count: number): Promise<Types.OrmResult> {
-  const query = 'SELECT c.*, u.first_name, u.last_name, c.id as id, u.id as user_id, o.title as offer\
+  const query = 'SELECT c.*, u.first_name, u.last_name, c.id as id, u.id as user_id, o.title as offer, o.archive as offer_archive\
    FROM `campaigns` c LEFT JOIN users u ON c.user_id = u.id LEFT JOIN offers o ON c.offer_id = o.id WHERE c.archive=0 ORDER BY CASE WHEN c.status=? THEN 1 ELSE 2 END LIMIT ?,? ';
   const values = [ status, start, count ];
   return lib.runDBQuery(query, 'Error get list of campaigns', values);

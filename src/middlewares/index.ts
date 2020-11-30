@@ -117,7 +117,8 @@ export async function selfOffer(req: express.Request, res: express.Response, nex
     };
     return res.status(403).json(warnRes);
   }
-
+  // @ts-ignore
+  req.offer = offer;
   next();
 
 }

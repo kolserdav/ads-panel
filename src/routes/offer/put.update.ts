@@ -55,7 +55,10 @@ export default async function putUpdateOffer(req: express.Request, res: express.
   const successRes: Types.ServerHandlerResponse = {
     result: 'success',
     message: 'Оффер успешно изменён',
-    body: req.body,
+    body: {
+      id,
+      ...req.body,
+    },
   };
   return res.status(201).json(successRes);
 }

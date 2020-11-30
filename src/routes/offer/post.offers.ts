@@ -57,7 +57,6 @@ export default async function getOffers(req: express.Request, res: express.Respo
   }
 
   const offers: Types.Offer[] = getRes.data;
-
   const successRes: Types.ServerHandlerResponse = {
     result: 'success',
     message: 'Offers received',

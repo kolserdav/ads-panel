@@ -1,7 +1,8 @@
 import * as Types from '../../types';
 import * as orm from '../../orm';
 import express from 'express';
-
+import fs from 'fs';
+import path from 'path';
 
 /**
  * /offer/icon/:id POST
@@ -13,20 +14,15 @@ export default async function postIconOffer(req: express.Request, res: express.R
 
   const { id } = req.params;
 
+  // @ts-ignore
+  const iconPath = path.resolve(__dirname, `../../../public/${req.offer.icon}`);
+  fs.unlink(iconPath, (e) => {
+    //
+  });
+
   const { imageFile, imageDir }: any = req;
 
-  if (!imageFile) {
-    const warnRes: Types.ServerHandlerResponse = {
-      result: 'warning',
-      message: 'Иконка не передана',
-      body: {
-        stdErrMessage: "Require 'icon' FormData",
-      },
-    };
-    return res.status(400).json(warnRes);
-  }
-
-  const url = `/img/offers/${imageDir}/${imageFile.originalname}`;
+  const url = imageFile ? `/img/offers/${imageDir}/${imageFile.originalname}` : '';
   const updateRes: Types.OrmResult = await orm.offer.changeIcon(url, parseInt(id, 10));
   if (updateRes.error === 1) {
     console.warn(`<${Date()}>`, '[Warning: updateRes.error === 1]', {
@@ -45,7 +41,7 @@ export default async function postIconOffer(req: express.Request, res: express.R
 
   const successRes: Types.ServerHandlerResponse = {
     result: 'success',
-    message: 'Иконка добавлена',
+    message: imageFile ? 'Offer icon changed' : 'Offer icon deleted',
     body: {
       url,
     },

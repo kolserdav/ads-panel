@@ -1,6 +1,8 @@
 import * as Types from '../../types';
 import * as orm from '../../orm';
 import express from 'express';
+import fs from 'fs';
+import path from 'path';
 
 /**
  * /offer/image/:id POST
@@ -13,20 +15,15 @@ export default async function postImageOffer(req: express.Request, res: express.
 
   const { id } = req.params;
 
+  // @ts-ignore
+  const imagePath = path.resolve(__dirname, `../../../public/${req.offer.image}`);
+  fs.unlink(imagePath, (e) => {
+    //
+  });
+
   const { imageFile, imageDir }: any = req;
 
-  if (!imageFile) {
-    const warnRes: Types.ServerHandlerResponse = {
-      result: 'warning',
-      message: 'Изображение не передано',
-      body: {
-        stdErrMessage: "Require 'image' FormData",
-      },
-    };
-    return res.status(400).json(warnRes);
-  }
-
-  const url = `/img/offers/${imageDir}/${imageFile.originalname}`;
+  const url = imageFile ? `/img/offers/${imageDir}/${imageFile.originalname}` : '';
   const updateRes: Types.OrmResult = await orm.offer.changeImage(url, parseInt(id, 10));
   if (updateRes.error === 1) {
     console.warn(`<${Date()}>`, '[Warning: updateRes.error === 1]', {
@@ -45,7 +42,7 @@ export default async function postImageOffer(req: express.Request, res: express.
 
   const successRes: Types.ServerHandlerResponse = {
     result: 'success',
-    message: 'Изображение добавлено',
+    message: imageFile ? 'Offer image changed' : 'Offer image deleted',
     body: {
       url,
     },
