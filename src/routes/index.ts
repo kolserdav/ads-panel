@@ -8,6 +8,8 @@ export { default as getForgot } from './user/get.forgot';
 export { default as postForgot } from './user/post.forgot';
 export { default as putPass } from './user/put.pass';
 export { default as getSession } from './user/get.session';
+export { default as getUserForAdmin } from './user/get.userForAdmin';
+export { default as getUsers } from './user/get.users';
 // Роуты кампаний
 export { default as postCreateCampaign } from './campaign/post.create';
 export { default as putUpdateCampaign } from './campaign/put.update';

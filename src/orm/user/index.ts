@@ -26,6 +26,25 @@ export function getById(id: number): Promise<Types.OrmResult> {
 }
 
 /**
+ * Получение количества пользователей  
+ */
+export function getCount(): Promise<Types.OrmResult> {
+  const query = 'SELECT COUNT(id) as count FROM users';
+  return lib.runDBQuery(query, 'Error get users');
+}
+
+/**
+ * Получение пользователей 
+ * @param limit {number} = количество элементов
+ * @param start {number} = начальный элемент 
+ */
+export function getAll(start: number, limit: number): Promise<Types.OrmResult> {
+  const query = 'SELECT * FROM users LIMIT ?,?';
+  const values = [start, limit];
+  return lib.runDBQuery(query, 'Error get users', values);
+}
+
+/**
  *  Вставляет в таблицу 'users' нового пользователя
  * 
  * @param user {Types.User}

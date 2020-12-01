@@ -68,6 +68,7 @@ export type ServerHandlerResponse = {
   result: 'error' | 'warning' | 'success'
   message: string
   body: {
+    users?: User[]
     table?: TableStatistic[]
     graph?: TableStatistic[]
     require?: any

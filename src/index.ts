@@ -103,6 +103,8 @@ app.get('/user/forgot', router.getForgot);
 app.post('/user/forgot', router.postForgot);
 app.put('/user/pass', router.putPass);
 app.get('/user/session', middle.auth, router.getSession);
+app.get('/user/admin', middle.auth, middle.onlyAdmin, router.getUsers);
+app.get('/user/:id', middle.auth, middle.onlyAdmin, router.getUserForAdmin); // c :id должен стоять после всех
 // API кампаний
 app.post('/campaign', middle.auth, router.postCreateCampaign);
 app.put('/campaign/:id', middle.auth, middle.selfCampaign, router.putUpdateCampaign);
