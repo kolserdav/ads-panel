@@ -11,6 +11,8 @@
     "ts": "tsc -p . -w",
     "ts:build": "tsc -p .",
     "start": "NODE_ENV=development nodemon dist/index.js",
+    "dev": "NODE_ENV=development nodemon dist/index.js",
+    "dev:win": "set NODE_ENV=development && nodemon dist/index.js",
     "start:deploy": "NODE_ENV=production node dist/index.js",
     "start:predeploy": "NODE_ENV=development node dist/index.js",
     "start:test": "NODE_ENV=test node dist/index.js",

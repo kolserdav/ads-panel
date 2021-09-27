@@ -4,3 +4,4 @@ dist/
 .eslintcache
 public/img/offers/*
 !public/img/offers/README.md
+.env

@@ -47,7 +47,7 @@ const upload = multer({ storage });
 // Если нужно удалить все таблицы, чтобы потом создать заново то true но ОСТОРОЖНО!!!
 const dropTables = false;
 // Для наполения тестовыми данными true
-const testData = false;
+const testData = true;
 
 // Создает нужные таблицы.
 console.info(`<${Date()}>`, 'Start create tables script ...');
@@ -85,10 +85,10 @@ appOrigin = test ? APP_ORIGIN_TEST : appOrigin;
 
 const app = express();
 
-app.use(bodyParser.json({ limit: '10mb' }));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true }));
 
-app.use(cors({ origin: appOrigin }));
+app.use(cors());
 
 // Выдает статичные изображения
 app.use('/img', express.static(path.resolve(__dirname, '../public/img')));
