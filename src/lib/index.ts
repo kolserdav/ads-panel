@@ -3,13 +3,21 @@
  * Здесь методы делающе операции, которые просто возвращают нужные данные,
  * но не делают изменений ни на дистке ни в облаке.
  */
-
+import mysql from 'mysql2';
 import * as Types from '../types';
 import { FieldPacket, QueryError } from 'mysql2';
-import connection from '../orm/connection';
 import jwt from 'jsonwebtoken';
 
-const { LINK_EXPIRE, JWT_SECRET }: any = process.env;
+const { LINK_EXPIRE, JWT_SECRET, DB_USER, DB_HOST, DB_NAME, DB_PASS }: any = process.env;
+
+const DB_CONFIG = {
+  host: DB_HOST,
+  user: DB_USER,
+  password: DB_PASS,
+  database: DB_NAME,
+};
+
+let connection = mysql.createConnection(DB_CONFIG);
 
 /**
  * Обработка запроса к базе данных
@@ -17,7 +25,15 @@ const { LINK_EXPIRE, JWT_SECRET }: any = process.env;
  * @param values - массив значений
  * @param errMessage - сообщение об ошибке для лога и ответа
  */
-export function runDBQuery(sql: string, errMessage: string, values: any = []): Promise<Types.OrmResult> {
+export async function runDBQuery(sql: string, errMessage: string, values: any = []): Promise<Types.OrmResult> {
+  const disconnected = await new Promise(resolve => {
+    connection.ping(err => {
+      resolve(err);
+    });
+  });
+  if (disconnected) {
+    connection = mysql.createConnection(DB_CONFIG);
+  }
   return new Promise(resolve => {
     connection.query(sql, values, (err: QueryError | null, result: any, fields: FieldPacket[]) => {
       if (err) {

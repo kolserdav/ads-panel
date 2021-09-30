@@ -47,7 +47,7 @@ const upload = multer({ storage });
 // Если нужно удалить все таблицы, чтобы потом создать заново то true но ОСТОРОЖНО!!!
 const dropTables = false;
 // Для наполения тестовыми данными true
-const testData = true;
+const testData = false;
 
 // Создает нужные таблицы.
 console.info(`<${Date()}>`, 'Start create tables script ...');
